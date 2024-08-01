@@ -1,8 +1,7 @@
-import { Button } from "@mui/material";
 import "./App.css";
 
 function App() {
-  return <Button variant="contained">Test</Button>;
+  return <div>Hello World</div>;
 }
 
 export default App;
