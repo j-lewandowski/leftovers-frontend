@@ -42,7 +42,7 @@ const BaseButton = styled(Button)({
 
 const Navbar = () => {
   return (
-    <Nav position="fixed">
+    <Nav position="sticky">
       <ToolbarWrapper>
         <LeftWrapper>
           <Logo />
