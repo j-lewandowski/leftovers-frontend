@@ -1,17 +1,17 @@
-import { Menu, MenuList } from '@mui/material';
+import { Menu } from '@mui/material';
 import { ReactNode } from 'react';
 
-interface CustomMenuProps {
-  anchor: HTMLElement | null;
-  onClose: () => void;
+interface DropdownProps {
   children: ReactNode;
+  anchor: null | HTMLElement;
+  onClose: () => void;
 }
 
-const CustomMenu = ({ anchor, onClose, children }: CustomMenuProps) => {
+const Dropdown = ({ children, anchor, onClose }: DropdownProps) => {
   return (
     <Menu
-      open={!!anchor}
       anchorEl={anchor}
+      open={!!anchor}
       onClose={onClose}
       anchorOrigin={{
         vertical: 'bottom',
@@ -21,10 +21,11 @@ const CustomMenu = ({ anchor, onClose, children }: CustomMenuProps) => {
         vertical: 'top',
         horizontal: 'right',
       }}
+      sx={{ top: '0.5rem' }}
     >
-      <MenuList>{children}</MenuList>
+      {children}
     </Menu>
   );
 };
 
-export default CustomMenu;
+export default Dropdown;
