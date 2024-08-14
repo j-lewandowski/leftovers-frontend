@@ -1,23 +1,23 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  createRoutesFromElements,
+} from 'react-router-dom';
 import App from './App';
-import Navbar from './components/navbar/Navbar';
-import Footer from './components/footer/Footer';
+
+import { Layout } from './layout';
 
 const Router = () => {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <App />,
-    },
-  ]);
-
-  return (
-    <>
-      <Navbar />
-      <RouterProvider router={router} />
-      <Footer />
-    </>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route element={<Layout />}>
+        <Route path="/" element={<App />} />
+      </Route>,
+    ),
   );
+
+  return <RouterProvider router={router} />;
 };
 
 export default Router;
