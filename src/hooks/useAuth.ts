@@ -16,6 +16,7 @@ export const useAuth = () => {
 
   const signOut = () => {
     localStorage.removeItem('accessToken');
+    setAccessToken('');
     setIsAuthenticated(false);
     navigate('/');
   };
