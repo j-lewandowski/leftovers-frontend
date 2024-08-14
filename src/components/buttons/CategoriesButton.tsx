@@ -17,7 +17,7 @@ const CategoriesButton = () => {
       <Button
         variant="text"
         color="secondary"
-        endIcon={<Icon isOpen={!!anchor} />}
+        endIcon={<Icon $isOpen={!!anchor} />}
         onClick={onOpen}
       >
         <Typography>Recipes</Typography>
@@ -26,8 +26,7 @@ const CategoriesButton = () => {
       <Dropdown anchor={anchor} onClose={() => setAnchor(null)}>
         {categories.map((category, i) => (
           <MenuItem
-            sx={{ width: '220px' }}
-            key={category.name}
+            key={`${category.name}-${i}`}
             divider={i !== categories.length - 1}
           >
             {category.name}
@@ -38,8 +37,9 @@ const CategoriesButton = () => {
   );
 };
 
-const Icon = styled(ExpandMore)(({ isOpen }: { isOpen: boolean }) => ({
-  rotate: isOpen ? '180deg' : '0deg',
+const Icon = styled(ExpandMore)(({ $isOpen }: { $isOpen: boolean }) => ({
+  transform: $isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+  transition: 'transform 0.3s ease',
 }));
 
 export default CategoriesButton;

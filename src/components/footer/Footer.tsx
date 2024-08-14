@@ -8,10 +8,10 @@ const Footer = () => {
       <ContentGroup gap={4} direction="row">
         <ContentGroup gap={0.5} direction="row">
           <Link href="https://www.instagram.com/">
-            <ImageLogo src={instagramLogo} />
+            <ImageLogo src={instagramLogo} alt="instagram logo" />
           </Link>
           <Link href="https://www.facebook.com/">
-            <ImageLogo src={facebookLogo} />
+            <ImageLogo src={facebookLogo} alt="facebook logo" />
           </Link>
         </ContentGroup>
 
