@@ -1,6 +1,11 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 const colorsTheme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: 'Poppins, Arial, sans-serif',
+    },
+  },
   palette: {
     primary: {
       main: '#43A047',
@@ -22,9 +27,6 @@ const colorsTheme = createTheme({
 });
 
 export const theme = createTheme(colorsTheme, {
-  typography: {
-    fontFamily: 'Poppins',
-  },
   components: {
     MuiButton: {
       variants: [
