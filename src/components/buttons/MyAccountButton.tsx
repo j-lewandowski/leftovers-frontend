@@ -17,7 +17,7 @@ const MyAccountButton = () => {
       <Button
         variant="contained"
         color="primary"
-        endIcon={<Icon isOpen={!!anchor} />}
+        endIcon={<Icon $isOpen={!!anchor} />}
         onClick={onOpen}
       >
         <Typography>My account</Typography>
@@ -48,8 +48,9 @@ const MyAccountButton = () => {
   );
 };
 
-const Icon = styled(ExpandMore)(({ isOpen }: { isOpen: boolean }) => ({
-  rotate: isOpen ? '180deg' : '0deg',
+const Icon = styled(ExpandMore)(({ $isOpen }: { $isOpen: boolean }) => ({
+  transform: $isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+  transition: 'transform 0.3s ease',
 }));
 
 export default MyAccountButton;
