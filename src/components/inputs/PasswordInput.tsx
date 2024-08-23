@@ -1,9 +1,14 @@
 import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
+import { FormInputValues } from '../modals/SignUpModal';
 
-const PasswordInput = () => {
+const PasswordInput = (props: UseControllerProps<FormInputValues>) => {
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    field: { onChange, value },
+  } = useController({ ...props, rules: { required: true, minLength: 5 } });
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -13,6 +18,8 @@ const PasswordInput = () => {
       label="Password*"
       size="small"
       fullWidth
+      onChange={onChange}
+      value={value}
       type={showPassword ? 'text' : 'password'}
       InputProps={{
         endAdornment: (

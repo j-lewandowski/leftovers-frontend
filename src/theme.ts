@@ -22,6 +22,8 @@ const colorsTheme = createTheme({
     },
     action: {
       active: 'rgba(0, 0, 0, 0.56)',
+      disabled: 'rgba(0, 0, 0, 0.38)',
+      disabledBackground: 'rgba(0, 0, 0, 0.12)',
     },
   },
 });

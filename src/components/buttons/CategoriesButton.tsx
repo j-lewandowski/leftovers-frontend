@@ -1,8 +1,8 @@
-import { Button, MenuItem, styled, Typography } from '@mui/material';
-import { useCategories } from '../../hooks/useCategories';
 import { ExpandMore } from '@mui/icons-material';
-import Dropdown from '../navbar/Dropdown';
+import { Button, MenuItem, styled, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useCategories } from '../../hooks/useCategories';
+import Dropdown from '../navbar/Dropdown';
 
 const CategoriesButton = () => {
   const { categories } = useCategories();

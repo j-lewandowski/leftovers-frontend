@@ -2,6 +2,7 @@ import { Close } from '@mui/icons-material';
 import {
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,12 +13,31 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
-import { Link } from 'react-router-dom';
+
+export interface FormInputValues {
+  email: string;
+  password: string;
+  acceptTC: boolean;
+}
 
 const SignUpModal = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { handleSubmit, control, register, formState } =
+    useForm<FormInputValues>({
+      defaultValues: {
+        email: '',
+        password: '',
+        acceptTC: false,
+      },
+      mode: 'onChange',
+    });
+  const onSubmit = (data: FormInputValues) => {
+    console.log(data);
+  };
 
   const onClose = () => {
     setIsOpen(false);
@@ -37,14 +57,14 @@ const SignUpModal = () => {
         <Typography variant="body2">Create an account for free</Typography>
       </Content>
       <Content>
-        <EmailInput />
+        <EmailInput control={control} name="email" />
       </Content>
       <Content>
-        <PasswordInput />
+        <PasswordInput control={control} name="password" />
       </Content>
       <Content>
         <FormControlLabel
-          control={<Checkbox />}
+          control={<Checkbox {...register('acceptTC', { required: true })} />}
           labelPlacement="end"
           label={
             <Typography>
@@ -57,8 +77,13 @@ const SignUpModal = () => {
         />
       </Content>
       <SubmitContainer>
-        <Button variant="contained" size="medium">
-          Create an account
+        <Button
+          variant="contained"
+          size="medium"
+          onClick={handleSubmit(onSubmit)}
+          disabled={!formState.isValid || formState.isSubmitted}
+        >
+          {formState.isSubmitted ? <Spinner /> : 'Create an account'}
         </Button>
       </SubmitContainer>
       <Content>
@@ -103,6 +128,10 @@ const SubmitContainer = styled(DialogActions)(() => ({
 const LoginLink = styled(Link)(() => ({
   textDecoration: 'underline',
   color: 'inherit',
+}));
+
+const Spinner = styled(CircularProgress)(({ theme }) => ({
+  color: theme.palette.action.disabled,
 }));
 
 export default SignUpModal;
