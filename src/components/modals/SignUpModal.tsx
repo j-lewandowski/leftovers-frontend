@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
@@ -26,7 +27,7 @@ export interface FormInputValues {
 
 const SignUpModal = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { handleSubmit, control, register, formState } =
+  const { handleSubmit, control, register, formState, reset } =
     useForm<FormInputValues>({
       defaultValues: {
         email: '',
@@ -36,6 +37,7 @@ const SignUpModal = () => {
       mode: 'onChange',
     });
   const onSubmit = (data: FormInputValues) => {
+    setIsOpen(false);
     console.log(data);
   };
 
@@ -44,54 +46,61 @@ const SignUpModal = () => {
   };
 
   return (
-    <DialogContainer open={isOpen} onClose={onClose} fullWidth>
-      <CloseDialogContainer>
-        <IconButton onClick={onClose}>
-          <Close />
-        </IconButton>
-      </CloseDialogContainer>
-      <Title>
-        <Typography variant="h4">Sign up</Typography>
-      </Title>
-      <Content>
-        <Typography variant="body2">Create an account for free</Typography>
-      </Content>
-      <Content>
-        <EmailInput control={control} name="email" />
-      </Content>
-      <Content>
-        <PasswordInput control={control} name="password" />
-      </Content>
-      <Content>
-        <FormControlLabel
-          control={<Checkbox {...register('acceptTC', { required: true })} />}
-          labelPlacement="end"
-          label={
-            <Typography>
-              Acceptance of{' '}
-              <TermsAndConditionsLink target="_blank">
-                Terms & Conditions and Privacy Policy*
-              </TermsAndConditionsLink>
-            </Typography>
-          }
-        />
-      </Content>
-      <SubmitContainer>
-        <Button
-          variant="contained"
-          size="medium"
-          onClick={handleSubmit(onSubmit)}
-          disabled={!formState.isValid || formState.isSubmitted}
-        >
-          {formState.isSubmitted ? <Spinner /> : 'Create an account'}
-        </Button>
-      </SubmitContainer>
-      <Content>
-        <Typography variant="body2">
-          Already have an account? <LoginLink to="/sign-in">Login</LoginLink>
-        </Typography>
-      </Content>
-    </DialogContainer>
+    <>
+      <DialogContainer open={isOpen} onClose={onClose} fullWidth>
+        <CloseDialogContainer>
+          <IconButton onClick={onClose}>
+            <Close />
+          </IconButton>
+        </CloseDialogContainer>
+        <Title>
+          <Typography variant="h4">Sign up</Typography>
+        </Title>
+        <Content>
+          <Typography variant="body2">Create an account for free</Typography>
+        </Content>
+        <Content>
+          <EmailInput control={control} name="email" />
+        </Content>
+        <Content>
+          <PasswordInput control={control} name="password" />
+        </Content>
+        <Content>
+          <FormControlLabel
+            control={<Checkbox {...register('acceptTC', { required: true })} />}
+            labelPlacement="end"
+            label={
+              <Typography>
+                Acceptance of{' '}
+                <TermsAndConditionsLink target="_blank">
+                  Terms & Conditions and Privacy Policy*
+                </TermsAndConditionsLink>
+              </Typography>
+            }
+          />
+        </Content>
+        <SubmitContainer>
+          <Button
+            variant="contained"
+            size="medium"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!formState.isValid || formState.isSubmitted}
+          >
+            {formState.isSubmitted ? <Spinner /> : 'Create an account'}
+          </Button>
+        </SubmitContainer>
+        <Content>
+          <Typography variant="body2">
+            Already have an account? <LoginLink to="/sign-in">Login</LoginLink>
+          </Typography>
+        </Content>
+      </DialogContainer>
+      <CustomSnackbar
+        message="You've successfully registered on our website. To complete the registration process, please check your email 📬"
+        isOpen={formState.isSubmitSuccessful}
+        handleClose={reset}
+      />
+    </>
   );
 };
 
