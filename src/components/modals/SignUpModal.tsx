@@ -44,6 +44,7 @@ const SignupModal = () => {
   };
 
   const onSubmit = (data: FormInputValues) => {
+    // @TODO - send data to backend
     onClose();
   };
 
@@ -101,6 +102,7 @@ const SignupModal = () => {
           </Typography>
         </Content>
       </DialogContainer>
+      {/* @TODO - message below should come from backend*/}
       <CustomSnackbar
         message="You've successfully registered on our website. To complete the registration process, please check your email 📬"
         isOpen={formState.isSubmitSuccessful}
