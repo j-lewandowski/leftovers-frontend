@@ -1,11 +1,10 @@
 import {
   createBrowserRouter,
-  RouterProvider,
-  Route,
   createRoutesFromElements,
+  Route,
+  RouterProvider,
 } from 'react-router-dom';
 import App from './App';
-
 import { Layout } from './layout';
 
 const Router = () => {

@@ -1,5 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import CategoriesButton from '../buttons/CategoriesButton';
+import SignupButton from '../buttons/SignupButton';
 
 const UnauthenticatedUserButtons = () => {
   return (
@@ -8,9 +9,7 @@ const UnauthenticatedUserButtons = () => {
       <Button size="medium">
         <Typography>Log in</Typography>
       </Button>
-      <Button variant="contained" size="medium">
-        <Typography>Sign up</Typography>
-      </Button>
+      <SignupButton />
     </>
   );
 };

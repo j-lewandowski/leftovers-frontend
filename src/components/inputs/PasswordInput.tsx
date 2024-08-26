@@ -2,7 +2,7 @@ import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
-import { FormInputValues } from '../modals/SignUpModal';
+import { FormInputValues } from '../modals/SignupModal';
 
 const PasswordInput = (props: UseControllerProps<FormInputValues>) => {
   const [showPassword, setShowPassword] = useState(false);

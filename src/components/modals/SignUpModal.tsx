@@ -12,9 +12,8 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
@@ -25,8 +24,7 @@ export interface FormInputValues {
   acceptTC: boolean;
 }
 
-const SignUpModal = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const SignupModal = () => {
   const { handleSubmit, control, register, formState, reset } =
     useForm<FormInputValues>({
       defaultValues: {
@@ -36,18 +34,26 @@ const SignUpModal = () => {
       },
       mode: 'onChange',
     });
-  const onSubmit = (data: FormInputValues) => {
-    setIsOpen(false);
-    console.log(data);
-  };
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  console.log();
 
   const onClose = () => {
-    setIsOpen(false);
+    reset();
+    navigate(-1);
+  };
+
+  const onSubmit = (data: FormInputValues) => {
+    onClose();
   };
 
   return (
     <>
-      <DialogContainer open={isOpen} onClose={onClose} fullWidth>
+      <DialogContainer
+        open={!!searchParams.get('signup')}
+        onClose={onClose}
+        fullWidth
+      >
         <CloseDialogContainer>
           <IconButton onClick={onClose}>
             <Close />
@@ -143,4 +149,4 @@ const Spinner = styled(CircularProgress)(({ theme }) => ({
   color: theme.palette.action.disabled,
 }));
 
-export default SignUpModal;
+export default SignupModal;

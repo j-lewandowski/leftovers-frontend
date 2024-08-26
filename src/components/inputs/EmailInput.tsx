@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { useController, UseControllerProps } from 'react-hook-form';
-import { FormInputValues } from '../modals/SignUpModal';
+import { FormInputValues } from '../modals/SignupModal';
 
 const EmailInput = (props: UseControllerProps<FormInputValues>) => {
   const {
