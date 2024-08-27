@@ -3,11 +3,10 @@ import { IconButton, Snackbar, SnackbarContent, styled } from '@mui/material';
 
 interface SnackbarProps {
   message: string;
-  isOpen: boolean;
   handleClose: () => void;
 }
 
-const CustomSnackbar = ({ message, isOpen, handleClose }: SnackbarProps) => {
+const CustomSnackbar = ({ message, handleClose }: SnackbarProps) => {
   const action = (
     <>
       <IconButton size="small" onClick={handleClose}>
@@ -17,7 +16,7 @@ const CustomSnackbar = ({ message, isOpen, handleClose }: SnackbarProps) => {
   );
   return (
     <Snackbar
-      open={isOpen}
+      open={!!message}
       autoHideDuration={5000}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       onClose={handleClose}

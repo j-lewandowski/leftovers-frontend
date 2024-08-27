@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
@@ -36,7 +35,6 @@ const SignupModal = () => {
     });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  console.log();
 
   const onClose = () => {
     reset();
@@ -103,11 +101,10 @@ const SignupModal = () => {
         </Content>
       </DialogContainer>
       {/* @TODO - message below should come from backend*/}
-      <CustomSnackbar
+      {/* <CustomSnackbar
         message="You've successfully registered on our website. To complete the registration process, please check your email 📬"
-        isOpen={formState.isSubmitSuccessful}
         handleClose={reset}
-      />
+      /> */}
     </>
   );
 };
