@@ -1,8 +1,9 @@
-import { Button, MenuItem, styled, Typography } from '@mui/material';
-import { useCategories } from '../../hooks/useCategories';
 import { ExpandMore } from '@mui/icons-material';
-import Dropdown from '../navbar/Dropdown';
+import { Button, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
+import styled from 'styled-components';
+import { useCategories } from '../../hooks/useCategories';
+import Dropdown from '../navbar/Dropdown';
 
 const CategoriesButton = () => {
   const { categories } = useCategories();
@@ -37,9 +38,10 @@ const CategoriesButton = () => {
   );
 };
 
-const Icon = styled(ExpandMore)(({ $isOpen }: { $isOpen: boolean }) => ({
-  transform: $isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-  transition: 'transform 0.3s ease',
-}));
+const Icon = styled(ExpandMore)<{ $isOpen: boolean }>`
+  transition: transform 0.15s ease-in !important;
+  transform: ${({ $isOpen }) =>
+    $isOpen ? 'rotate(180deg)' : 'rotate(0deg)'} !important;
+`;
 
 export default CategoriesButton;
