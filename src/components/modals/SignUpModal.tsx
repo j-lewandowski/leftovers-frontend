@@ -12,42 +12,25 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useSignUp } from '../../hooks/useSignUp';
+import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
-export interface FormInputValues {
-  email: string;
-  password: string;
-  acceptTC: boolean;
-}
-
 const SignupModal = () => {
-  const { handleSubmit, control, register, formState, reset } =
-    useForm<FormInputValues>({
-      defaultValues: {
-        email: '',
-        password: '',
-        acceptTC: false,
-      },
-      mode: 'onChange',
-    });
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const onClose = () => {
-    reset();
-    navigate(-1);
-  };
-
-  const onSubmit = (data: FormInputValues) => {
-    // @TODO - send data to backend
-    onClose();
-  };
+  const { form, mutation, message, setMessage, onClose } = useSignUp();
 
   return (
     <>
+      <CustomSnackbar
+        message={message}
+        handleClose={() => {
+          setMessage('');
+        }}
+      />
+
       <DialogContainer
         open={!!searchParams.get('signup')}
         onClose={onClose}
@@ -58,21 +41,21 @@ const SignupModal = () => {
             <Close />
           </IconButton>
         </CloseDialogContainer>
-        <Title>
-          <Typography variant="h4">Sign up</Typography>
-        </Title>
+        <Title variant="h4">Sign up</Title>
         <Content>
           <Typography variant="body2">Create an account for free</Typography>
         </Content>
         <Content>
-          <EmailInput control={control} name="email" />
+          <EmailInput control={form.control} name="email" />
         </Content>
         <Content>
-          <PasswordInput control={control} name="password" />
+          <PasswordInput control={form.control} name="password" />
         </Content>
         <Content>
           <FormControlLabel
-            control={<Checkbox {...register('acceptTC', { required: true })} />}
+            control={
+              <Checkbox {...form.register('acceptTC', { required: true })} />
+            }
             labelPlacement="end"
             label={
               <Typography>
@@ -88,10 +71,10 @@ const SignupModal = () => {
           <Button
             variant="contained"
             size="medium"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!formState.isValid || formState.isSubmitted}
+            onClick={form.handleSubmit(async (data) => mutation.mutate(data))}
+            disabled={!form.formState.isValid || mutation.isPending}
           >
-            {formState.isSubmitted ? <Spinner /> : 'Create an account'}
+            {mutation.isPending ? <Spinner /> : 'Create an account'}
           </Button>
         </SubmitContainer>
         <Content>
@@ -100,11 +83,6 @@ const SignupModal = () => {
           </Typography>
         </Content>
       </DialogContainer>
-      {/* @TODO - message below should come from backend*/}
-      {/* <CustomSnackbar
-        message="You've successfully registered on our website. To complete the registration process, please check your email 📬"
-        handleClose={reset}
-      /> */}
     </>
   );
 };
