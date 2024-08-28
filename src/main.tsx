@@ -1,10 +1,13 @@
+import { ThemeProvider } from '@mui/material';
+import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { HttpService } from './query-client-provider';
 import Router from './router';
 import { theme } from './theme';
-import { ThemeProvider } from '@mui/material';
-import { HttpService } from './query-client-provider';
+
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -12,8 +12,12 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
@@ -21,6 +25,10 @@ export interface FormInputValues {
   email: string;
   password: string;
   acceptTC: boolean;
+}
+
+interface ErrorReponse {
+  message: string | string[];
 }
 
 const SignupModal = () => {
@@ -33,21 +41,48 @@ const SignupModal = () => {
       },
       mode: 'onChange',
     });
+  const mutation = useMutation({
+    onSuccess: (res) => {
+      setMessage(res.data.message);
+      onClose();
+    },
+    onError: (error: AxiosError<ErrorReponse>) => {
+      if (!error.response) {
+        setMessage('Unknown error');
+        return;
+      }
+
+      if (error.response.status === 400) {
+        setMessage(error.response.data.message[0]);
+      }
+
+      setMessage(error.response.data.message as string);
+    },
+    mutationFn: (userData: FormInputValues) => {
+      return axios.post('/auth/register', {
+        email: userData.email,
+        password: userData.password,
+      });
+    },
+  });
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [message, setMessage] = useState('');
 
   const onClose = () => {
     reset();
     navigate(-1);
   };
 
-  const onSubmit = (data: FormInputValues) => {
-    // @TODO - send data to backend
-    onClose();
-  };
-
   return (
     <>
+      <CustomSnackbar
+        message={message}
+        handleClose={() => {
+          setMessage('');
+        }}
+      />
+
       <DialogContainer
         open={!!searchParams.get('signup')}
         onClose={onClose}
@@ -58,9 +93,7 @@ const SignupModal = () => {
             <Close />
           </IconButton>
         </CloseDialogContainer>
-        <Title>
-          <Typography variant="h4">Sign up</Typography>
-        </Title>
+        <Title variant="h4">Sign up</Title>
         <Content>
           <Typography variant="body2">Create an account for free</Typography>
         </Content>
@@ -88,10 +121,10 @@ const SignupModal = () => {
           <Button
             variant="contained"
             size="medium"
-            onClick={handleSubmit(onSubmit)}
-            disabled={!formState.isValid || formState.isSubmitted}
+            onClick={handleSubmit(async (data) => mutation.mutate(data))}
+            disabled={!formState.isValid || mutation.isPending}
           >
-            {formState.isSubmitted ? <Spinner /> : 'Create an account'}
+            {mutation.isPending ? <Spinner /> : 'Create an account'}
           </Button>
         </SubmitContainer>
         <Content>
@@ -100,11 +133,6 @@ const SignupModal = () => {
           </Typography>
         </Content>
       </DialogContainer>
-      {/* @TODO - message below should come from backend*/}
-      {/* <CustomSnackbar
-        message="You've successfully registered on our website. To complete the registration process, please check your email 📬"
-        handleClose={reset}
-      /> */}
     </>
   );
 };
