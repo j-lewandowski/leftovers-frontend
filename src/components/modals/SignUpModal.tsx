@@ -12,68 +12,15 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useSignUp } from '../../hooks/useSignUp';
 import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
-export interface FormInputValues {
-  email: string;
-  password: string;
-  acceptTC: boolean;
-}
-
-interface ErrorReponse {
-  message: string | string[];
-}
-
 const SignupModal = () => {
-  const { handleSubmit, control, register, formState, reset } =
-    useForm<FormInputValues>({
-      defaultValues: {
-        email: '',
-        password: '',
-        acceptTC: false,
-      },
-      mode: 'onChange',
-    });
-  const mutation = useMutation({
-    onSuccess: (res) => {
-      setMessage(res.data.message);
-      onClose();
-    },
-    onError: (error: AxiosError<ErrorReponse>) => {
-      if (!error.response) {
-        setMessage('Unknown error');
-        return;
-      }
-
-      if (error.response.status === 400) {
-        setMessage(error.response.data.message[0]);
-        return;
-      }
-
-      setMessage(error.response.data.message as string);
-    },
-    mutationFn: (userData: FormInputValues) => {
-      return axios.post('/auth/register', {
-        email: userData.email,
-        password: userData.password,
-      });
-    },
-  });
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [message, setMessage] = useState('');
-
-  const onClose = () => {
-    reset();
-    navigate(-1);
-  };
+  const { form, mutation, message, setMessage, onClose } = useSignUp();
 
   return (
     <>
@@ -99,14 +46,16 @@ const SignupModal = () => {
           <Typography variant="body2">Create an account for free</Typography>
         </Content>
         <Content>
-          <EmailInput control={control} name="email" />
+          <EmailInput control={form.control} name="email" />
         </Content>
         <Content>
-          <PasswordInput control={control} name="password" />
+          <PasswordInput control={form.control} name="password" />
         </Content>
         <Content>
           <FormControlLabel
-            control={<Checkbox {...register('acceptTC', { required: true })} />}
+            control={
+              <Checkbox {...form.register('acceptTC', { required: true })} />
+            }
             labelPlacement="end"
             label={
               <Typography>
@@ -122,8 +71,8 @@ const SignupModal = () => {
           <Button
             variant="contained"
             size="medium"
-            onClick={handleSubmit(async (data) => mutation.mutate(data))}
-            disabled={!formState.isValid || mutation.isPending}
+            onClick={form.handleSubmit(async (data) => mutation.mutate(data))}
+            disabled={!form.formState.isValid || mutation.isPending}
           >
             {mutation.isPending ? <Spinner /> : 'Create an account'}
           </Button>
