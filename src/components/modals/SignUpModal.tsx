@@ -54,6 +54,7 @@ const SignupModal = () => {
 
       if (error.response.status === 400) {
         setMessage(error.response.data.message[0]);
+        return;
       }
 
       setMessage(error.response.data.message as string);
