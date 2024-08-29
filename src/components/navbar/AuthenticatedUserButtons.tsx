@@ -1,11 +1,15 @@
+import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import MyAccountButton from '../buttons/MyAccountButton';
 import CategoriesButton from '../buttons/CategoriesButton';
+import MyAccountButton from '../buttons/MyAccountButton';
 
 const AuthenticatedUserButtons = () => {
   return (
     <>
-      <Button>Add recipe</Button>
+      <Button sx={{ gap: '8px' }}>
+        <Add />
+        Add recipe
+      </Button>
       <CategoriesButton />
       <MyAccountButton />
     </>

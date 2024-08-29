@@ -7,15 +7,16 @@ export const useAuth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAccessToken(token);
-      setIsAuthenticated(true);
-    }
-  }, []);
+    const localStorageToken = localStorage.getItem('accessToken');
+    const sessionStorageToken = sessionStorage.getItem('accessToken');
+
+    setAccessToken(localStorageToken || sessionStorageToken || '');
+    setIsAuthenticated(!!(localStorageToken || sessionStorageToken));
+  }, [navigate]);
 
   const signOut = () => {
     localStorage.removeItem('accessToken');
+    sessionStorage.removeItem('accessToken');
     setAccessToken('');
     setIsAuthenticated(false);
     navigate('/');
