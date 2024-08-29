@@ -1,21 +1,46 @@
 import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useController, UseControllerProps } from 'react-hook-form';
-import { FormInputValues } from '../modals/SignupModal';
+import {
+  FieldPath,
+  FieldValues,
+  useController,
+  UseControllerProps,
+} from 'react-hook-form';
 
-const PasswordInput = (props: UseControllerProps<FormInputValues>) => {
+interface PasswordInputProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends UseControllerProps<TFieldValues, TName> {
+  label?: string;
+  placeholder?: string;
+}
+
+const PasswordInput = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  control,
+  name,
+  label = 'Password*',
+  placeholder = 'Create a password',
+  rules = { required: true, minLength: 5 },
+}: PasswordInputProps<TFieldValues, TName>) => {
   const [showPassword, setShowPassword] = useState(false);
   const {
     field: { onChange, value },
-  } = useController({ ...props, rules: { required: true, minLength: 5 } });
+  } = useController({
+    control,
+    name,
+    rules,
+  });
 
   const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
   return (
     <TextField
-      placeholder="Create a password"
-      label="Password*"
+      placeholder={placeholder}
+      label={label}
       size="small"
       fullWidth
       onChange={onChange}

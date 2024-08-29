@@ -8,19 +8,20 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
+  FormHelperText,
   IconButton,
   styled,
   Typography,
 } from '@mui/material';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useSignUp } from '../../hooks/useSignUp';
+import { useSignIn } from '../../hooks/useSignIn';
 import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
-const SignupModal = () => {
+const SigninModal = () => {
   const [searchParams] = useSearchParams();
-  const { form, mutation, message, setMessage, onClose } = useSignUp();
+  const { form, mutation, message, setMessage, onClose } = useSignIn();
 
   return (
     <>
@@ -32,7 +33,7 @@ const SignupModal = () => {
       />
 
       <DialogContainer
-        open={!!searchParams.get('signup')}
+        open={!!searchParams.get('signin')}
         onClose={onClose}
         fullWidth
       >
@@ -41,32 +42,17 @@ const SignupModal = () => {
             <Close />
           </IconButton>
         </CloseDialogContainer>
-        <Title variant="h4">Sign up</Title>
-        <Content>
-          <Typography variant="body2">Create an account for free</Typography>
-        </Content>
+        <Title variant="h4">Log in</Title>
         <Content>
           <EmailInput control={form.control} name="email" />
         </Content>
         <Content>
           <PasswordInput control={form.control} name="password" />
+          <Link to="?reset-password=true">
+            <Helper>Forgot your password?</Helper>
+          </Link>
         </Content>
-        <Content>
-          <FormControlLabel
-            control={
-              <Checkbox {...form.register('acceptTC', { required: true })} />
-            }
-            labelPlacement="end"
-            label={
-              <Typography>
-                Acceptance of{' '}
-                <TermsAndConditionsLink target="_blank">
-                  Terms & Conditions and Privacy Policy*
-                </TermsAndConditionsLink>
-              </Typography>
-            }
-          />
-        </Content>
+
         <SubmitContainer>
           <Button
             variant="contained"
@@ -74,13 +60,22 @@ const SignupModal = () => {
             onClick={form.handleSubmit(async (data) => mutation.mutate(data))}
             disabled={!form.formState.isValid || mutation.isPending}
           >
-            {mutation.isPending ? <Spinner /> : 'Create an account'}
+            {mutation.isPending ? <Spinner /> : 'Log in'}
           </Button>
         </SubmitContainer>
         <Content>
+          <FormControlLabel
+            control={
+              <Checkbox {...form.register('rememberMe', { required: false })} />
+            }
+            labelPlacement="end"
+            label={<Typography variant="body2">Remember me</Typography>}
+          />
+        </Content>
+        <Content>
           <Typography variant="body2">
-            Already have an account?{' '}
-            <LoginLink to="?signin=true">Login</LoginLink>
+            Don't have an account yet?{' '}
+            <SignInLink to="?signup=true">Create an account</SignInLink>
           </Typography>
         </Content>
       </DialogContainer>
@@ -102,15 +97,14 @@ const Title = styled(DialogTitle)(() => ({
   padding: '0 1.5rem 1rem 1.5rem',
 }));
 
+const Helper = styled(FormHelperText)(() => ({
+  float: 'right',
+  marginRight: '0',
+}));
+
 const Content = styled(DialogContent)(() => ({
   padding: '0 1.5rem 2rem 1.5rem',
   overflow: 'visible',
-}));
-
-const TermsAndConditionsLink = styled('a')(() => ({
-  textDecoration: 'none',
-  color: 'inherit',
-  fontWeight: 500,
 }));
 
 const SubmitContainer = styled(DialogActions)(() => ({
@@ -118,7 +112,7 @@ const SubmitContainer = styled(DialogActions)(() => ({
   padding: '0.5rem 1.5rem 1.5rem 1.5rem',
 }));
 
-const LoginLink = styled(Link)(() => ({
+const SignInLink = styled(Link)(() => ({
   textDecoration: 'underline',
   color: 'inherit',
 }));
@@ -127,4 +121,4 @@ const Spinner = styled(CircularProgress)(({ theme }) => ({
   color: theme.palette.action.disabled,
 }));
 
-export default SignupModal;
+export default SigninModal;

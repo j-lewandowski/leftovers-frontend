@@ -5,7 +5,17 @@ import { FormInputValues } from '../modals/SignupModal';
 const EmailInput = (props: UseControllerProps<FormInputValues>) => {
   const {
     field: { onChange, value },
-  } = useController({ ...props, rules: { required: true, minLength: 1 } });
+  } = useController({
+    ...props,
+    rules: {
+      required: true,
+      minLength: 1,
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: 'Invalid email address',
+      },
+    },
+  });
 
   return (
     <TextField
