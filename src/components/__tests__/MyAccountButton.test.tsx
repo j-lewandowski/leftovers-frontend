@@ -1,9 +1,16 @@
-import { test } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { expect, test } from 'vitest';
+import { render, screen } from '../../test-utils';
+import MyAccountButton from '../buttons/MyAccountButton';
 
-test('recipe category list is shown after categories button is clicked', () => {
-  // render(<MyAccountButton />);
-  // const button = screen.getByRole('button', { name: 'Recipes' });
-  // fireEvent.click(button);
-  // const listElement = screen.getByRole('menuitem', { name: /all recipes/i });
-  // expect(listElement).toBeDefined();
+test('account options list is shown after my account button is clicked', async () => {
+  const { user } = render(
+    <MemoryRouter>
+      <MyAccountButton />
+    </MemoryRouter>,
+  );
+  const button = screen.getByRole('button', { name: /my account/i });
+  await user.click(button);
+  const listElement = screen.getByRole('menuitem', { name: /Saved recipes/i });
+  expect(listElement).toBeDefined();
 });
