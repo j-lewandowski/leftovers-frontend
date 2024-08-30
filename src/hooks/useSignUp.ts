@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../context/SnackbarContext';
 import { SignupFormInput } from '../types';
 
 interface ErrorReponse {
@@ -12,7 +12,7 @@ interface ErrorReponse {
 export const useSignUp = () => {
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState('');
+  const { setMessage } = useSnackbar();
 
   const mutation = useMutation({
     onSuccess: (res) => {
@@ -54,5 +54,5 @@ export const useSignUp = () => {
     navigate(-1);
   };
 
-  return { mutation, form, message, setMessage, onClose };
+  return { mutation, form, onClose };
 };
