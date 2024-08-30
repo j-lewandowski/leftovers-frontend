@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import CustomSnackbar from './CustomSnackbar';
+import { useSnackbar } from '../context/SnackbarContext';
 
 const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
   const [searchParams] = useSearchParams();
-  const [message, setMessage] = useState('');
+  const { setMessage } = useSnackbar();
   const hasMutated = useRef<boolean>(false);
 
   const mutation = useMutation({
@@ -39,12 +39,7 @@ const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
     }
   }, [searchParams]);
 
-  return (
-    <>
-      {children}
-      <CustomSnackbar message={message} handleClose={() => setMessage('')} />
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default AccountActivationHOC;

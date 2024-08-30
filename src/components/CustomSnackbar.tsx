@@ -6,32 +6,29 @@ import {
   SnackbarContent,
   styled,
 } from '@mui/material';
+import { useSnackbar } from '../context/SnackbarContext';
 
-interface SnackbarProps {
-  message: string;
-  handleClose: () => void;
-}
+const CustomSnackbar = () => {
+  const { message, setMessage } = useSnackbar();
 
-const CustomSnackbar = ({ message, handleClose }: SnackbarProps) => {
+  const onClose = () => {
+    setMessage('');
+  };
+
   const action = (
     <>
-      <IconButton size="small" onClick={handleClose}>
+      <IconButton size="small" onClick={onClose}>
         <Close />
       </IconButton>
     </>
   );
-
-  if (!message) {
-    return null;
-  }
-
   return (
     <Portal>
       <Snackbar
-        open
+        open={!!message}
         autoHideDuration={5000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        onClose={handleClose}
+        onClose={onClose}
       >
         <Content message={message} action={action} />
       </Snackbar>

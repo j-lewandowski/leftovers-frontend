@@ -14,23 +14,15 @@ import {
 } from '@mui/material';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useSignUp } from '../../hooks/useSignUp';
-import CustomSnackbar from '../CustomSnackbar';
 import EmailInput from '../inputs/EmailInput';
 import PasswordInput from '../inputs/PasswordInput';
 
 const SignupModal = () => {
   const [searchParams] = useSearchParams();
-  const { form, mutation, message, setMessage, onClose } = useSignUp();
+  const { form, mutation, onClose } = useSignUp();
 
   return (
     <>
-      <CustomSnackbar
-        message={message}
-        handleClose={() => {
-          setMessage('');
-        }}
-      />
-
       <DialogContainer
         open={!!searchParams.get('signup')}
         onClose={onClose}
@@ -79,7 +71,8 @@ const SignupModal = () => {
         </SubmitContainer>
         <Content>
           <Typography variant="body2">
-            Already have an account? <LoginLink to="/sign-in">Login</LoginLink>
+            Already have an account?{' '}
+            <LoginLink to="?signin=true">Login</LoginLink>
           </Typography>
         </Content>
       </DialogContainer>

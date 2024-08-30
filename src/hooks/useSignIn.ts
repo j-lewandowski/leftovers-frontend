@@ -3,23 +3,27 @@ import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../context/SnackbarContext';
-import { SignupFormInput } from '../types';
+import { SigninFormInput } from '../types';
 
-interface ErrorReponse {
+interface ErrorResponse {
   message: string | string[];
 }
 
-export const useSignUp = () => {
+export const useSignIn = () => {
   const navigate = useNavigate();
-
   const { setMessage } = useSnackbar();
-
-  const mutation = useMutation({
+  const signInMutation = useMutation({
     onSuccess: (res) => {
-      setMessage(res.data.message);
+      if (form.getValues('rememberMe')) {
+        localStorage.setItem('accessToken', res.data.accessToken);
+      } else {
+        sessionStorage.setItem('accessToken', res.data.accessToken);
+      }
+
+      setMessage('Successfully logged in ✅');
       onClose();
     },
-    onError: (error: AxiosError<ErrorReponse>) => {
+    onError: (error: AxiosError<ErrorResponse>) => {
       if (!error.response) {
         setMessage('Unknown error');
         return;
@@ -32,27 +36,33 @@ export const useSignUp = () => {
 
       setMessage(error.response.data.message as string);
     },
-    mutationFn: (userData: SignupFormInput) => {
-      return axios.post('/auth/register', {
-        email: userData.email,
-        password: userData.password,
-      });
+    mutationFn: (userData: SigninFormInput) => {
+      return axios.post(
+        '/auth/login',
+        {},
+        {
+          auth: {
+            username: userData.email,
+            password: userData.password,
+          },
+        },
+      );
     },
   });
 
-  const form = useForm<SignupFormInput>({
+  const form = useForm<SigninFormInput>({
     defaultValues: {
       email: '',
       password: '',
-      acceptTC: false,
+      rememberMe: false,
     },
     mode: 'onChange',
   });
 
   const onClose = () => {
     form.reset();
-    navigate(-1);
+    navigate('/');
   };
 
-  return { mutation, form, onClose };
+  return { signInMutation, form, onClose };
 };

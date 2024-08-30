@@ -1,9 +1,9 @@
-import { AppBar, styled, Toolbar, Stack } from '@mui/material';
-import Searchbar from './Searchbar';
-import Logo from '../Logo';
+import { AppBar, Stack, styled, Toolbar } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
-import UnauthenticatedUserButtons from './UnauthenticatedUserButtons';
+import Logo from '../Logo';
 import AuthenticatedUserButtons from './AuthenticatedUserButtons';
+import Searchbar from './Searchbar';
+import UnauthenticatedUserButtons from './UnauthenticatedUserButtons';
 
 const Navbar = () => {
   const { isAuthenticated } = useAuth();
