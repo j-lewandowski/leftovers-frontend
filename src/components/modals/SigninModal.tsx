@@ -21,7 +21,7 @@ import PasswordInput from '../inputs/PasswordInput';
 
 const SigninModal = () => {
   const [searchParams] = useSearchParams();
-  const { form, mutation, message, setMessage, onClose } = useSignIn();
+  const { form, signInMutation, message, setMessage, onClose } = useSignIn();
 
   return (
     <>
@@ -57,10 +57,12 @@ const SigninModal = () => {
           <Button
             variant="contained"
             size="medium"
-            onClick={form.handleSubmit(async (data) => mutation.mutate(data))}
-            disabled={!form.formState.isValid || mutation.isPending}
+            onClick={form.handleSubmit(async (data) =>
+              signInMutation.mutate(data),
+            )}
+            disabled={!form.formState.isValid || signInMutation.isPending}
           >
-            {mutation.isPending ? <Spinner /> : 'Log in'}
+            {signInMutation.isPending ? <Spinner /> : 'Log in'}
           </Button>
         </SubmitContainer>
         <Content>

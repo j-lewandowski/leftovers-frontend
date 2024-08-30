@@ -12,7 +12,7 @@ interface ErrorResponse {
 export const useSignIn = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
-  const mutation = useMutation({
+  const signInMutation = useMutation({
     onSuccess: (res) => {
       if (form.getValues('rememberMe')) {
         localStorage.setItem('accessToken', res.data.accessToken);
@@ -64,5 +64,5 @@ export const useSignIn = () => {
     navigate('/');
   };
 
-  return { mutation, form, message, setMessage, onClose };
+  return { signInMutation, form, message, setMessage, onClose };
 };

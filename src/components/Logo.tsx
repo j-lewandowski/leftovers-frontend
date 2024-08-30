@@ -4,9 +4,9 @@ import logoImage from '../assets/logo.svg';
 
 const Logo = () => {
   return (
-    <Wrapper to="/">
+    <StyledLink to="/">
       <LogoImage alt="logo" src={logoImage} />
-    </Wrapper>
+    </StyledLink>
   );
 };
 
@@ -15,7 +15,7 @@ const LogoImage = styled('img')({
   height: '2rem',
 });
 
-const Wrapper = styled(Link)({
+const StyledLink = styled(Link)({
   width: 'fit-content',
   height: 'fit-content',
 });

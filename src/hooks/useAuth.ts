@@ -12,7 +12,7 @@ export const useAuth = () => {
 
     setAccessToken(localStorageToken || sessionStorageToken || '');
     setIsAuthenticated(!!(localStorageToken || sessionStorageToken));
-  }, [navigate]);
+  }, []);
 
   const signOut = () => {
     localStorage.removeItem('accessToken');
