@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { ReactNode, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useSnackbar } from '../context/SnackbarContext';
+import { useSnackbar } from '../../context/SnackbarContext';
 
 const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
   const [searchParams] = useSearchParams();
