@@ -9,53 +9,55 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
-import { useForgotPassword } from '../../hooks/useForgotPassword';
-import EmailInput from '../inputs/EmailInput';
+import PasswordInput from '../inputs/PasswordInput';
 
-const ForgotPasswordModal = () => {
+const ResetPasswordModal = () => {
   const [searchParams] = useSearchParams();
-  const { form, onClose, forgotPasswordMutation } = useForgotPassword();
+
+  // @TODO - move form logic to custom hook
+  const { control } = useForm();
 
   return (
-    <DialogContainer
-      open={!!searchParams.get('forgot-password')}
-      onClose={onClose}
-    >
+    <DialogContainer open={!!searchParams.get('reset-password')}>
       <CloseDialogContainer>
-        <IconButton onClick={onClose}>
+        <IconButton>
           <Close />
         </IconButton>
       </CloseDialogContainer>
-      <Title>Forgot password</Title>
+      <Title>New password</Title>
       <Content>
-        <Typography variant="body2">
-          No worries! Enter your email address below, and we'll send you a link
-          to reset your password.
+        <Typography>
+          Please ensure your password is a minimum of 8 characters long.
+          Ideally, include a mix of both letters and numbers.
         </Typography>
       </Content>
       <Content>
-        <EmailInput control={form.control} name={'email'} />
+        <PasswordInput
+          label="New password*"
+          placeholder="Type new password"
+          name="newPassword"
+          control={control}
+        />
+      </Content>
+      <Content>
+        <PasswordInput
+          label="Repeat new password*"
+          placeholder="Type new password again"
+          name="newPassword"
+          control={control}
+        />
       </Content>
       <SubmitContainer>
-        <Button variant="outlined" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          disabled={!form.formState.isValid}
-          onClick={form.handleSubmit(async (data) =>
-            forgotPasswordMutation.mutate(data),
-          )}
-        >
-          Send e-mail
-        </Button>
+        <Button variant="outlined">Cancel</Button>
+        <Button variant="contained">Reset my password</Button>
       </SubmitContainer>
     </DialogContainer>
   );
 };
 
-export default ForgotPasswordModal;
+export default ResetPasswordModal;
 
 const DialogContainer = styled(Dialog)(() => ({
   minWidth: '500px',
