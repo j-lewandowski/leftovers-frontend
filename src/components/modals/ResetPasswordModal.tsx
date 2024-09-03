@@ -9,20 +9,23 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
+import { useResetPassword } from '../../hooks/useResetPassword';
 import PasswordInput from '../inputs/PasswordInput';
 
 const ResetPasswordModal = () => {
   const [searchParams] = useSearchParams();
 
-  // @TODO - move form logic to custom hook
-  const { control } = useForm();
-
+  const { form, resetPasswordMutation, onClose } = useResetPassword();
   return (
-    <DialogContainer open={!!searchParams.get('reset-password')}>
+    <DialogContainer
+      open={
+        !!searchParams.get('reset-password') && !!searchParams.get('requestId')
+      }
+      onClose={onClose}
+    >
       <CloseDialogContainer>
-        <IconButton>
+        <IconButton onClick={onClose}>
           <Close />
         </IconButton>
       </CloseDialogContainer>
@@ -38,20 +41,42 @@ const ResetPasswordModal = () => {
           label="New password*"
           placeholder="Type new password"
           name="newPassword"
-          control={control}
+          control={form.control}
+          rules={{
+            required: true,
+            validate: (value: string) => {
+              return form.watch('repeatNewPassword') === value;
+            },
+          }}
         />
       </Content>
       <Content>
         <PasswordInput
           label="Repeat new password*"
           placeholder="Type new password again"
-          name="newPassword"
-          control={control}
+          name="repeatNewPassword"
+          control={form.control}
+          rules={{
+            required: true,
+            validate: (value: string) => {
+              return form.watch('newPassword') === value;
+            },
+          }}
         />
       </Content>
       <SubmitContainer>
-        <Button variant="outlined">Cancel</Button>
-        <Button variant="contained">Reset my password</Button>
+        <Button variant="outlined" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!form.formState.isValid}
+          onClick={form.handleSubmit(async (data) =>
+            resetPasswordMutation.mutate(data),
+          )}
+        >
+          Reset my password
+        </Button>
       </SubmitContainer>
     </DialogContainer>
   );
