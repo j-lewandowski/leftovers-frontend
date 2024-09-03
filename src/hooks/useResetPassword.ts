@@ -35,7 +35,7 @@ export const useResetPassword = () => {
 
   const onClose = () => {
     form.reset();
-    navigate('/');
+    navigate('?signin=true');
   };
 
   return { form, resetPasswordMutation, onClose };

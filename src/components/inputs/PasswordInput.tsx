@@ -14,6 +14,8 @@ interface PasswordInputProps<
 > extends UseControllerProps<TFieldValues, TName> {
   label?: string;
   placeholder?: string;
+  error?: boolean;
+  helperText?: string;
 }
 
 const PasswordInput = <
@@ -25,6 +27,8 @@ const PasswordInput = <
   label = 'Password*',
   placeholder = 'Create a password',
   rules = { required: true, minLength: 5 },
+  error = false,
+  helperText = '',
 }: PasswordInputProps<TFieldValues, TName>) => {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -45,6 +49,8 @@ const PasswordInput = <
       fullWidth
       onChange={onChange}
       value={value}
+      error={error}
+      helperText={helperText}
       type={showPassword ? 'text' : 'password'}
       InputProps={{
         endAdornment: (

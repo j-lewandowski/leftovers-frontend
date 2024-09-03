@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -56,6 +57,17 @@ const ResetPasswordModal = () => {
           placeholder="Type new password again"
           name="repeatNewPassword"
           control={form.control}
+          error={
+            form.formState.isDirty &&
+            !form.formState.isValid &&
+            form.getValues('repeatNewPassword').length > 0
+          }
+          helperText={
+            form.getValues('repeatNewPassword').length > 0 &&
+            !form.formState.isValid
+              ? 'Your passwords need to match before you can proceed.'
+              : ''
+          }
           rules={{
             required: true,
             validate: (value: string) => {
@@ -70,12 +82,16 @@ const ResetPasswordModal = () => {
         </Button>
         <Button
           variant="contained"
-          disabled={!form.formState.isValid}
+          disabled={!form.formState.isValid || resetPasswordMutation.isPending}
           onClick={form.handleSubmit(async (data) =>
             resetPasswordMutation.mutate(data),
           )}
         >
-          Reset my password
+          {resetPasswordMutation.isPending ? (
+            <Spinner size="1.5rem" />
+          ) : (
+            'Reset my password'
+          )}
         </Button>
       </SubmitContainer>
     </DialogContainer>
@@ -105,4 +121,8 @@ const Content = styled(DialogContent)(() => ({
 
 const SubmitContainer = styled(DialogActions)(() => ({
   padding: '0.5rem 1.5rem 1.5rem 1.5rem',
+}));
+
+const Spinner = styled(CircularProgress)(({ theme }) => ({
+  color: theme.palette.action.disabled,
 }));
