@@ -9,3 +9,7 @@ export type SigninFormInput = {
   password: string;
   rememberMe: boolean;
 };
+
+export type ForgotPasswordFormInput = {
+  email: string;
+};
