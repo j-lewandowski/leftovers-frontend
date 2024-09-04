@@ -1,12 +1,15 @@
 import { Divider, Stack, styled, Typography } from '@mui/material';
-import instagramLogo from '../../assets/instagram.png';
 import facebookLogo from '../../assets/facebook.png';
+import instagramLogo from '../../assets/instagram.png';
 
 const Footer = () => {
   return (
     <FooterWrapper>
-      <ContentGroup gap={4} direction="row">
-        <ContentGroup gap={0.5} direction="row">
+      <ContentGroup
+        gap={{ xs: 0, sm: 4 }}
+        direction={{ xs: 'column', sm: 'row' }}
+      >
+        <ContentGroup gap={{ xs: 2, sm: 0.5 }} direction="row">
           <Link href="https://www.instagram.com/">
             <ImageLogo src={instagramLogo} alt="instagram logo" />
           </Link>
@@ -38,13 +41,18 @@ const Footer = () => {
   );
 };
 
-const FooterWrapper = styled('footer')({
+const FooterWrapper = styled('footer')(({ theme }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    padding: '1rem',
+  },
+  flexDirection: 'row',
   padding: '1rem 4.5rem',
-});
+}));
 
 const ImageLogo = styled('img')({
   height: '1.5rem',
