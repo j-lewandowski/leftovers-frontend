@@ -7,7 +7,7 @@ import Navbar from './components/navbar/Navbar';
 
 export const Layout = () => {
   return (
-    <div>
+    <>
       <ForgotPasswordHOC>
         <AccountActivationHOC>
           <Navbar />
@@ -16,6 +16,6 @@ export const Layout = () => {
           <Footer />
         </AccountActivationHOC>
       </ForgotPasswordHOC>
-    </div>
+    </>
   );
 };
