@@ -39,7 +39,7 @@ const SigninModal = () => {
       </Content>
       <Content>
         <PasswordInput control={form.control} name="password" />
-        <Link to="?reset-password=true">
+        <Link to="?forgot-password=true">
           <Helper>Forgot your password?</Helper>
         </Link>
       </Content>

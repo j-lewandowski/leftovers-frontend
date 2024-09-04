@@ -3,11 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../context/SnackbarContext';
-import { SigninFormInput } from '../types';
-
-interface ErrorResponse {
-  message: string | string[];
-}
+import { ErrorResponse, SigninFormInput } from '../types';
 
 export const useSignIn = () => {
   const navigate = useNavigate();

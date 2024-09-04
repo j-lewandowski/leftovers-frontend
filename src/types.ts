@@ -13,3 +13,12 @@ export type SigninFormInput = {
 export type ForgotPasswordFormInput = {
   email: string;
 };
+
+export type ErrorResponse = {
+  message: string | string[];
+};
+
+export type ResetPasswordFormInput = {
+  newPassword: string;
+  repeatNewPassword: string;
+};

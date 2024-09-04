@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,7 +19,10 @@ const ForgotPasswordModal = () => {
   const { form, onClose, forgotPasswordMutation } = useForgotPassword();
 
   return (
-    <DialogContainer open={!!searchParams.get('forgot-password')}>
+    <DialogContainer
+      open={!!searchParams.get('forgot-password')}
+      onClose={onClose}
+    >
       <CloseDialogContainer>
         <IconButton onClick={onClose}>
           <Close />
@@ -40,12 +44,16 @@ const ForgotPasswordModal = () => {
         </Button>
         <Button
           variant="contained"
-          disabled={!form.formState.isValid}
+          disabled={!form.formState.isValid || forgotPasswordMutation.isPending}
           onClick={form.handleSubmit(async (data) =>
             forgotPasswordMutation.mutate(data),
           )}
         >
-          Send e-mail
+          {forgotPasswordMutation.isPending ? (
+            <Spinner size="1.5rem" />
+          ) : (
+            'Send e-mail'
+          )}
         </Button>
       </SubmitContainer>
     </DialogContainer>
@@ -75,4 +83,8 @@ const Content = styled(DialogContent)(() => ({
 
 const SubmitContainer = styled(DialogActions)(() => ({
   padding: '0.5rem 1.5rem 1.5rem 1.5rem',
+}));
+
+const Spinner = styled(CircularProgress)(({ theme }) => ({
+  color: theme.palette.action.disabled,
 }));

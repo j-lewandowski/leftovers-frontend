@@ -3,11 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../context/SnackbarContext';
-import { SignupFormInput } from '../types';
-
-interface ErrorReponse {
-  message: string | string[];
-}
+import { ErrorResponse, SignupFormInput } from '../types';
 
 export const useSignUp = () => {
   const navigate = useNavigate();
@@ -19,7 +15,7 @@ export const useSignUp = () => {
       setMessage(res.data.message);
       onClose();
     },
-    onError: (error: AxiosError<ErrorReponse>) => {
+    onError: (error: AxiosError<ErrorResponse>) => {
       if (!error.response) {
         setMessage('Unknown error');
         return;

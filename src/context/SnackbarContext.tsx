@@ -30,6 +30,7 @@ export const SnackbarContextProvider = ({
 
 export const useSnackbar = () => {
   const context = useContext(SnackbarContext);
-  if (!context) throw new Error('useAuth must be used within an AuthProvider');
+  if (!context)
+    throw new Error('useSnackbar must be used within an SnackbarProvider');
   return context;
 };
