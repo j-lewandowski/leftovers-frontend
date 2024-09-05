@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
 
-const FavouritesButton = ({ selected = false }: { selected?: boolean }) => {
+const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
@@ -39,10 +39,10 @@ const FavouritesButton = ({ selected = false }: { selected?: boolean }) => {
   );
 };
 
-export default FavouritesButton;
+export default FavoritesButton;
 
 const FloatingButton = styled(Fab)(() => ({
   position: 'absolute',
-  top: '1rem',
-  right: '1rem',
+  top: '.5rem',
+  right: '.5rem',
 }));

@@ -1,24 +1,20 @@
-import { Star } from '@mui/icons-material';
-import { Stack, Typography } from '@mui/material';
-import { yellow } from '@mui/material/colors';
+import { Rating as MUIRating, Stack, Typography } from '@mui/material';
 
 interface RatingProps {
   rating: number;
   numberOfRatings: number;
+  short?: boolean;
 }
 
-const Rating = ({ rating, numberOfRatings }: RatingProps) => {
-  // @TODO logic for the stars
+const Rating = ({ rating, numberOfRatings, short = false }: RatingProps) => {
   return (
     <Stack direction="row" alignItems={'center'}>
       <Typography variant="overline">{rating}</Typography>
-      <Stack direction="row" color={yellow[600]}>
-        <Star />
-        <Star />
-        <Star />
-        <Star />
-        <Star />
-      </Stack>
+      <MUIRating
+        readOnly
+        defaultValue={short ? 1 : rating}
+        max={short ? 1 : 5}
+      />
       <Typography variant="overline">({numberOfRatings})</Typography>
     </Stack>
   );
