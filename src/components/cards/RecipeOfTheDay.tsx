@@ -3,24 +3,29 @@ import { Divider, Stack, styled, Typography, useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Recipe } from '../../types';
 import Rating from '../Rating';
 import ImageCard from './ImageCard';
 
 const RecipeOfTheDay = () => {
   const theme = useTheme();
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ['recipe-of-the-day'],
     queryFn: async () => {
       const res = await axios.get('/recipes/recipe-of-the-day');
-      return res.data;
+      return res.data as Recipe;
     },
   });
+
+  if (isError) {
+    return <Typography>Something went wrong.</Typography>;
+  }
 
   return (
     <Card direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 1, sm: 2 }}>
       {isPending ? (
-        <div>Loading...</div>
+        <Typography>Loading...</Typography>
       ) : (
         <>
           <ImageCard imageUrl={data.imageUrl} />
@@ -54,7 +59,7 @@ const RecipeOfTheDay = () => {
                 {data.servings} SERVINGS
               </Typography>
             </Stack>
-            <StyledLink to="/recipes/:id">
+            <StyledLink to={'/recipes/' + data.id}>
               <Stack direction="row" color={theme.palette.primary.main}>
                 {/* @TODO - add navigation to real id */}
 

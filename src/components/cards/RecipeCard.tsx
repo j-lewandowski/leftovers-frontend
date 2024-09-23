@@ -15,7 +15,7 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
 
   return (
     <CardWrapper>
-      <StyledCard onClick={() => navigate('/recipes/:id')}>
+      <StyledCard onClick={() => navigate('/recipes/' + recipeData.id)}>
         <CardMedia sx={{ height: '180px' }} image={recipeData.imageUrl} />
         <CardContent>
           <Typography variant="subtitle1">{recipeData.title}</Typography>
