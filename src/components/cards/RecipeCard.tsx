@@ -7,8 +7,8 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Recipe } from '../../types';
-import Rating from '../Rating';
 import FavoritesButton from '../buttons/FavoritesButton';
+import Rating from '../recipe/Rating';
 
 const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Recipe } from '../../types';
-import Rating from '../Rating';
+import Rating from '../recipe/Rating';
 import ImageCard from './ImageCard';
 
 const RecipeOfTheDay = () => {
@@ -61,8 +61,6 @@ const RecipeOfTheDay = () => {
             </Stack>
             <StyledLink to={'/recipes/' + data.id}>
               <Stack direction="row" color={theme.palette.primary.main}>
-                {/* @TODO - add navigation to real id */}
-
                 <Typography>View the recipe</Typography>
                 <ChevronRight />
               </Stack>
