@@ -1,7 +1,7 @@
 import { Bookmark, BookmarkBorder } from '@mui/icons-material';
 import { Fab, styled, useTheme } from '@mui/material';
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
 
 const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {

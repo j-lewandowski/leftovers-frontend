@@ -6,28 +6,25 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Recipe } from '../../types';
 import Rating from '../Rating';
 import FavoritesButton from '../buttons/FavoritesButton';
 
-const RecipeCard = () => {
+const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
   const navigate = useNavigate();
 
   return (
     <CardWrapper>
       <StyledCard onClick={() => navigate('/recipes/:id')}>
-        <CardMedia
-          sx={{ height: '180px' }}
-          image="https://images.unsplash.com/photo-1485962398705-ef6a13c41e8f?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        />
+        <CardMedia sx={{ height: '180px' }} image={recipeData.imageUrl} />
         <CardContent>
-          <Typography variant="subtitle1">
-            Grilled Chicken with Roasted Ve...
-          </Typography>
-          <Typography variant="body2">
-            This grilled chicken is a breeze to make and delivers a delicious
-            comb...
-          </Typography>
-          <Rating short rating={5} numberOfRatings={12} />
+          <Typography variant="subtitle1">{recipeData.title}</Typography>
+          <Description variant="body2">{recipeData.description}</Description>
+          <Rating
+            short
+            rating={recipeData.rating}
+            numberOfRatings={recipeData.numberOfRatings}
+          />
         </CardContent>
       </StyledCard>
       <FavoritesButton />
@@ -45,3 +42,11 @@ const StyledCard = styled(Card)(() => ({
 const CardWrapper = styled('div')(() => ({
   position: 'relative',
 }));
+
+const Description = styled(Typography)`
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;

@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext';
 import Logo from '../Logo';
 import AuthenticatedUserButtons from './AuthenticatedUserButtons';
 import Searchbar from './Searchbar';

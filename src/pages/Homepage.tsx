@@ -7,10 +7,31 @@ import {
   styled,
   Typography,
 } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import RecipeCard from '../components/cards/RecipeCard';
 import RecipeOfTheDay from '../components/cards/RecipeOfTheDay';
+import { useAuth } from '../context/AuthContext';
+import { Recipe } from '../types';
 
 function HomePage() {
+  const { accessToken } = useAuth();
+  const { data, isPending } = useQuery({
+    queryKey: ['recipes'],
+    queryFn: async () => {
+      const res = await axios.get('/recipes', {
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+        },
+      });
+      return res.data;
+    },
+  });
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <HomePageWrapper>
       <RecipeOfTheDay />
@@ -19,30 +40,11 @@ function HomePage() {
         <Divider />
       </Stack>
       <Grid container spacing={1.5}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <RecipeCard />
-        </Grid>
+        {data.map((recipe: Recipe) => (
+          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
+            <RecipeCard recipeData={recipe} />
+          </Grid>
+        ))}
       </Grid>
       <ButtonWrapper>
         <Button variant="contained" size="medium" endIcon={<ChevronRight />}>
