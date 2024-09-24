@@ -1,7 +1,21 @@
-import { useEffect, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const useAuth = () => {
+interface AuthContextTypes {
+  isAuthenticated: boolean;
+  accessToken: string;
+  signOut: () => void;
+}
+
+const AuthContext = createContext<AuthContextTypes | null>(null);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string>('');
   const navigate = useNavigate();
@@ -22,5 +36,18 @@ export const useAuth = () => {
     navigate('/');
   };
 
-  return { isAuthenticated, accessToken, signOut };
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, accessToken, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
 };

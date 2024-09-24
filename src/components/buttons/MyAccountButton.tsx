@@ -1,8 +1,8 @@
-import { Button, MenuItem, styled, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
-import Dropdown from '../navbar/Dropdown';
+import { Button, MenuItem, styled, Typography } from '@mui/material';
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthContext';
+import Dropdown from '../navbar/Dropdown';
 
 const MyAccountButton = () => {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
