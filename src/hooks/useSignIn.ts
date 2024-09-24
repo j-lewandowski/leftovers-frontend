@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { SIGN_IN_ENDPOINT } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
 import { ErrorResponse, SigninFormInput } from '../types';
 
@@ -34,7 +35,7 @@ export const useSignIn = () => {
     },
     mutationFn: (userData: SigninFormInput) => {
       return axios.post(
-        '/auth/login',
+        SIGN_IN_ENDPOINT,
         {},
         {
           auth: {

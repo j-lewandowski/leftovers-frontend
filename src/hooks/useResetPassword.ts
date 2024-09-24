@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { RESET_PASSWORD_ENDPOINT } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
 import { ErrorResponse, ResetPasswordFormInput } from '../types';
 
@@ -12,7 +13,7 @@ export const useResetPassword = () => {
 
   const resetPasswordMutation = useMutation({
     mutationFn: (data: ResetPasswordFormInput) => {
-      return axios.post('/auth/reset-password', {
+      return axios.post(RESET_PASSWORD_ENDPOINT, {
         validationToken: searchParams.get('requestId'),
         newPassword: data.newPassword,
       });
