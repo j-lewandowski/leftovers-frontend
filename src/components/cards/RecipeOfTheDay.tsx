@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { RECIPE_OF_THE_DAY_ENDPOINT } from '../../assets/constants/api';
-import { Recipe } from '../../types';
+import { getPreparationTimeLabel } from '../../features/recipes/recipes';
 import Rating from '../recipe/Rating';
 import ImageCard from './ImageCard';
 
@@ -15,7 +15,7 @@ const RecipeOfTheDay = () => {
     queryKey: ['recipe-of-the-day'],
     queryFn: async () => {
       const res = await axios.get(RECIPE_OF_THE_DAY_ENDPOINT);
-      return res.data as Recipe;
+      return res.data;
     },
   });
 
@@ -29,7 +29,7 @@ const RecipeOfTheDay = () => {
         <Typography>Loading...</Typography>
       ) : (
         <>
-          <ImageCard imageUrl={data.imageUrl} />
+          <ImageCard imageUrl={data.imageUrl} isSaved={data.isSaved} />
           <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
             <Stack gap={{ xs: 1, sm: 2 }}>
               <Typography
@@ -54,7 +54,8 @@ const RecipeOfTheDay = () => {
               divider={<Divider orientation={'vertical'} variant="middle" />}
             >
               <Typography variant="overline" lineHeight={'18px'}>
-                PREPARATION TIME: {data.preparationTime}
+                PREPARATION TIME:{' '}
+                {getPreparationTimeLabel(data.preparationTime)}
               </Typography>
               <Typography variant="overline" lineHeight={'18px'}>
                 {data.servings} SERVINGS

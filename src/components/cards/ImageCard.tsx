@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 import FavoritesButton from '../buttons/FavoritesButton';
 
-const ImageCard = ({ imageUrl }: { imageUrl: string }) => {
+const ImageCard = ({
+  imageUrl,
+  isSaved,
+}: {
+  imageUrl: string;
+  isSaved: boolean;
+}) => {
   return (
     <RecipeImage $imageUrl={imageUrl}>
-      <FavoritesButton />
+      <FavoritesButton saved={isSaved} />
     </RecipeImage>
   );
 };

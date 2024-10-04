@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
 
-const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {
+const FavoritesButton = ({ saved = false }: { saved?: boolean }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAuthenticated } = useAuth();
@@ -14,7 +14,13 @@ const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {
       setIsModalOpen(true);
       return;
     }
-    // @TODO - call to backend
+
+    // const query = useQuery({
+    //   queryKey: ['save'],
+    //   queryFn: async () => {
+    //     const res = await axios('/user/'+)
+    //   }
+    // })
   };
 
   return (
@@ -25,7 +31,7 @@ const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {
         sx={{ boxShadow: 6 }}
         onClick={onClick}
       >
-        {selected ? (
+        {saved ? (
           <Bookmark style={{ color: theme.palette.primary.main }} />
         ) : (
           <BookmarkBorder style={{ color: theme.palette.action.disabled }} />

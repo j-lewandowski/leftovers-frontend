@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { ALL_RECIPES_ENDPOINT } from '../assets/constants/api';
 import RecipeDetailsSection from '../components/recipe/RecipeDetailsSection';
 import RecipePreparationDetails from '../components/recipe/RecipePreparationDetails';
-import { Recipe } from '../types';
+import { getPreparationTimeLabel } from '../features/recipes/recipes';
 
 const RecipeDetails = () => {
   const { recipeId } = useParams();
@@ -14,7 +14,7 @@ const RecipeDetails = () => {
     queryKey: ['recipe'],
     queryFn: async () => {
       const res = await axios.get(ALL_RECIPES_ENDPOINT + recipeId);
-      return res.data as Recipe;
+      return res.data;
     },
   });
 
@@ -27,16 +27,16 @@ const RecipeDetails = () => {
       <RecipeCard>
         <Stack gap={2} sx={{ width: '100%' }}>
           <RecipeDetailsSection
-            imageUrl={data!.imageUrl}
-            title={data!.title}
-            description={data!.description}
-            rating={data!.rating}
-            numberOfRatings={data!.numberOfRatings}
-            preparationTime={data!.preparationTime}
+            imageUrl={data.imageUrl}
+            title={data.title}
+            description={data.description}
+            rating={data.rating}
+            numberOfRatings={data.numberOfRatings}
+            preparationTime={getPreparationTimeLabel(data.preparationTime)}
           />
           <RecipePreparationDetails
-            ingredients={data!.ingredients}
-            preparationSteps={data!.preparationSteps}
+            ingredients={data.ingredients}
+            preparationSteps={data.preparationSteps}
           />
         </Stack>
       </RecipeCard>
