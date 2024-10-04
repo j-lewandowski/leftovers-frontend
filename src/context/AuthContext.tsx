@@ -8,7 +8,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 interface AuthContextTypes {
-  isAuthenticated: boolean;
+  userId: string;
+  setUserId: (userId: string) => void;
   accessToken: string;
   signOut: () => void;
 }
@@ -16,7 +17,7 @@ interface AuthContextTypes {
 const AuthContext = createContext<AuthContextTypes | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>('');
   const [accessToken, setAccessToken] = useState<string>('');
   const navigate = useNavigate();
 
@@ -24,20 +25,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const localStorageToken = localStorage.getItem('accessToken');
     const sessionStorageToken = sessionStorage.getItem('accessToken');
 
+    const localStorageUserId = localStorage.getItem('userId');
+    const sessionStorageUserId = sessionStorage.getItem('userId');
+
     setAccessToken(localStorageToken || sessionStorageToken || '');
-    setIsAuthenticated(!!(localStorageToken || sessionStorageToken));
+    setUserId(localStorageUserId || sessionStorageUserId || '');
   }, []);
 
   const signOut = () => {
     localStorage.removeItem('accessToken');
     sessionStorage.removeItem('accessToken');
     setAccessToken('');
-    setIsAuthenticated(false);
+    setUserId('');
     navigate('/');
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, signOut }}>
+    <AuthContext.Provider value={{ userId, setUserId, accessToken, signOut }}>
       {children}
     </AuthContext.Provider>
   );
