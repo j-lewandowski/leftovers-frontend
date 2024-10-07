@@ -1,6 +1,7 @@
 import { ExpandMore } from '@mui/icons-material';
-import { Button, MenuItem, styled, Typography } from '@mui/material';
+import { Button, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useAuth } from '../../context/AuthContext';
 import Dropdown from '../navbar/Dropdown';
 
@@ -48,9 +49,10 @@ const MyAccountButton = () => {
   );
 };
 
-const Icon = styled(ExpandMore)(({ $isOpen }: { $isOpen: boolean }) => ({
-  transform: $isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-  transition: 'transform 0.3s ease',
-}));
+const Icon = styled(ExpandMore)<{ $isOpen: boolean }>`
+  transition: transform 0.15s ease-in !important;
+  transform: ${({ $isOpen }) =>
+    $isOpen ? 'rotate(180deg)' : 'rotate(0deg)'} !important;
+`;
 
 export default MyAccountButton;

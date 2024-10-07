@@ -1,6 +1,7 @@
-import { Button, Stack, styled, Typography } from '@mui/material';
+import { Stack, styled, Typography } from '@mui/material';
 import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
+import RateRecipeButton from '../buttons/RateRecipeButton';
 import Rating from './Rating';
 
 const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
@@ -27,10 +28,8 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
         </SaveRecipeWrapper>
         <Stack gap={4} sx={{ width: '100%' }}>
           <RateRecipeWrapper>
-            <Button variant="text" sx={{ width: 'fit-content' }}>
-              Rate the recipe
-            </Button>
-            <Rating rating={rating} numberOfRatings={numberOfRatings} />
+            <RateRecipeButton />
+            <Rating rating={+rating} numberOfRatings={numberOfRatings} />
           </RateRecipeWrapper>
           <TitleWrapper>
             <Typography variant="h5">{title}</Typography>
