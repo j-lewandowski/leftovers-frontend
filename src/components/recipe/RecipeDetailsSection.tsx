@@ -18,7 +18,7 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
   return (
     <RecipeDetailsWrapper direction="row" gap={7}>
       <Image src={imageUrl} />
-      <Stack gap={2}>
+      <Stack gap={2} sx={{ width: '100%' }}>
         <SaveRecipeWrapper>
           <FavoritesButton
             recipeId={id}
@@ -26,7 +26,7 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
             isFloatingButton={false}
           />
         </SaveRecipeWrapper>
-        <Stack gap={4} sx={{ width: '100%' }}>
+        <Stack gap={4}>
           <RateRecipeWrapper>
             <RateRecipeButton />
             <Rating rating={+rating} numberOfRatings={numberOfRatings} />
