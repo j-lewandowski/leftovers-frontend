@@ -12,7 +12,7 @@ const RecipeOfTheDay = () => {
   const theme = useTheme();
 
   const { data, isPending, isError } = useQuery({
-    queryKey: ['recipe-of-the-day'],
+    queryKey: ['save-recipes', 'recipe-of-the-day'],
     queryFn: async () => {
       const res = await axios.get(RECIPE_OF_THE_DAY_ENDPOINT);
       return res.data;
@@ -29,7 +29,11 @@ const RecipeOfTheDay = () => {
         <Typography>Loading...</Typography>
       ) : (
         <>
-          <ImageCard imageUrl={data.imageUrl} isSaved={data.isSaved} />
+          <ImageCard
+            recipeId={data.id}
+            imageUrl={data.imageUrl}
+            isSaved={data.isSaved}
+          />
           <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
             <Stack gap={{ xs: 1, sm: 2 }}>
               <Typography

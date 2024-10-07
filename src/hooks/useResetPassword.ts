@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RESET_PASSWORD_ENDPOINT } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
-import { ErrorResponse, ResetPasswordFormInput } from '../types';
+import { ResetPasswordFormInput } from '../models/user.model';
+import { ErrorResponse } from '../types';
 
 export const useResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -18,8 +19,10 @@ export const useResetPassword = () => {
         newPassword: data.newPassword,
       });
     },
-    onSuccess: (res) => {
-      setMessage(res.data.message);
+    onSuccess: () => {
+      setMessage(
+        '✅ Password changed successfully! You can now log in using your updated credentials.',
+      );
       onClose();
     },
     onError: (error: AxiosError<ErrorResponse>) => {

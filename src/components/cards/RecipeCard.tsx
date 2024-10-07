@@ -27,7 +27,7 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
           />
         </CardContent>
       </StyledCard>
-      <FavoritesButton saved={recipeData.isSaved} />
+      <FavoritesButton isSaved={recipeData.isSaved} recipeId={recipeData.id} />
     </CardWrapper>
   );
 };

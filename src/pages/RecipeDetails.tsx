@@ -11,7 +11,7 @@ const RecipeDetails = () => {
   const { recipeId } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['recipe'],
+    queryKey: ['save-recipes', 'recipe'],
     queryFn: async () => {
       const res = await axios.get(ALL_RECIPES_ENDPOINT + recipeId);
       return res.data;
@@ -25,7 +25,7 @@ const RecipeDetails = () => {
   return (
     <RecipeDetailsWrapper>
       <RecipeCard>
-        <Stack gap={2} sx={{ width: '100%' }}>
+        <Stack gap={2} sx={{ width: '100%', minWidth: '100%' }}>
           <RecipeDetailsSection
             imageUrl={data.imageUrl}
             title={data.title}
@@ -33,6 +33,8 @@ const RecipeDetails = () => {
             rating={data.rating}
             numberOfRatings={data.numberOfRatings}
             preparationTime={getPreparationTimeLabel(data.preparationTime)}
+            recipeId={data.id}
+            isSaved={data.isSaved}
           />
           <RecipePreparationDetails
             ingredients={data.ingredients}
@@ -47,14 +49,14 @@ const RecipeDetails = () => {
 export default RecipeDetails;
 
 const RecipeDetailsWrapper = styled(Box)(({ theme }) => ({
-  height: 'fit-content',
+  height: '100dvh',
   padding: '1rem 12rem',
   backgroundColor: theme.palette.background.default,
 }));
 
 const RecipeCard = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: '100%',
+  minHeight: '100%',
   borderRadius: '.5rem',
   padding: '2rem',
   backgroundColor: theme.palette.common.white,

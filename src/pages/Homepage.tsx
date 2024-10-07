@@ -13,12 +13,12 @@ import { ALL_RECIPES_ENDPOINT } from '../assets/constants/api';
 import RecipeCard from '../components/cards/RecipeCard';
 import RecipeOfTheDay from '../components/cards/RecipeOfTheDay';
 import { useAuth } from '../context/AuthContext';
-import { Recipe } from '../types';
+import { Recipe } from '../models/recipe.model';
 
 function HomePage() {
   const { accessToken } = useAuth();
   const { data, isPending } = useQuery({
-    queryKey: ['recipes'],
+    queryKey: ['save-recipes', 'recipes'],
     queryFn: async () => {
       const res = await axios.get(ALL_RECIPES_ENDPOINT, {
         headers: {
