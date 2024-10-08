@@ -1,19 +1,22 @@
 import { MemoryRouter } from 'react-router-dom';
 import { expect, test, vi } from 'vitest';
-import * as useAuth from '../../hooks/useAuth';
+import * as AuthContext from '../../context/AuthContext';
 import { render, screen } from '../../test-utils';
 import Navbar from '../navbar/Navbar';
 
 test('navbar displays buttons for sign up and log in if user is unauthenticated', () => {
-  vi.spyOn(useAuth, 'useAuth').mockImplementation(() => ({
+  vi.spyOn(AuthContext, 'useAuth').mockImplementation(() => ({
     isAuthenticated: false,
+    setIsAuthenticated: () => {},
     accessToken: '',
     signOut: () => {},
   }));
 
   render(
     <MemoryRouter>
-      <Navbar />
+      <AuthContext.AuthProvider>
+        <Navbar />
+      </AuthContext.AuthProvider>
     </MemoryRouter>,
   );
 
@@ -25,15 +28,18 @@ test('navbar displays buttons for sign up and log in if user is unauthenticated'
 });
 
 test('navbar displays my account button and add recipe button if user is authenticated', () => {
-  vi.spyOn(useAuth, 'useAuth').mockImplementation(() => ({
+  vi.spyOn(AuthContext, 'useAuth').mockImplementation(() => ({
     isAuthenticated: true,
+    setIsAuthenticated: () => {},
     accessToken: '',
     signOut: () => {},
   }));
 
   render(
     <MemoryRouter>
-      <Navbar />
+      <AuthContext.AuthProvider>
+        <Navbar />
+      </AuthContext.AuthProvider>
     </MemoryRouter>,
   );
 

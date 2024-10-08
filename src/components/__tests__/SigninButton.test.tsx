@@ -1,12 +1,15 @@
 import { MemoryRouter } from 'react-router-dom';
 import { expect, test } from 'vitest';
+import { AuthProvider } from '../../context/AuthContext';
 import { fireEvent, render, screen } from '../../test-utils';
 import SigninButton from '../buttons/SigninButton';
 
 test('sign in modal is displayed after signin button is clicked', () => {
   render(
     <MemoryRouter>
-      <SigninButton />
+      <AuthProvider>
+        <SigninButton />
+      </AuthProvider>
     </MemoryRouter>,
   );
 
