@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { FORGOT_PASSWORD_ENDPOINT } from '../assets/constants/api';
+import { API } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
 import { ForgotPasswordFormInput } from '../models/user.model';
 
@@ -12,7 +12,7 @@ export const useForgotPassword = () => {
 
   const forgotPasswordMutation = useMutation({
     mutationFn: (userData: ForgotPasswordFormInput) => {
-      return axios.post(FORGOT_PASSWORD_ENDPOINT, {
+      return axios.post(API.AUTH.FORGOT_PASSWORD, {
         email: userData.email,
       });
     },

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { SIGN_UP_ENDPOINT } from '../assets/constants/api';
+import { API } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
 import { SignupFormInput } from '../models/user.model';
 import { ErrorResponse } from '../types';
@@ -33,7 +33,7 @@ export const useSignUp = () => {
       setMessage(error.response.data.message as string);
     },
     mutationFn: (userData: SignupFormInput) => {
-      return axios.post(SIGN_UP_ENDPOINT, {
+      return axios.post(API.AUTH.REGISTER, {
         email: userData.email,
         password: userData.password,
       });

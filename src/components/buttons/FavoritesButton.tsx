@@ -7,6 +7,7 @@ import { Button, Fab, styled, useTheme } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
+import { API } from '../../assets/constants/api';
 import { useAuth } from '../../context/AuthContext';
 import { useSnackbar } from '../../context/SnackbarContext';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
@@ -29,7 +30,7 @@ const FavoritesButton = ({
   const mutation = useMutation({
     mutationFn: async () => {
       await axios.put(
-        '/users/' + userId + '/saved-recipes',
+        API.USERS.SAVED_RECIPES,
         {
           save: !isSaved,
           recipeId,

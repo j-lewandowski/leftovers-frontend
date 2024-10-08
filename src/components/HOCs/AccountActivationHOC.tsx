@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { ReactNode, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CONFIRM_SIGN_UP_ENDPOINT } from '../../assets/constants/api';
+import { API } from '../../assets/constants/api';
 import { useSnackbar } from '../../context/SnackbarContext';
 
 const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
@@ -12,7 +12,7 @@ const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
 
   const mutation = useMutation({
     mutationFn: () => {
-      return axios.post(CONFIRM_SIGN_UP_ENDPOINT, {
+      return axios.post(API.AUTH.CONFIRM_SIGNUP, {
         email: searchParams.get('userEmail'),
         validationToken: searchParams.get('requestId'),
       });

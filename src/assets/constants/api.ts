@@ -1,10 +1,22 @@
-// USER
-export const SIGN_UP_ENDPOINT = '/auth/register/';
-export const SIGN_IN_ENDPOINT = '/auth/login/';
-export const CONFIRM_SIGN_UP_ENDPOINT = '/auth/confirm/';
-export const FORGOT_PASSWORD_ENDPOINT = '/auth/forgot-password/';
-export const RESET_PASSWORD_ENDPOINT = '/auth/reset-password/';
+export const DEFAULT_ENDPOINTS = {
+  AUTH: '/auth/',
+  RECIPES: '/recipes/',
+  USERS: '/users/',
+};
 
-// RECIPES
-export const ALL_RECIPES_ENDPOINT = '/recipes/';
-export const RECIPE_OF_THE_DAY_ENDPOINT = '/recipes/recipe-of-the-day/';
+export const API = {
+  AUTH: {
+    LOGIN: `${DEFAULT_ENDPOINTS.AUTH}login/`,
+    REGISTER: `${DEFAULT_ENDPOINTS.AUTH}register/`,
+    CONFIRM_SIGNUP: `${DEFAULT_ENDPOINTS.AUTH}confirm/`,
+    FORGOT_PASSWORD: `${DEFAULT_ENDPOINTS.AUTH}forgot-password/`,
+    RESET_PASSWORD: `${DEFAULT_ENDPOINTS.AUTH}reset-password/`,
+  },
+  RECIPES: {
+    ALL: `${DEFAULT_ENDPOINTS.RECIPES}`,
+    RECIPE_OF_THE_DAY: `${DEFAULT_ENDPOINTS.RECIPES}recipe-of-the-day/`,
+  },
+  USERS: {
+    SAVED_RECIPES: `${DEFAULT_ENDPOINTS.USERS}saved-recipes/`,
+  },
+};

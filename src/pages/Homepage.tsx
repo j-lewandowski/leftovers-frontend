@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { ALL_RECIPES_ENDPOINT } from '../assets/constants/api';
+import { API } from '../assets/constants/api';
 import RecipeCard from '../components/cards/RecipeCard';
 import RecipeOfTheDay from '../components/cards/RecipeOfTheDay';
 import { useAuth } from '../context/AuthContext';
@@ -20,7 +20,7 @@ function HomePage() {
   const { data, isPending } = useQuery({
     queryKey: ['save-recipes', 'recipes'],
     queryFn: async () => {
-      const res = await axios.get(ALL_RECIPES_ENDPOINT, {
+      const res = await axios.get(API.RECIPES.ALL, {
         headers: {
           Authorization: 'Bearer ' + accessToken,
         },

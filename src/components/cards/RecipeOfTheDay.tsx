@@ -3,7 +3,7 @@ import { Divider, Stack, styled, Typography, useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { RECIPE_OF_THE_DAY_ENDPOINT } from '../../assets/constants/api';
+import { API } from '../../assets/constants/api';
 import { getPreparationTimeLabel } from '../../features/recipes/recipes';
 import Rating from '../recipe/Rating';
 import ImageCard from './ImageCard';
@@ -14,7 +14,7 @@ const RecipeOfTheDay = () => {
   const { data, isPending, isError } = useQuery({
     queryKey: ['save-recipes', 'recipe-of-the-day'],
     queryFn: async () => {
-      const res = await axios.get(RECIPE_OF_THE_DAY_ENDPOINT);
+      const res = await axios.get(API.RECIPES.RECIPE_OF_THE_DAY);
       return res.data;
     },
   });
