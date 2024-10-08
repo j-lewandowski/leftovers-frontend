@@ -17,7 +17,7 @@ import Searchbar from './Searchbar';
 import UnauthenticatedUserButtons from './UnauthenticatedUserButtons';
 
 const Navbar = () => {
-  const { userId } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -35,7 +35,7 @@ const Navbar = () => {
           </IconButton>
         ) : (
           <Stack gap={2} direction="row">
-            {userId ? (
+            {isAuthenticated ? (
               <AuthenticatedUserButtons />
             ) : (
               <UnauthenticatedUserButtons />
@@ -48,7 +48,7 @@ const Navbar = () => {
           anchor="right"
         >
           <Stack gap={2} direction="column" padding={'1rem'}>
-            {userId ? (
+            {isAuthenticated ? (
               <AuthenticatedUserButtons />
             ) : (
               <UnauthenticatedUserButtons />

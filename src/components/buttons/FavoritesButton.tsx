@@ -23,7 +23,7 @@ const FavoritesButton = ({
 }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { userId, accessToken } = useAuth();
+  const { isAuthenticated, accessToken } = useAuth();
   const queryClient = useQueryClient();
   const { setMessage } = useSnackbar();
 
@@ -51,7 +51,7 @@ const FavoritesButton = ({
   });
 
   const onClick = () => {
-    if (!userId) {
+    if (!isAuthenticated) {
       setIsModalOpen(true);
       return;
     }
