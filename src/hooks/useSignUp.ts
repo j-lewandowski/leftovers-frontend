@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
-import { ErrorResponse, SignupFormInput } from '../types';
+import { SignupFormInput } from '../models/user.model';
+import { ErrorResponse } from '../types';
 
 export const useSignUp = () => {
   const navigate = useNavigate();
@@ -11,8 +13,10 @@ export const useSignUp = () => {
   const { setMessage } = useSnackbar();
 
   const mutation = useMutation({
-    onSuccess: (res) => {
-      setMessage(res.data.message);
+    onSuccess: () => {
+      setMessage(
+        "You've successfully registered on our website. To complete the registration process, please check your email 📬",
+      );
       onClose();
     },
     onError: (error: AxiosError<ErrorResponse>) => {
@@ -29,7 +33,7 @@ export const useSignUp = () => {
       setMessage(error.response.data.message as string);
     },
     mutationFn: (userData: SignupFormInput) => {
-      return axios.post('/auth/register', {
+      return axios.post(API.AUTH.REGISTER, {
         email: userData.email,
         password: userData.password,
       });

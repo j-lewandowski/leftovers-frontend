@@ -6,9 +6,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Recipe } from '../../types';
-import Rating from '../Rating';
+import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
+import Rating from '../recipe/Rating';
 
 const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
   const navigate = useNavigate();
@@ -21,13 +21,13 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
           <Typography variant="subtitle1">{recipeData.title}</Typography>
           <Description variant="body2">{recipeData.description}</Description>
           <Rating
-            short
+            oneStar
             rating={recipeData.rating}
             numberOfRatings={recipeData.numberOfRatings}
           />
         </CardContent>
       </StyledCard>
-      <FavoritesButton />
+      <FavoritesButton isSaved={recipeData.isSaved} recipeId={recipeData.id} />
     </CardWrapper>
   );
 };

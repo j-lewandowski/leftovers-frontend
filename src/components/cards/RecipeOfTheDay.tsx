@@ -3,18 +3,19 @@ import { Divider, Stack, styled, Typography, useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Recipe } from '../../types';
-import Rating from '../Rating';
+import { API } from '../../assets/constants/api';
+import { getPreparationTimeLabel } from '../../features/recipes/recipes';
+import Rating from '../recipe/Rating';
 import ImageCard from './ImageCard';
 
 const RecipeOfTheDay = () => {
   const theme = useTheme();
 
   const { data, isPending, isError } = useQuery({
-    queryKey: ['recipe-of-the-day'],
+    queryKey: ['save-recipes', 'recipe-of-the-day'],
     queryFn: async () => {
-      const res = await axios.get('/recipes/recipe-of-the-day');
-      return res.data as Recipe;
+      const res = await axios.get(API.RECIPES.RECIPE_OF_THE_DAY);
+      return res.data;
     },
   });
 
@@ -28,7 +29,11 @@ const RecipeOfTheDay = () => {
         <Typography>Loading...</Typography>
       ) : (
         <>
-          <ImageCard imageUrl={data.imageUrl} />
+          <ImageCard
+            recipeId={data.id}
+            imageUrl={data.imageUrl}
+            isSaved={data.isSaved}
+          />
           <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
             <Stack gap={{ xs: 1, sm: 2 }}>
               <Typography
@@ -53,7 +58,8 @@ const RecipeOfTheDay = () => {
               divider={<Divider orientation={'vertical'} variant="middle" />}
             >
               <Typography variant="overline" lineHeight={'18px'}>
-                PREPARATION TIME: {data.preparationTime}
+                PREPARATION TIME:{' '}
+                {getPreparationTimeLabel(data.preparationTime)}
               </Typography>
               <Typography variant="overline" lineHeight={'18px'}>
                 {data.servings} SERVINGS
@@ -61,8 +67,6 @@ const RecipeOfTheDay = () => {
             </Stack>
             <StyledLink to={'/recipes/' + data.id}>
               <Stack direction="row" color={theme.palette.primary.main}>
-                {/* @TODO - add navigation to real id */}
-
                 <Typography>View the recipe</Typography>
                 <ChevronRight />
               </Stack>

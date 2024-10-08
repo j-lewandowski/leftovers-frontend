@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface AuthContextTypes {
   isAuthenticated: boolean;
+  setIsAuthenticated: (val: boolean) => void;
   accessToken: string;
   signOut: () => void;
 }
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sessionStorageToken = sessionStorage.getItem('accessToken');
 
     setAccessToken(localStorageToken || sessionStorageToken || '');
-    setIsAuthenticated(!!(localStorageToken || sessionStorageToken));
+    setIsAuthenticated(!!localStorageToken || !!sessionStorageToken);
   }, []);
 
   const signOut = () => {
@@ -37,7 +38,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, accessToken, signOut }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, accessToken, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

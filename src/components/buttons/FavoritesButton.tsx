@@ -1,36 +1,88 @@
-import { Bookmark, BookmarkBorder } from '@mui/icons-material';
-import { Fab, styled, useTheme } from '@mui/material';
+import {
+  Bookmark,
+  BookmarkBorder,
+  BookmarkBorderOutlined,
+} from '@mui/icons-material';
+import { Button, Fab, styled, useTheme } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useState } from 'react';
+import { API } from '../../assets/constants/api';
 import { useAuth } from '../../context/AuthContext';
+import { useSnackbar } from '../../context/SnackbarContext';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
 
-const FavoritesButton = ({ selected = false }: { selected?: boolean }) => {
+const FavoritesButton = ({
+  isSaved = false,
+  isFloatingButton = true,
+  recipeId,
+}: {
+  isSaved?: boolean;
+  isFloatingButton?: boolean;
+  recipeId: string;
+}) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, accessToken } = useAuth();
+  const queryClient = useQueryClient();
+  const { setMessage } = useSnackbar();
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      await axios.put(
+        API.USERS.SAVED_RECIPES,
+        {
+          save: !isSaved,
+          recipeId,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+          },
+        },
+      );
+    },
+    onSuccess: () => {
+      if (!isSaved) {
+        setMessage('✅ The recipe was added to Saved Recipes in your profile.');
+      }
+      queryClient.invalidateQueries({ queryKey: ['save-recipes'] });
+    },
+  });
 
   const onClick = () => {
     if (!isAuthenticated) {
       setIsModalOpen(true);
       return;
     }
-    // @TODO - call to backend
+
+    mutation.mutate();
   };
 
   return (
     <>
-      <FloatingButton
-        size="small"
-        color="default"
-        sx={{ boxShadow: 6 }}
-        onClick={onClick}
-      >
-        {selected ? (
-          <Bookmark style={{ color: theme.palette.primary.main }} />
-        ) : (
-          <BookmarkBorder style={{ color: theme.palette.action.disabled }} />
-        )}
-      </FloatingButton>
+      {isFloatingButton ? (
+        <FloatingButton
+          size="small"
+          color="default"
+          sx={{ boxShadow: 6 }}
+          onClick={onClick}
+        >
+          {isSaved ? (
+            <Bookmark style={{ color: theme.palette.primary.main }} />
+          ) : (
+            <BookmarkBorder style={{ color: theme.palette.action.disabled }} />
+          )}
+        </FloatingButton>
+      ) : (
+        <Button
+          variant="outlined"
+          startIcon={isSaved ? <Bookmark /> : <BookmarkBorderOutlined />}
+          onClick={onClick}
+        >
+          {isSaved ? 'Saved' : 'Save'}
+        </Button>
+      )}
       <LogInToSaveRecipeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

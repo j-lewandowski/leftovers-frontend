@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { API } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
-import { ErrorResponse, ResetPasswordFormInput } from '../types';
+import { ResetPasswordFormInput } from '../models/user.model';
+import { ErrorResponse } from '../types';
 
 export const useResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -12,13 +14,15 @@ export const useResetPassword = () => {
 
   const resetPasswordMutation = useMutation({
     mutationFn: (data: ResetPasswordFormInput) => {
-      return axios.post('/auth/reset-password', {
+      return axios.post(API.AUTH.RESET_PASSWORD, {
         validationToken: searchParams.get('requestId'),
         newPassword: data.newPassword,
       });
     },
-    onSuccess: (res) => {
-      setMessage(res.data.message);
+    onSuccess: () => {
+      setMessage(
+        '✅ Password changed successfully! You can now log in using your updated credentials.',
+      );
       onClose();
     },
     onError: (error: AxiosError<ErrorResponse>) => {

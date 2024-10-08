@@ -2,8 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../assets/constants/api';
 import { useSnackbar } from '../context/SnackbarContext';
-import { ForgotPasswordFormInput } from '../types';
+import { ForgotPasswordFormInput } from '../models/user.model';
 
 export const useForgotPassword = () => {
   const navigate = useNavigate();
@@ -11,12 +12,14 @@ export const useForgotPassword = () => {
 
   const forgotPasswordMutation = useMutation({
     mutationFn: (userData: ForgotPasswordFormInput) => {
-      return axios.post('/auth/forgot-password', {
+      return axios.post(API.AUTH.FORGOT_PASSWORD, {
         email: userData.email,
       });
     },
-    onSuccess: (res) => {
-      setMessage(res.data.message);
+    onSuccess: () => {
+      setMessage(
+        'Thanks! An e-mail was sent that will ask you to click on a link to verify that you own this account 📬',
+      );
       onClose();
     },
   });
