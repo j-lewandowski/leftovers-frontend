@@ -1,8 +1,8 @@
-import { PREPARATION_TIME } from '../../assets/constants/enums';
+import { PreparationTime } from '../../assets/constants/enums';
 
 export function getPreparationTimeLabel(preparationTime: string) {
   return (
-    PREPARATION_TIME[preparationTime as keyof typeof PREPARATION_TIME] ||
+    PreparationTime[preparationTime as keyof typeof PreparationTime] ||
     'Unknown'
   );
 }

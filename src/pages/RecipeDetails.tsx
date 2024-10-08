@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import RecipeDetailsSection from '../components/recipe/RecipeDetailsSection';
 import RecipePreparationDetails from '../components/recipe/RecipePreparationDetails';
-import { getPreparationTimeLabel } from '../features/recipes/recipes';
 
 const RecipeDetails = () => {
   const { recipeId } = useParams();
@@ -26,20 +25,8 @@ const RecipeDetails = () => {
     <RecipeDetailsWrapper>
       <RecipeCard>
         <Stack gap={2} sx={{ width: '100%', minWidth: '100%' }}>
-          <RecipeDetailsSection
-            imageUrl={data.imageUrl}
-            title={data.title}
-            description={data.description}
-            rating={data.rating}
-            numberOfRatings={data.numberOfRatings}
-            preparationTime={getPreparationTimeLabel(data.preparationTime)}
-            recipeId={data.id}
-            isSaved={data.isSaved}
-          />
-          <RecipePreparationDetails
-            ingredients={data.ingredients}
-            preparationSteps={data.preparationSteps}
-          />
+          <RecipeDetailsSection data={data} />
+          <RecipePreparationDetails data={data} />
         </Stack>
       </RecipeCard>
     </RecipeDetailsWrapper>

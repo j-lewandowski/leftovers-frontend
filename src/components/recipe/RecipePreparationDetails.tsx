@@ -1,14 +1,9 @@
 import { Divider, Stack, styled, Typography } from '@mui/material';
+import { Recipe } from '../../models/recipe.model';
 
-interface RecipePreparationDetailsProps {
-  ingredients: string[];
-  preparationSteps: string[];
-}
+const RecipePreparationDetails = ({ data }: { data: Recipe }) => {
+  const { ingredients, preparationSteps } = data;
 
-const RecipePreparationDetails = ({
-  ingredients,
-  preparationSteps,
-}: RecipePreparationDetailsProps) => {
   return (
     <PreparationDetailsWrapper direction="row">
       <ListWrapper gap={2}>

@@ -1,35 +1,26 @@
 import { Button, Stack, styled, Typography } from '@mui/material';
+import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
 import Rating from './Rating';
 
-interface RecipeDetailsSectionProps {
-  recipeId: string;
-  imageUrl: string;
-  rating: number;
-  numberOfRatings: number;
-  title: string;
-  description: string;
-  preparationTime: string;
-  isSaved: boolean;
-}
-
-const RecipeDetailsSection = ({
-  recipeId,
-  imageUrl,
-  rating,
-  numberOfRatings,
-  title,
-  description,
-  preparationTime,
-  isSaved,
-}: RecipeDetailsSectionProps) => {
+const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
+  const {
+    imageUrl,
+    id,
+    isSaved,
+    rating,
+    numberOfRatings,
+    title,
+    description,
+    preparationTime,
+  } = data;
   return (
     <RecipeDetailsWrapper direction="row" gap={7}>
       <Image src={imageUrl} />
       <Stack gap={2}>
         <SaveRecipeWrapper>
           <FavoritesButton
-            recipeId={recipeId}
+            recipeId={id}
             isSaved={isSaved}
             isFloatingButton={false}
           />
