@@ -22,7 +22,7 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
           <Description variant="body2">{recipeData.description}</Description>
           <Rating
             oneStar
-            rating={+recipeData.rating}
+            rating={recipeData.rating}
             numberOfRatings={recipeData.numberOfRatings}
           />
         </CardContent>

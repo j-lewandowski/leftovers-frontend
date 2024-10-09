@@ -44,7 +44,7 @@ const RecipeOfTheDay = () => {
                 RECIPE OF THE DAY
               </Typography>
               <Rating
-                rating={+data.rating}
+                rating={data.rating}
                 numberOfRatings={data.numberOfRatings}
               />
               <Typography variant="h5">{data.title}</Typography>

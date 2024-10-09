@@ -29,7 +29,7 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
         <Stack gap={4}>
           <RateRecipeWrapper>
             <RateRecipeButton />
-            <Rating rating={+rating} numberOfRatings={numberOfRatings} />
+            <Rating rating={rating} numberOfRatings={numberOfRatings} />
           </RateRecipeWrapper>
           <TitleWrapper>
             <Typography variant="h5">{title}</Typography>
