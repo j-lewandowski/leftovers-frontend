@@ -1,12 +1,15 @@
 import { MemoryRouter } from 'react-router-dom';
 import { expect, test } from 'vitest';
+import { AuthProvider } from '../../context/AuthContext';
 import { fireEvent, render, screen } from '../../test-utils';
 import SigninModal from '../modals/SigninModal';
 
 test('signin modal fields should be empty, remember me checkbox should be unchecked by default and log in button should be disabled by default', () => {
   render(
     <MemoryRouter initialEntries={['?signin=true']}>
-      <SigninModal />
+      <AuthProvider>
+        <SigninModal />
+      </AuthProvider>
     </MemoryRouter>,
   );
 
@@ -26,7 +29,9 @@ test('signin modal fields should be empty, remember me checkbox should be unchec
 test('sign in button is disabled if email is invalid', () => {
   render(
     <MemoryRouter initialEntries={['?signin=true']}>
-      <SigninModal />
+      <AuthProvider>
+        <SigninModal />
+      </AuthProvider>
     </MemoryRouter>,
   );
 
@@ -41,7 +46,9 @@ test('sign in button is disabled if email is invalid', () => {
 test('sign in button is enabled if valid credentials are provided', async () => {
   const { user } = render(
     <MemoryRouter initialEntries={['?signin=true']}>
-      <SigninModal />
+      <AuthProvider>
+        <SigninModal />
+      </AuthProvider>
     </MemoryRouter>,
   );
 

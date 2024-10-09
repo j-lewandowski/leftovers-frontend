@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = () => {
     localStorage.removeItem('accessToken');
     sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
+    sessionStorage.removeItem('userId');
     setAccessToken('');
     setIsAuthenticated(false);
     navigate('/');

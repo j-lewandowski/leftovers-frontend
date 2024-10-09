@@ -39,10 +39,13 @@ const RecipeDetailsWrapper = styled(Box)(({ theme }) => ({
   height: '100dvh',
   padding: '1rem 12rem',
   backgroundColor: theme.palette.background.default,
+  display: 'flex',
+  justifyContent: 'center',
 }));
 
 const RecipeCard = styled(Box)(({ theme }) => ({
   width: '100%',
+  maxWidth: '1072px',
   minHeight: '100%',
   borderRadius: '.5rem',
   padding: '2rem',
