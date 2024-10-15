@@ -20,7 +20,7 @@ function HomePage() {
   const { accessToken } = useAuth();
   const navigate = useNavigate();
   const { data, isPending } = useQuery({
-    queryKey: ['save-recipes', 'recipes'],
+    queryKey: ['recipes'],
     queryFn: async () => {
       const res = await axios.get(API.RECIPES.ALL, {
         headers: {

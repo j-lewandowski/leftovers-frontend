@@ -27,6 +27,7 @@ const CategoriesButton = () => {
       </Button>
 
       <Dropdown anchor={anchor} onClose={() => setAnchor(null)}>
+        <MenuItem onClick={() => navigate('/recipes')}>🍽️ All recipes</MenuItem>
         {categories.map((category, i) => (
           <MenuItem
             key={`${category.name}-${i}`}

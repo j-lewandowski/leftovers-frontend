@@ -3,10 +3,6 @@ import { useState } from 'react';
 export const useCategories = () => {
   const mockCategories = [
     {
-      name: '🍽️ All recipes',
-      filter: null,
-    },
-    {
       name: '🥪 Breakfasts',
       filter: 'breakfast',
     },
@@ -40,7 +36,7 @@ export const useCategories = () => {
     },
   ];
   const [categories, setCategories] =
-    useState<Record<string, string | null>[]>(mockCategories);
+    useState<Record<string, string>[]>(mockCategories);
 
   return { categories, setCategories };
 };

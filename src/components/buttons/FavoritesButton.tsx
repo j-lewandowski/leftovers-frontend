@@ -46,7 +46,7 @@ const FavoritesButton = ({
       if (!isSaved) {
         setMessage('✅ The recipe was added to Saved Recipes in your profile.');
       }
-      queryClient.invalidateQueries({ queryKey: ['save-recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['recipes'] });
     },
   });
 

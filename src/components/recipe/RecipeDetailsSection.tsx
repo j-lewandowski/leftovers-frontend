@@ -1,4 +1,5 @@
 import { Stack, styled, Typography } from '@mui/material';
+import { getPreparationTimeLabel } from '../../features/recipes/recipes';
 import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
 import RateRecipeButton from '../buttons/RateRecipeButton';
@@ -36,7 +37,7 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
             <Typography variant="body1">{description}</Typography>
           </TitleWrapper>
           <Typography variant="overline">
-            PREPARATION TIME: {preparationTime}
+            PREPARATION TIME: {getPreparationTimeLabel(preparationTime)}
           </Typography>
         </Stack>
       </Stack>
