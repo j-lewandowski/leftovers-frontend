@@ -53,10 +53,6 @@ const FilterButton = ({ name }: FilterButtonProps) => {
 
   const onClose = () => {
     setAnchor(null);
-
-    // if (savedRecipes !== null) {
-    //   newSearchParams.set('saved', savedRecipes.toString());
-    // }
     setSearchParams(newSearchParams);
   };
 

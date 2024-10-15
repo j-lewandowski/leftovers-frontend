@@ -1,18 +1,11 @@
-import { ImportExport } from '@mui/icons-material';
-import {
-  Button,
-  Divider,
-  Grid,
-  Stack,
-  styled,
-  Typography,
-} from '@mui/material';
+import { Divider, Grid, Stack, styled, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import FilterButton from '../components/buttons/FilterButton';
+import SortingButton from '../components/buttons/SortingButton';
 import RecipeCard from '../components/cards/RecipeCard';
 import { useAuth } from '../context/AuthContext';
 import { Recipe } from '../models/recipe.model';
@@ -38,13 +31,12 @@ const RecipesList = () => {
         params: {
           category: searchParams.getAll('category'),
           saved: searchParams.get('saved'),
+          sort: searchParams.get('sort'),
         },
       });
       return res.data;
     },
   });
-
-  console.log(data);
 
   return (
     <Wrapper gap={2}>
@@ -62,20 +54,18 @@ const RecipesList = () => {
           searchParams.get('category')?.length > 1) && (
           <FilterButton name="Filters"></FilterButton>
         )}
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<ImportExport />}
-        >
-          Rating
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<ImportExport />}
-        >
-          Date
-        </Button>
+        <SortingButton
+          name="Rating"
+          fieldName="rating"
+          descOptionName="Highest score first"
+          ascOptionName="Lowest score first"
+        />
+        <SortingButton
+          name="Date"
+          fieldName="date"
+          descOptionName="Sort by newest"
+          ascOptionName="Sort by oldest"
+        />
       </Stack>
       <Grid container spacing={1.5}>
         {isLoading ? (
