@@ -26,8 +26,12 @@ const SortingButton = ({
 
   const onSort = (value: string) => {
     setSearchParams((prev) => {
-      prev.delete('sort', `${fieldName},${value === 'desc' ? 'asc' : 'desc'}`);
-      prev.append('sort', `${fieldName},${value}`);
+      if (value === 'desc') {
+        prev.delete('sort', `${fieldName},asc`);
+      } else {
+        prev.delete('sort', `${fieldName},asc`);
+        prev.append('sort', `${fieldName},${value}`);
+      }
       return prev;
     });
     setAnchor(null);
@@ -46,10 +50,7 @@ const SortingButton = ({
       <Dropdown anchor={anchor} onClose={() => setAnchor(null)}>
         <MenuItem onClick={() => onSort('desc')}>
           <Radio
-            defaultChecked={
-              searchParams.has('sort', `${fieldName},desc`) ||
-              !searchParams.has('sort')
-            }
+            defaultChecked={!searchParams.has('sort', `${fieldName},asc`)}
           />
           {descOptionName}
         </MenuItem>

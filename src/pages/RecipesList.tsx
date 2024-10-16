@@ -8,12 +8,14 @@ import FilterButton from '../components/buttons/FilterButton';
 import SortingButton from '../components/buttons/SortingButton';
 import RecipeCard from '../components/cards/RecipeCard';
 import { useAuth } from '../context/AuthContext';
+import { usePageLabel } from '../hooks/usePageLabel';
 import { Recipe } from '../models/recipe.model';
 
 const RecipesList = () => {
   const [searchParams] = useSearchParams();
   const { accessToken } = useAuth();
   const queryClient = useQueryClient();
+  const { label } = usePageLabel();
 
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -32,6 +34,7 @@ const RecipesList = () => {
           category: searchParams.getAll('category'),
           saved: searchParams.get('saved'),
           sort: searchParams.get('sort'),
+          myRecipes: searchParams.get('myRecipes'),
         },
       });
       return res.data;
@@ -42,16 +45,12 @@ const RecipesList = () => {
     <Wrapper gap={2}>
       <Stack gap={1}>
         <Typography variant="h5" sx={{ paddingBottom: '.5rem' }}>
-          {!searchParams.get('category') ||
-          searchParams.get('category')?.length > 1
-            ? 'All Recipes'
-            : searchParams.get('category')}
+          {label}
         </Typography>
         <Divider />
       </Stack>
       <Stack direction="row" spacing={1}>
-        {(!searchParams.get('category') ||
-          searchParams.get('category')?.length > 1) && (
+        {label === 'All Recipes' && (
           <FilterButton name="Filters"></FilterButton>
         )}
         <SortingButton
