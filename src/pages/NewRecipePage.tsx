@@ -6,27 +6,20 @@ import {
 } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   styled,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { useCategories } from '../hooks/useCategories';
-import { usePreparationTime } from '../hooks/usePreparationTime';
+import BasicInformation from '../components/forms/add-recipe-form/BasicInformation';
+import Ingredients from '../components/forms/add-recipe-form/Ingredients';
 
 const NewRecipePage = () => {
   const [page, setPage] = useState<number>(0);
-  const { categories } = useCategories();
-  const { preparationTime } = usePreparationTime();
+  const pages = [BasicInformation, Ingredients];
 
   const onChange = (event: React.SyntheticEvent, newValue: number) => {
     setPage(newValue);
@@ -74,48 +67,7 @@ const NewRecipePage = () => {
       </Stack>
 
       <PageContentWrapper padding={4}>
-        <Stack direction="row">
-          <Stack width="100%">
-            <Typography>Add photo</Typography>
-          </Stack>
-          <Stack width="100%" gap={4}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography variant="subtitle1">Add basic information</Typography>
-              <Button variant="contained">Next</Button>
-            </Stack>
-            <Stack gap={3}>
-              <TextField label="Title" variant="outlined" />
-              <TextField label="Description" variant="outlined" />
-            </Stack>
-            <Stack direction="row" gap={4}>
-              <FormControl fullWidth>
-                <InputLabel>Category</InputLabel>
-                <Select label="Category">
-                  {categories.map((category) => (
-                    <MenuItem key={category.filter} value={category.filter}>
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth>
-                <InputLabel>Preparation time</InputLabel>
-                <Select label="Preparation time">
-                  {preparationTime.map((time) => (
-                    <MenuItem key={time.value} value={time.value}>
-                      {time.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Stack>
-          </Stack>
-        </Stack>
+        <Ingredients />
       </PageContentWrapper>
     </NewRecipePageWrapper>
   );
@@ -124,7 +76,7 @@ const NewRecipePageWrapper = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: 'calc(100dvh - 8.5rem)',
+  minHeight: 'calc(100dvh - 8.5rem)',
   position: 'relative',
   padding: '2.5rem 3rem',
   gap: '1rem',
