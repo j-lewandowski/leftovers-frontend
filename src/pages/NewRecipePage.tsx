@@ -50,7 +50,7 @@ const NewRecipePage = () => {
             label={
               <Stack direction="row" gap={1}>
                 <RestaurantMenuOutlined />
-                <Typography>Ingredients</Typography>
+                <Typography>Preparation Method</Typography>
               </Stack>
             }
           ></Tab>
