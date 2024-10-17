@@ -14,16 +14,37 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PreparationTime } from '../assets/constants/enums';
 import BasicInformation from '../components/forms/add-recipe-form/BasicInformation';
 import Ingredients from '../components/forms/add-recipe-form/Ingredients';
+
+interface NewRecipeFormInput {
+  title: string;
+  description: string;
+  category: string;
+  preparationTime: PreparationTime;
+  image: string;
+}
 
 const NewRecipePage = () => {
   const [page, setPage] = useState<number>(0);
   const pages = [BasicInformation, Ingredients];
+  const methods = useForm<NewRecipeFormInput>({
+    defaultValues: {
+      title: '',
+      description: '',
+      category: '',
+      preparationTime: '',
+      image: '',
+    },
+  });
 
   const onChange = (event: React.SyntheticEvent, newValue: number) => {
     setPage(newValue);
   };
+
+  console.log(methods.watch());
 
   return (
     <NewRecipePageWrapper>
@@ -67,7 +88,10 @@ const NewRecipePage = () => {
       </Stack>
 
       <PageContentWrapper padding={4}>
-        <Ingredients />
+        <FormProvider {...methods}>
+          {/* <Ingredients /> */}
+          {<BasicInformation />}
+        </FormProvider>
       </PageContentWrapper>
     </NewRecipePageWrapper>
   );

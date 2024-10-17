@@ -8,19 +8,23 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useCategories } from '../../../hooks/useCategories';
 import { usePreparationTime } from '../../../hooks/usePreparationTime';
+import ImageUploadInput from '../../inputs/ImageUploadInput';
 
 const BasicInformation = () => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
+  const { control } = useFormContext();
 
   return (
-    <Stack direction="row">
-      <Stack width="100%">
+    <Stack direction="row" gap={4}>
+      <Stack>
         <Typography>Add photo</Typography>
+        <ImageUploadInput />
       </Stack>
-      <Stack width="100%" gap={4}>
+      <Stack flex={1} gap={4}>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -30,30 +34,54 @@ const BasicInformation = () => {
           <Button variant="contained">Next</Button>
         </Stack>
         <Stack gap={3}>
-          <TextField label="Title" variant="outlined" />
-          <TextField label="Description" variant="outlined" />
+          <Controller
+            name="title"
+            control={control}
+            rules={{ maxLength: 100, required: true }}
+            render={({ field }) => (
+              <TextField {...field} label="Title" variant="outlined" />
+            )}
+          ></Controller>
+          <Controller
+            name="description"
+            control={control}
+            rules={{ maxLength: 200, required: true }}
+            render={({ field }) => (
+              <TextField {...field} label="Description" variant="outlined" />
+            )}
+          ></Controller>
         </Stack>
         <Stack direction="row" gap={4}>
           <FormControl fullWidth>
             <InputLabel>Category</InputLabel>
-            <Select label="Category">
-              {categories.map((category) => (
-                <MenuItem key={category.filter} value={category.filter}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <Controller
+              name="category"
+              render={({ field }) => (
+                <Select label="Category" {...field} defaultValue={''}>
+                  {categories.map((category) => (
+                    <MenuItem key={category.filter} value={category.filter}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
           </FormControl>
 
           <FormControl fullWidth>
             <InputLabel>Preparation time</InputLabel>
-            <Select label="Preparation time">
-              {preparationTime.map((time) => (
-                <MenuItem key={time.value} value={time.value}>
-                  {time.label}
-                </MenuItem>
-              ))}
-            </Select>
+            <Controller
+              name="preparationTime"
+              render={({ field }) => (
+                <Select label="Preparation time" {...field} defaultValue={''}>
+                  {preparationTime.map((time) => (
+                    <MenuItem key={time.value} value={time.value}>
+                      {time.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
           </FormControl>
         </Stack>
       </Stack>
