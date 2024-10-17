@@ -20,7 +20,7 @@ const BasicInformation = () => {
 
   return (
     <Stack direction="row" gap={4}>
-      <Stack>
+      <Stack gap={2}>
         <Typography>Add photo</Typography>
         <ImageUploadInput />
       </Stack>

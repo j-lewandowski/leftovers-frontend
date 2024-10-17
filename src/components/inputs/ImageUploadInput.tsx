@@ -4,15 +4,22 @@ import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
+interface FileWithPreview extends File {
+  preview: string;
+}
+
 const ImageDropzone: React.FC = () => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<FileWithPreview | null>(
+    null,
+  );
   const theme = useTheme();
 
-  const onDrop = (acceptedFiles: File[]) => {
-    const filesWithPreview = acceptedFiles.map((file) =>
-      Object.assign(file, { preview: URL.createObjectURL(file) }),
-    );
-    setSelectedFiles(filesWithPreview);
+  const onDrop = (newFile: File[]) => {
+    const fileWithPreview = Object.assign(newFile[0], {
+      preview: URL.createObjectURL(newFile[0]),
+    }) as FileWithPreview;
+    console.log(fileWithPreview);
+    setSelectedFiles(fileWithPreview);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -22,47 +29,59 @@ const ImageDropzone: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      selectedFiles.forEach((file) => URL.revokeObjectURL(file));
+      setSelectedFiles(null);
     };
-  }, [selectedFiles]);
+  }, []);
 
   return (
     <Box>
-      <ImageDropzoneWrapper {...getRootProps()}>
+      <ImageDropzoneWrapper {...getRootProps()} isImageLoaded={!!selectedFiles}>
         <input {...getInputProps()} />
-        <Stack justifyItems="center" alignItems="center" gap={4}>
-          <UploadFile sx={{ color: 'rgba(33, 150, 243, 1)' }} />
-          <Typography>
-            <Link
-              sx={{
-                color: 'rgba(33, 150, 243, 1)',
-                textDecorationColor: 'rgba(33, 150, 243, 1)',
-              }}
-            >
-              Click to upload
-            </Link>{' '}
-            or drag and drop
-          </Typography>
-          <Typography color={theme.palette.secondary.main}>
-            SVG, PNG, JPG or GIF (max. 3MB)
-          </Typography>
-        </Stack>
+        {!selectedFiles ? (
+          <Stack justifyItems="center" alignItems="center" gap={4}>
+            <UploadFile sx={{ color: 'rgba(33, 150, 243, 1)' }} />
+            <Typography>
+              <Link
+                sx={{
+                  color: 'rgba(33, 150, 243, 1)',
+                  textDecorationColor: 'rgba(33, 150, 243, 1)',
+                }}
+              >
+                Click to upload
+              </Link>{' '}
+              or drag and drop
+            </Typography>
+            <Typography color={theme.palette.secondary.main}>
+              SVG, PNG, JPG or GIF (max. 3MB)
+            </Typography>
+          </Stack>
+        ) : (
+          <ImagePreview src={selectedFiles.preview} />
+        )}
       </ImageDropzoneWrapper>
     </Box>
   );
 };
 
-const ImageDropzoneWrapper = styled(Box)(({ theme }) => ({
-  backgroundColor: 'rgba(33, 150, 243, 0.08)',
-  height: '100%',
-  aspectRatio: '1/1',
-  borderRadius: '.25rem',
-  border: '2px dashed rgba(33, 150, 243, 1)',
-  padding: '1rem 1.5rem',
+const ImageDropzoneWrapper = styled(Box)<{ isImageLoaded?: boolean }>`
+  background-color: rgba(33, 150, 243, 0.08);
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 0.25rem;
+  border: ${({ isImageLoaded }) =>
+    isImageLoaded ? '' : '2px dashed rgba(33, 150, 243, 1)'};
+  padding: ${({ isImageLoaded }) => (isImageLoaded ? '0' : '1.5rem 1rem')};
 
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ImagePreview = styled('img')({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  borderRadius: '.25rem',
+});
 
 export default ImageDropzone;
