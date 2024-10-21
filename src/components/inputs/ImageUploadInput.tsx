@@ -2,6 +2,7 @@ import { UploadFile } from '@mui/icons-material';
 import { Box, Link, Stack, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useController } from 'react-hook-form';
 import styled from 'styled-components';
 
 interface FileWithPreview extends File {
@@ -13,18 +14,20 @@ const ImageDropzone: React.FC = () => {
     null,
   );
   const theme = useTheme();
+  const { field } = useController({ name: 'image', rules: { required: true } });
 
   const onDrop = (newFile: File[]) => {
     const fileWithPreview = Object.assign(newFile[0], {
       preview: URL.createObjectURL(newFile[0]),
     }) as FileWithPreview;
-    console.log(fileWithPreview);
     setSelectedFiles(fileWithPreview);
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { 'image/*': [] },
+    maxFiles: 1,
+    maxSize: 3 * 1024 * 1024, // 3 MB
   });
 
   useEffect(() => {
@@ -35,8 +38,11 @@ const ImageDropzone: React.FC = () => {
 
   return (
     <Box>
-      <ImageDropzoneWrapper {...getRootProps()} isImageLoaded={!!selectedFiles}>
-        <input {...getInputProps()} />
+      <ImageDropzoneWrapper
+        {...getRootProps()}
+        $isImageLoaded={!!selectedFiles}
+      >
+        <input {...getInputProps()} onChange={field.onChange} />
         {!selectedFiles ? (
           <Stack justifyItems="center" alignItems="center" gap={4}>
             <UploadFile sx={{ color: 'rgba(33, 150, 243, 1)' }} />
@@ -63,14 +69,14 @@ const ImageDropzone: React.FC = () => {
   );
 };
 
-const ImageDropzoneWrapper = styled(Box)<{ isImageLoaded?: boolean }>`
+const ImageDropzoneWrapper = styled(Box)<{ $isImageLoaded?: boolean }>`
   background-color: rgba(33, 150, 243, 0.08);
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 0.25rem;
-  border: ${({ isImageLoaded }) =>
-    isImageLoaded ? '' : '2px dashed rgba(33, 150, 243, 1)'};
-  padding: ${({ isImageLoaded }) => (isImageLoaded ? '0' : '1.5rem 1rem')};
+  border: ${({ $isImageLoaded }) =>
+    $isImageLoaded ? '' : '2px dashed rgba(33, 150, 243, 1)'};
+  padding: ${({ $isImageLoaded }) => ($isImageLoaded ? '0' : '1.5rem 1rem')};
 
   display: flex;
   align-items: center;

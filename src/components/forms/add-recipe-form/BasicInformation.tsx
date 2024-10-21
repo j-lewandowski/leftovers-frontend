@@ -9,20 +9,38 @@ import {
   Typography,
 } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useMultistepForm } from '../../../context/MultistepFormContext';
 import { useCategories } from '../../../hooks/useCategories';
 import { usePreparationTime } from '../../../hooks/usePreparationTime';
 import ImageUploadInput from '../../inputs/ImageUploadInput';
 
-const BasicInformation = () => {
+const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+  const { next } = useMultistepForm();
+
+  const isNextDisabled = () => {
+    const formData = watch([
+      'title',
+      'description',
+      'category',
+      'preparationTime',
+      'image',
+    ]);
+
+    return formData.some((field) => !field);
+  };
 
   return (
-    <Stack direction="row" gap={4}>
+    <Stack
+      direction="row"
+      gap={4}
+      sx={{ display: isVisible ? 'flex' : 'none' }}
+    >
       <Stack gap={2}>
         <Typography>Add photo</Typography>
-        <ImageUploadInput />
+        <Controller name="image" render={() => <ImageUploadInput />} />
       </Stack>
       <Stack flex={1} gap={4}>
         <Stack
@@ -31,13 +49,19 @@ const BasicInformation = () => {
           alignItems="center"
         >
           <Typography variant="subtitle1">Add basic information</Typography>
-          <Button variant="contained">Next</Button>
+          <Button
+            variant="contained"
+            disabled={isNextDisabled()}
+            onClick={next}
+          >
+            Next
+          </Button>
         </Stack>
         <Stack gap={3}>
           <Controller
             name="title"
             control={control}
-            rules={{ maxLength: 100, required: true }}
+            rules={{ minLength: 1, maxLength: 100, required: true }}
             render={({ field }) => (
               <TextField {...field} label="Title" variant="outlined" />
             )}
@@ -45,7 +69,7 @@ const BasicInformation = () => {
           <Controller
             name="description"
             control={control}
-            rules={{ maxLength: 200, required: true }}
+            rules={{ minLength: 1, maxLength: 200, required: true }}
             render={({ field }) => (
               <TextField {...field} label="Description" variant="outlined" />
             )}
@@ -56,6 +80,7 @@ const BasicInformation = () => {
             <InputLabel>Category</InputLabel>
             <Controller
               name="category"
+              rules={{ required: true }}
               render={({ field }) => (
                 <Select label="Category" {...field} defaultValue={''}>
                   {categories.map((category) => (
@@ -72,6 +97,7 @@ const BasicInformation = () => {
             <InputLabel>Preparation time</InputLabel>
             <Controller
               name="preparationTime"
+              rules={{ required: true }}
               render={({ field }) => (
                 <Select label="Preparation time" {...field} defaultValue={''}>
                   {preparationTime.map((time) => (

@@ -1,46 +1,62 @@
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useMultistepForm } from '../../../context/MultistepFormContext';
 
-const PreparationMethodInput = ({ i }: { i: number }) => {
-  return <TextField label={`Step ${i}`} placeholder="Describe the step" />;
-};
-
-const Ingredients = () => {
-  const [preparationMethodInputs, setPreparationMethodInputs] = useState<
-    JSX.Element[]
-  >([
-    <PreparationMethodInput key={1} i={1} />,
-    <PreparationMethodInput key={2} i={2} />,
-    <PreparationMethodInput key={3} i={3} />,
-  ]);
+const PreparationMethod = ({ isVisible }: { isVisible: boolean }) => {
+  const { back, next } = useMultistepForm();
+  const { control, watch } = useFormContext();
+  const { fields, append } = useFieldArray({
+    control,
+    name: 'preparationMethod',
+  });
 
   const onClick = () => {
-    const newPreparationMethodInput = (
-      <PreparationMethodInput
-        key={preparationMethodInputs.length + 1}
-        i={preparationMethodInputs.length + 1}
-      />
+    append({ name: '' });
+  };
+
+  const isNextDisabled = () => {
+    const ingredients = watch('preparationMethod');
+    return ingredients.every(
+      (ingredient: { name: string }) => ingredient.name === '',
     );
-    setPreparationMethodInputs([
-      ...preparationMethodInputs,
-      newPreparationMethodInput,
-    ]);
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} sx={{ display: isVisible ? 'flex' : 'none' }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Enter preparation method</Typography>
         <Stack direction="row" gap={1}>
-          <Button startIcon={<ChevronLeft />}>Back</Button>
-          <Button variant="contained" endIcon={<ChevronRight />}>
+          <Button startIcon={<ChevronLeft />} onClick={back}>
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            endIcon={<ChevronRight />}
+            disabled={isNextDisabled()}
+            onClick={next}
+          >
             Next
           </Button>
         </Stack>
       </Stack>
       <Stack gap={1.5}>
-        {preparationMethodInputs.map((input) => input)}
+        {fields.map((item, i) => (
+          <Controller
+            key={item.id}
+            name={`preparationMethod.${i}.name`}
+            control={control}
+            render={({ field }) => {
+              return (
+                <TextField
+                  label={`Step ${i + 1}`}
+                  placeholder="Describe the step"
+                  {...field}
+                />
+              );
+            }}
+          />
+        ))}
         <Box>
           <Button onClick={onClick}>Add a new step</Button>
         </Box>
@@ -49,4 +65,4 @@ const Ingredients = () => {
   );
 };
 
-export default Ingredients;
+export default PreparationMethod;
