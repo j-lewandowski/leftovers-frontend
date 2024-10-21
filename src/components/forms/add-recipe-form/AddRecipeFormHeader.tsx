@@ -24,6 +24,7 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
+            disabled={stepNumber < 1}
             label={
               <Stack direction="row" gap={1}>
                 <LunchDiningOutlined />
@@ -32,6 +33,7 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
+            disabled={stepNumber < 2}
             label={
               <Stack direction="row" gap={1}>
                 <RestaurantMenuOutlined />
@@ -40,6 +42,7 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
+            disabled={stepNumber < 3}
             label={
               <Stack direction="row" gap={1}>
                 <LibraryBooksOutlined />
