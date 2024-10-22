@@ -21,13 +21,16 @@ const ImageDropzone: React.FC = () => {
       preview: URL.createObjectURL(newFile[0]),
     }) as FileWithPreview;
     setSelectedFiles(fileWithPreview);
+    field.onChange(newFile);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
     onDrop,
     accept: { 'image/*': [] },
     maxFiles: 1,
     maxSize: 3 * 1024 * 1024, // 3 MB
+    noClick: true,
+    noKeyboard: true,
   });
 
   useEffect(() => {
@@ -42,7 +45,16 @@ const ImageDropzone: React.FC = () => {
         {...getRootProps()}
         $isImageLoaded={!!selectedFiles}
       >
-        <input {...getInputProps()} onChange={field.onChange} />
+        <input
+          {...getInputProps({
+            onChange: (e) => {
+              const files = e.target.files;
+              if (files && files.length > 0) {
+                onDrop(Array.from(files));
+              }
+            },
+          })}
+        />
         {!selectedFiles ? (
           <Stack justifyItems="center" alignItems="center" gap={4}>
             <UploadFile sx={{ color: 'rgba(33, 150, 243, 1)' }} />
@@ -52,6 +64,7 @@ const ImageDropzone: React.FC = () => {
                   color: 'rgba(33, 150, 243, 1)',
                   textDecorationColor: 'rgba(33, 150, 243, 1)',
                 }}
+                onClick={open}
               >
                 Click to upload
               </Link>{' '}
