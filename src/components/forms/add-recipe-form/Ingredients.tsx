@@ -5,9 +5,8 @@ import { useMultistepForm } from '../../../context/MultistepFormContext';
 
 const Ingredients = ({ isVisible }: { isVisible: boolean }) => {
   const { back, next } = useMultistepForm();
-  const { control, watch } = useFormContext();
+  const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
-    control,
     name: 'ingredients',
   });
 
@@ -45,7 +44,6 @@ const Ingredients = ({ isVisible }: { isVisible: boolean }) => {
           <Controller
             key={item.id}
             name={`ingredients.${i}.name`}
-            control={control}
             render={({ field }) => {
               return (
                 <TextField

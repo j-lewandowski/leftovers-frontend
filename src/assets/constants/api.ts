@@ -2,6 +2,7 @@ export const DEFAULT_ENDPOINTS = {
   AUTH: '/auth/',
   RECIPES: '/recipes/',
   USERS: '/users/',
+  UPLOAD_FILE: '/upload-file/',
 };
 
 export const API = {
@@ -14,6 +15,7 @@ export const API = {
   },
   RECIPES: {
     ALL: `${DEFAULT_ENDPOINTS.RECIPES}`,
+    CREATE: `${DEFAULT_ENDPOINTS.RECIPES}`,
     RECIPE_OF_THE_DAY: `${DEFAULT_ENDPOINTS.RECIPES}recipe-of-the-day/`,
   },
   USERS: {

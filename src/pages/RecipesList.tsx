@@ -1,19 +1,17 @@
 import { Divider, Grid, Stack, styled, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import FilterButton from '../components/buttons/FilterButton';
 import SortingButton from '../components/buttons/SortingButton';
 import RecipeCard from '../components/cards/RecipeCard';
-import { useAuth } from '../context/AuthContext';
 import { usePageLabel } from '../hooks/usePageLabel';
 import { Recipe } from '../models/recipe.model';
+import httpService from '../services/http.service';
 
 const RecipesList = () => {
   const [searchParams] = useSearchParams();
-  const { accessToken } = useAuth();
   const queryClient = useQueryClient();
   const { label } = usePageLabel();
 
@@ -26,10 +24,7 @@ const RecipesList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['recipes', searchParams.toString()],
     queryFn: async () => {
-      const res = await axios.get(API.RECIPES.ALL, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken,
-        },
+      const res = await httpService.get(API.RECIPES.ALL, {
         params: {
           category: searchParams.getAll('category'),
           saved: searchParams.get('saved'),

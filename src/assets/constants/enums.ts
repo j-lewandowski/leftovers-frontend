@@ -1,6 +1,6 @@
 export enum PreparationTime {
-  UpTo15Min = 'Up to 15 minutes',
-  UpTo30Min = 'Up to 30 minutes',
-  UpTo60Min = 'Up to 60 minutes',
-  Over60Min = 'Over 60 minutes',
+  UP_TO_15_MIN = 'Up to 15 minutes',
+  UP_TO_30_MIN = 'Up to 30 minutes',
+  UP_TO_60_MIN = 'Up to 60 minutes',
+  OVER_60_MIN = 'Over 60 minutes',
 }

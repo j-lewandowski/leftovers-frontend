@@ -10,11 +10,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { useSnackbar } from '../../context/SnackbarContext';
+import httpService from '../../services/http.service';
 
 const RateRecipeModal = () => {
   const { control, formState, handleSubmit, reset } = useForm<{
@@ -25,19 +24,14 @@ const RateRecipeModal = () => {
     },
   });
   const [searchParams] = useSearchParams();
-  const { accessToken } = useAuth();
   const { setMessage } = useSnackbar();
   const { recipeId } = useParams();
   const navigate = useNavigate();
   const rateRecipeMutation = useMutation({
     mutationFn: (data: { rating: number }) => {
-      return axios.post(
-        `recipes/${recipeId}/rate-recipe`,
-        { value: +data.rating },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      );
+      return httpService.post(`recipes/${recipeId}/rate-recipe`, {
+        value: +data.rating,
+      });
     },
     onSuccess: () => {
       reset();

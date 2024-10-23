@@ -17,14 +17,14 @@ import ImageUploadInput from '../../inputs/ImageUploadInput';
 const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
-  const { control, watch } = useFormContext();
+  const { watch } = useFormContext();
   const { next } = useMultistepForm();
 
   const isNextDisabled = () => {
     const formData = watch([
       'title',
       'description',
-      'category',
+      'categoryName',
       'preparationTime',
       'image',
     ]);
@@ -60,7 +60,6 @@ const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
         <Stack gap={3}>
           <Controller
             name="title"
-            control={control}
             rules={{ minLength: 1, maxLength: 100, required: true }}
             render={({ field }) => (
               <TextField {...field} label="Title" variant="outlined" />
@@ -68,7 +67,6 @@ const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
           ></Controller>
           <Controller
             name="description"
-            control={control}
             rules={{ minLength: 1, maxLength: 200, required: true }}
             render={({ field }) => (
               <TextField {...field} label="Description" variant="outlined" />
@@ -79,7 +77,7 @@ const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
           <FormControl fullWidth>
             <InputLabel>Category</InputLabel>
             <Controller
-              name="category"
+              name="categoryName"
               rules={{ required: true }}
               render={({ field }) => (
                 <Select label="Category" {...field} defaultValue={''}>

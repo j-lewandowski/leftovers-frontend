@@ -1,10 +1,10 @@
 import { ChevronRight } from '@mui/icons-material';
 import { Divider, Stack, styled, Typography, useTheme } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { API } from '../../assets/constants/api';
 import { getPreparationTimeLabel } from '../../features/recipes/recipes';
+import httpService from '../../services/http.service';
 import Rating from '../recipe/Rating';
 import ImageCard from './ImageCard';
 
@@ -14,7 +14,7 @@ const RecipeOfTheDay = () => {
   const { data, isPending, isError } = useQuery({
     queryKey: ['recipes', 'recipeOfTheDay'],
     queryFn: async () => {
-      const res = await axios.get(API.RECIPES.RECIPE_OF_THE_DAY);
+      const res = await httpService.get(API.RECIPES.RECIPE_OF_THE_DAY);
       return res.data;
     },
   });

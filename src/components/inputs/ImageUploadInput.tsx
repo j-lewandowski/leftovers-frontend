@@ -21,7 +21,7 @@ const ImageDropzone: React.FC = () => {
       preview: URL.createObjectURL(newFile[0]),
     }) as FileWithPreview;
     setSelectedFiles(fileWithPreview);
-    field.onChange(newFile);
+    field.onChange(fileWithPreview);
   };
 
   const { getRootProps, getInputProps, open } = useDropzone({

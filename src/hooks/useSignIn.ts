@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from '../context/SnackbarContext';
 import { SigninFormInput } from '../models/user.model';
+import httpService from '../services/http.service';
 import { ErrorResponse } from '../types';
 
 export const useSignIn = () => {
@@ -37,7 +38,7 @@ export const useSignIn = () => {
       setMessage(error.response.data.message as string);
     },
     mutationFn: (userData: SigninFormInput) => {
-      return axios.post(
+      return httpService.post(
         API.AUTH.LOGIN,
         {},
         {

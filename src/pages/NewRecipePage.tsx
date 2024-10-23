@@ -9,16 +9,7 @@ import Publication from '../components/forms/add-recipe-form/Publication';
 import MultistepFormProvider, {
   useMultistepForm,
 } from '../context/MultistepFormContext';
-
-interface NewRecipeFormInput {
-  title: string;
-  description: string;
-  category: string;
-  preparationTime: PreparationTime | string;
-  image: string;
-  ingredients: Array<{ name: string }>;
-  preparationMethod: Array<{ name: string }>;
-}
+import { NewRecipeFormInput } from '../models/recipe.model';
 
 const NewRecipePage = () => {
   return (
@@ -34,13 +25,13 @@ const Page = () => {
     defaultValues: {
       title: '',
       description: '',
-      category: '',
-      preparationTime: '',
+      categoryName: '',
+      preparationTime: PreparationTime.UP_TO_15_MIN,
       image: '',
       ingredients: [{ name: '' }, { name: '' }, { name: '' }],
-      preparationMethod: [{ name: '' }, { name: '' }, { name: '' }],
+      preparationSteps: [{ name: '' }, { name: '' }, { name: '' }],
     },
-    reValidateMode: 'onChange',
+    mode: 'all',
   });
 
   return (

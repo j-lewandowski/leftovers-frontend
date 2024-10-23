@@ -5,10 +5,9 @@ import { useMultistepForm } from '../../../context/MultistepFormContext';
 
 const PreparationMethod = ({ isVisible }: { isVisible: boolean }) => {
   const { back, next } = useMultistepForm();
-  const { control, watch } = useFormContext();
+  const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
-    control,
-    name: 'preparationMethod',
+    name: 'preparationSteps',
   });
 
   const onClick = () => {
@@ -16,10 +15,8 @@ const PreparationMethod = ({ isVisible }: { isVisible: boolean }) => {
   };
 
   const isNextDisabled = () => {
-    const ingredients = watch('preparationMethod');
-    return ingredients.every(
-      (ingredient: { name: string }) => ingredient.name === '',
-    );
+    const steps = watch('preparationSteps');
+    return steps.every((step: { name: string }) => step.name === '');
   };
 
   return (
@@ -44,8 +41,7 @@ const PreparationMethod = ({ isVisible }: { isVisible: boolean }) => {
         {fields.map((item, i) => (
           <Controller
             key={item.id}
-            name={`preparationMethod.${i}.name`}
-            control={control}
+            name={`preparationSteps.${i}.name`}
             render={({ field }) => {
               return (
                 <TextField

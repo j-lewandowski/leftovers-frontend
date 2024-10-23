@@ -8,25 +8,19 @@ import {
   Typography,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import RecipeCard from '../components/cards/RecipeCard';
 import RecipeOfTheDay from '../components/cards/RecipeOfTheDay';
-import { useAuth } from '../context/AuthContext';
 import { Recipe } from '../models/recipe.model';
+import httpService from '../services/http.service';
 
 function HomePage() {
-  const { accessToken } = useAuth();
   const navigate = useNavigate();
   const { data, isPending } = useQuery({
     queryKey: ['recipes'],
     queryFn: async () => {
-      const res = await axios.get(API.RECIPES.ALL, {
-        headers: {
-          Authorization: 'Bearer ' + accessToken,
-        },
-      });
+      const res = await httpService.get(API.RECIPES.ALL);
       return res.data;
     },
   });

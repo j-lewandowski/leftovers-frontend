@@ -1,10 +1,10 @@
 import { Box, Stack, styled } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import RecipeDetailsSection from '../components/recipe/RecipeDetailsSection';
 import RecipePreparationDetails from '../components/recipe/RecipePreparationDetails';
+import httpService from '../services/http.service';
 
 const RecipeDetails = () => {
   const { recipeId } = useParams();
@@ -12,7 +12,7 @@ const RecipeDetails = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['save-recipes', 'recipe'],
     queryFn: async () => {
-      const res = await axios.get(API.RECIPES.ALL + recipeId);
+      const res = await httpService.get(API.RECIPES.ALL + recipeId);
       return res.data;
     },
   });
