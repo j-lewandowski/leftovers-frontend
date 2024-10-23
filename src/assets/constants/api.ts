@@ -17,6 +17,6 @@ export const API = {
     RECIPE_OF_THE_DAY: `${DEFAULT_ENDPOINTS.RECIPES}recipe-of-the-day/`,
   },
   USERS: {
-    SAVED_RECIPES: `${DEFAULT_ENDPOINTS.USERS}save-recipes/`,
+    SAVE_RECIPES: `${DEFAULT_ENDPOINTS.USERS}save-recipes/`,
   },
 };

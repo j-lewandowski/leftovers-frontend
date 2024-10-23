@@ -13,10 +13,7 @@ export const usePageLabel = () => {
       setLabel('All Recipes');
     }
 
-    if (
-      searchParams.get('category') &&
-      searchParams.get('category')?.length === 1
-    ) {
+    if (searchParams.get('category')?.length === 1) {
       const categoryName = searchParams.get('category') as string;
 
       setLabel(categoryName.charAt(0).toUpperCase() + categoryName.slice(1));
