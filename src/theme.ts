@@ -12,6 +12,10 @@ const colorsTheme = createTheme({
       dark: '#2E7D32',
       light: '#66BB6A',
     },
+    secondary: {
+      main: 'rgba(66, 66, 66, 1)',
+      // dark: 'rgba(66, 66, 66, 1)',
+    },
     text: {
       primary: 'rgba(0, 0, 0, 0.87)',
       secondary: 'rgba(0, 0, 0, 0.6)',

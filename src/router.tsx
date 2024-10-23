@@ -7,16 +7,15 @@ import {
 import { Layout } from './layout';
 import Homepage from './pages/Homepage';
 import RecipeDetails from './pages/RecipeDetails';
-import RecipeList from './pages/RecipeList';
+import RecipesList from './pages/RecipesList';
 
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route element={<Layout />}>
         <Route path="/" element={<Homepage />} />
-        <Route path="/recipes" element={<RecipeList />}>
-          <Route path=":recipeId" element={<RecipeDetails />} />
-        </Route>
+        <Route path="/recipes" element={<RecipesList />} />
+        <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
       </Route>,
     ),
   );

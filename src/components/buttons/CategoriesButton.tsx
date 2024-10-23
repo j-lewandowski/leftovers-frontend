@@ -1,12 +1,14 @@
 import { ExpandMore } from '@mui/icons-material';
 import { Button, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useCategories } from '../../hooks/useCategories';
 import Dropdown from '../navbar/Dropdown';
 
 const CategoriesButton = () => {
   const { categories } = useCategories();
+  const navigate = useNavigate();
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);
 
   const onOpen = (e: React.MouseEvent<HTMLElement>) => {
@@ -25,10 +27,17 @@ const CategoriesButton = () => {
       </Button>
 
       <Dropdown anchor={anchor} onClose={() => setAnchor(null)}>
+        <MenuItem onClick={() => navigate('/recipes')}>🍽️ All recipes</MenuItem>
         {categories.map((category, i) => (
           <MenuItem
             key={`${category.name}-${i}`}
             divider={i !== categories.length - 1}
+            onClick={() =>
+              navigate(
+                'recipes' +
+                  (category.filter ? `?category=${category.filter}` : ''),
+              )
+            }
           >
             {category.name}
           </MenuItem>

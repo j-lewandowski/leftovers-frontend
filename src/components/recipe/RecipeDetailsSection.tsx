@@ -1,4 +1,5 @@
 import { Stack, styled, Typography } from '@mui/material';
+import { getPreparationTimeLabel } from '../../features/recipes/recipes';
 import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
 import RateRecipeButton from '../buttons/RateRecipeButton';
@@ -29,14 +30,14 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
         <Stack gap={4}>
           <RateRecipeWrapper>
             <RateRecipeButton />
-            <Rating rating={+rating} numberOfRatings={numberOfRatings} />
+            <Rating rating={rating} numberOfRatings={numberOfRatings} />
           </RateRecipeWrapper>
           <TitleWrapper>
             <Typography variant="h5">{title}</Typography>
             <Typography variant="body1">{description}</Typography>
           </TitleWrapper>
           <Typography variant="overline">
-            PREPARATION TIME: {preparationTime}
+            PREPARATION TIME: {getPreparationTimeLabel(preparationTime)}
           </Typography>
         </Stack>
       </Stack>

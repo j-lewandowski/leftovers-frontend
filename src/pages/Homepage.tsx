@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import RecipeCard from '../components/cards/RecipeCard';
 import RecipeOfTheDay from '../components/cards/RecipeOfTheDay';
@@ -17,8 +18,9 @@ import { Recipe } from '../models/recipe.model';
 
 function HomePage() {
   const { accessToken } = useAuth();
+  const navigate = useNavigate();
   const { data, isPending } = useQuery({
-    queryKey: ['save-recipes', 'recipes'],
+    queryKey: ['recipes'],
     queryFn: async () => {
       const res = await axios.get(API.RECIPES.ALL, {
         headers: {
@@ -48,7 +50,12 @@ function HomePage() {
         ))}
       </Grid>
       <ButtonWrapper>
-        <Button variant="contained" size="medium" endIcon={<ChevronRight />}>
+        <Button
+          variant="contained"
+          size="medium"
+          endIcon={<ChevronRight />}
+          onClick={() => navigate('/recipes')}
+        >
           See all recipes
         </Button>
       </ButtonWrapper>

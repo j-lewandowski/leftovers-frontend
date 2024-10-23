@@ -12,7 +12,7 @@ const RecipeOfTheDay = () => {
   const theme = useTheme();
 
   const { data, isPending, isError } = useQuery({
-    queryKey: ['save-recipes', 'recipe-of-the-day'],
+    queryKey: ['recipes', 'recipeOfTheDay'],
     queryFn: async () => {
       const res = await axios.get(API.RECIPES.RECIPE_OF_THE_DAY);
       return res.data;
@@ -44,7 +44,7 @@ const RecipeOfTheDay = () => {
                 RECIPE OF THE DAY
               </Typography>
               <Rating
-                rating={+data.rating}
+                rating={data.rating}
                 numberOfRatings={data.numberOfRatings}
               />
               <Typography variant="h5">{data.title}</Typography>

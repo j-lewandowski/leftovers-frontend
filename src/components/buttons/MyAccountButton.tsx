@@ -28,7 +28,7 @@ const MyAccountButton = () => {
         <MenuItem
           sx={{ width: '220px' }}
           component="a"
-          href="/saved-recipes"
+          href="/recipes?saved=true"
           divider
         >
           Saved recipes
@@ -36,7 +36,7 @@ const MyAccountButton = () => {
         <MenuItem
           sx={{ width: '220px' }}
           component="a"
-          href="/my-recipes"
+          href="/recipes?myRecipes=true"
           divider
         >
           My recipes
