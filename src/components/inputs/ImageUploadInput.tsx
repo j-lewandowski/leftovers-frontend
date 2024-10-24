@@ -49,7 +49,7 @@ const ImageDropzone: React.FC = () => {
           {...getInputProps({
             onChange: (e) => {
               const files = e.target.files;
-              if (files && files.length > 0) {
+              if (files && files?.length > 0) {
                 onDrop(Array.from(files));
               }
             },

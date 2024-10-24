@@ -3,8 +3,8 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 const MultistepFormContext = createContext<{
   stepNumber: number;
   onTabClick: (event: React.SyntheticEvent, tabNumber: number) => void;
-  next: () => void;
-  back: () => void;
+  goToNextStep: () => void;
+  goToPreviousStep: () => void;
 } | null>(null);
 
 const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
@@ -14,11 +14,11 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
     setStepNumber(tabNumber);
   };
 
-  const next = () => {
+  const goToNextStep = () => {
     setStepNumber((prev) => prev + 1);
   };
 
-  const back = () => {
+  const goToPreviousStep = () => {
     setStepNumber((prev) => prev - 1);
   };
 
@@ -27,8 +27,8 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
       value={{
         stepNumber,
         onTabClick,
-        next,
-        back,
+        goToNextStep,
+        goToPreviousStep,
       }}
     >
       {children}

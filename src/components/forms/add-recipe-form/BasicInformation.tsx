@@ -14,13 +14,17 @@ import { useCategories } from '../../../hooks/useCategories';
 import { usePreparationTime } from '../../../hooks/usePreparationTime';
 import ImageUploadInput from '../../inputs/ImageUploadInput';
 
-const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
+interface BasicInformationProps {
+  isVisible: boolean;
+}
+
+const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
   const { watch } = useFormContext();
-  const { next } = useMultistepForm();
+  const { goToNextStep } = useMultistepForm();
 
-  const isNextDisabled = () => {
+  const isNextDisabled = (): boolean => {
     const formData = watch([
       'title',
       'description',
@@ -52,7 +56,7 @@ const BasicInformation = ({ isVisible }: { isVisible: boolean }) => {
           <Button
             variant="contained"
             disabled={isNextDisabled()}
-            onClick={next}
+            onClick={goToNextStep}
           >
             Next
           </Button>

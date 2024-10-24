@@ -3,18 +3,22 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 
-const Ingredients = ({ isVisible }: { isVisible: boolean }) => {
-  const { back, next } = useMultistepForm();
+interface IngredientsProps {
+  isVisible: boolean;
+}
+
+const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
+  const { goToPreviousStep, goToNextStep } = useMultistepForm();
   const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
     name: 'ingredients',
   });
 
-  const onClick = () => {
+  const onNewIngredient = (): void => {
     append({ name: '' });
   };
 
-  const isNextDisabled = () => {
+  const isNextDisabled = (): boolean => {
     const ingredients = watch('ingredients');
     return ingredients.every(
       (ingredient: { name: string }) => ingredient.name === '',
@@ -26,14 +30,14 @@ const Ingredients = ({ isVisible }: { isVisible: boolean }) => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Add ingredients</Typography>
         <Stack direction="row" gap={1}>
-          <Button startIcon={<ChevronLeft />} onClick={back}>
+          <Button startIcon={<ChevronLeft />} onClick={goToPreviousStep}>
             Back
           </Button>
           <Button
             variant="contained"
             endIcon={<ChevronRight />}
             disabled={isNextDisabled()}
-            onClick={next}
+            onClick={goToNextStep}
           >
             Next
           </Button>
@@ -56,7 +60,7 @@ const Ingredients = ({ isVisible }: { isVisible: boolean }) => {
           />
         ))}
         <Box>
-          <Button onClick={onClick}>Add a new ingredient</Button>
+          <Button onClick={onNewIngredient}>Add a new ingredient</Button>
         </Box>
       </Stack>
     </Stack>

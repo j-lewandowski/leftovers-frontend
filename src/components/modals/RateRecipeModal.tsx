@@ -30,7 +30,7 @@ const RateRecipeModal = () => {
   const rateRecipeMutation = useMutation({
     mutationFn: (data: { rating: number }) => {
       return httpService.post(`recipes/${recipeId}/rate-recipe`, {
-        value: +data.rating,
+        value: data.rating,
       });
     },
     onSuccess: () => {

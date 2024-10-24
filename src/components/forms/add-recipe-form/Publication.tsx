@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useFormContext } from 'react-hook-form';
 import { API, DEFAULT_ENDPOINTS } from '../../../assets/constants/api';
+import { Visibility } from '../../../assets/constants/enums';
 import {
   CreateRecipeDto,
   NewRecipeFormInput,
@@ -19,7 +20,7 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
       visibility,
     }: {
       data: NewRecipeFormInput;
-      visibility: 'PUBLIC' | 'PRIVATE';
+      visibility: Visibility;
     }) => {
       const getUploadSignedUrlResponse = await httpService.get(
         DEFAULT_ENDPOINTS.UPLOAD_FILE,
@@ -37,7 +38,7 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
           .filter((step) => step !== ''),
         imageKey: fileKey,
         visibility,
-        servings: 2, // @TODO: Add servings to the form
+        servings: 2, // @TODO: Add servings to the form / 23.10.2024
       };
 
       const createRecipeResponse = await httpService.post(
@@ -52,7 +53,7 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
     handleSubmit(async (data: NewRecipeFormInput) => {
       createRecipeMutation.mutate({
         data,
-        visibility: isPublic ? 'PUBLIC' : 'PRIVATE',
+        visibility: isPublic ? Visibility.Public : Visibility.Private,
       });
     })();
   };
