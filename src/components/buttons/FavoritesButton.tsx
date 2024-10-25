@@ -5,11 +5,11 @@ import {
 } from '@mui/icons-material';
 import { Button, Fab, styled, useTheme } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
 import { API } from '../../assets/constants/api';
 import { useAuth } from '../../context/AuthContext';
 import { useSnackbar } from '../../context/SnackbarContext';
+import httpService from '../../services/http.service';
 import LogInToSaveRecipeModal from '../modals/LogInToSaveRecipeModal';
 
 const FavoritesButton = ({
@@ -23,24 +23,16 @@ const FavoritesButton = ({
 }) => {
   const theme = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isAuthenticated, accessToken } = useAuth();
+  const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const { setMessage } = useSnackbar();
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await axios.put(
-        API.USERS.SAVED_RECIPES,
-        {
-          save: !isSaved,
-          recipeId,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + accessToken,
-          },
-        },
-      );
+      await httpService.put(API.USERS.SAVED_RECIPES, {
+        save: !isSaved,
+        recipeId,
+      });
     },
     onSuccess: () => {
       if (!isSaved) {

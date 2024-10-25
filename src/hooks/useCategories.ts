@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Category } from '../models/category.model';
 
 export const useCategories = () => {
   const mockCategories = [
@@ -35,8 +36,7 @@ export const useCategories = () => {
       filter: 'salads',
     },
   ];
-  const [categories, setCategories] =
-    useState<Record<string, string>[]>(mockCategories);
+  const [categories, setCategories] = useState<Category[]>(mockCategories);
 
   return { categories, setCategories };
 };

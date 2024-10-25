@@ -4,3 +4,8 @@ export enum PreparationTime {
   UpTo60Min = 'Up to 60 minutes',
   Over60Min = 'Over 60 minutes',
 }
+
+export enum Visibility {
+  Private = 'Private',
+  Public = 'Public',
+}

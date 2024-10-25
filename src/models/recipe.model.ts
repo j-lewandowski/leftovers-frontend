@@ -1,4 +1,4 @@
-import { PREPARATION_TIME } from '../assets/constants/enums';
+import { PreparationTime } from '../assets/constants/enums';
 
 export interface Recipe {
   id: string;
@@ -6,7 +6,7 @@ export interface Recipe {
   description: string;
   rating: number;
   numberOfRatings: number;
-  preparationTime: PREPARATION_TIME;
+  preparationTime: PreparationTime;
   ingredients: string[];
   preparationSteps: string[];
   visibility: string;
@@ -16,4 +16,26 @@ export interface Recipe {
   servings: number;
   imageUrl: string;
   isSaved: boolean;
+}
+
+export interface CreateRecipeDto {
+  title: string;
+  description: string;
+  preparationTime: PreparationTime;
+  ingredients: string[];
+  preparationSteps: string[];
+  visibility: string;
+  categoryName: string;
+  servings: number;
+  imageKey: string;
+}
+
+export interface NewRecipeFormInput {
+  title: string;
+  description: string;
+  categoryName: string;
+  preparationTime: PreparationTime;
+  image: string;
+  ingredients: Array<{ name: string }>;
+  preparationSteps: Array<{ name: string }>;
 }
