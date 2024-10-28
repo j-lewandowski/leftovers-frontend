@@ -29,7 +29,7 @@ const FavoritesButton = ({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      await httpService.put(API.USERS.SAVED_RECIPES, {
+      await httpService.put(API.USERS.SAVE_RECIPES, {
         save: !isSaved,
         recipeId,
       });
