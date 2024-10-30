@@ -30,6 +30,8 @@ const RecipesList = () => {
           saved: searchParams.get('saved'),
           sort: searchParams.get('sort'),
           myRecipes: searchParams.get('myRecipes'),
+          title: searchParams.get('search'),
+          description: searchParams.get('search'),
         },
       });
       return res.data;
@@ -39,6 +41,11 @@ const RecipesList = () => {
   return (
     <Wrapper gap={2}>
       <Stack gap={1}>
+        {searchParams.get('search') && (
+          <Typography variant="body2" color="secondary">
+            Search results for
+          </Typography>
+        )}
         <Typography variant="h5" sx={{ paddingBottom: '.5rem' }}>
           {label}
         </Typography>

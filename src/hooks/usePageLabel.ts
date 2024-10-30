@@ -13,7 +13,7 @@ export const usePageLabel = () => {
       setLabel('All Recipes');
     }
 
-    if (searchParams.get('category')?.length === 1) {
+    if (searchParams.getAll('category')?.length === 1) {
       const categoryName = searchParams.get('category') as string;
 
       setLabel(categoryName.charAt(0).toUpperCase() + categoryName.slice(1));
@@ -25,6 +25,10 @@ export const usePageLabel = () => {
 
     if (searchParams.get('myRecipes')) {
       setLabel('My Recipes');
+    }
+
+    if (searchParams.get('search')) {
+      setLabel(searchParams.get('search') as string);
     }
   }, [searchParams]);
 

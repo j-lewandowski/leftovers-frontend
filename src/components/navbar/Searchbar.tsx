@@ -21,7 +21,9 @@ const Searchbar = () => {
       variant="outlined"
       size="small"
       placeholder="Search"
-      InputProps={{ endAdornment: <Icon onClick={onSearch} /> }}
+      InputProps={{
+        endAdornment: <Icon sx={{ cursor: 'pointer' }} onClick={onSearch} />,
+      }}
       onChange={onChange}
       value={searchTerm}
       onSubmit={onSearch}
