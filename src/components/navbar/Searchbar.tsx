@@ -1,13 +1,35 @@
-import { styled, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { styled, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Searchbar = () => {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const onSearch = () => {
+    if (searchTerm.trim() === '') return;
+    navigate(`/recipes?search=${searchTerm}`);
+  };
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <SearchBar
       variant="outlined"
       size="small"
       placeholder="Search"
-      InputProps={{ endAdornment: <Icon /> }}
+      InputProps={{ endAdornment: <Icon onClick={onSearch} /> }}
+      onChange={onChange}
+      value={searchTerm}
+      onSubmit={onSearch}
+      onKeyDownCapture={(e) => {
+        if (e.key === 'Enter') {
+          onSearch();
+        }
+      }}
     />
   );
 };
