@@ -11,8 +11,8 @@ vi.mock('../../context/MultistepFormContext', async () => {
   return {
     ...originalModule,
     useMultistepForm: () => ({
-      back: vi.fn(),
-      next: vi.fn(),
+      goToNextStep: vi.fn(),
+      goToPreviousStep: vi.fn(),
     }),
   };
 });
