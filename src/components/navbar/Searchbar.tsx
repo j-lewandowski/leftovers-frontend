@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, TextField } from '@mui/material';
+import { IconButton, styled, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,11 @@ const Searchbar = () => {
       size="small"
       placeholder="Search"
       InputProps={{
-        endAdornment: <Icon sx={{ cursor: 'pointer' }} onClick={onSearch} />,
+        endAdornment: (
+          <IconButton onClick={onSearch}>
+            <Icon sx={{ cursor: 'pointer' }} />
+          </IconButton>
+        ),
       }}
       onChange={onChange}
       value={searchTerm}
