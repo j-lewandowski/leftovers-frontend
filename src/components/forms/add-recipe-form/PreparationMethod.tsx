@@ -2,13 +2,14 @@ import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
+import SaveEditedFormButton from '../../buttons/SaveEditedFormButton';
 
 interface PreparationMethodProps {
   isVisible: boolean;
 }
 
 const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
-  const { goToPreviousStep, goToNextStep } = useMultistepForm();
+  const { goToPreviousStep, goToNextStep, isEdit } = useMultistepForm();
   const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
     name: 'preparationSteps',
@@ -28,17 +29,24 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Enter preparation method</Typography>
         <Stack direction="row" gap={1}>
-          <Button startIcon={<ChevronLeft />} onClick={goToPreviousStep}>
-            Back
-          </Button>
-          <Button
-            variant="contained"
-            endIcon={<ChevronRight />}
-            disabled={isNextDisabled()}
-            onClick={goToNextStep}
-          >
-            Next
-          </Button>
+          {isEdit ? (
+            <SaveEditedFormButton />
+          ) : (
+            <>
+              <Button startIcon={<ChevronLeft />} onClick={goToPreviousStep}>
+                Back
+              </Button>
+
+              <Button
+                variant="contained"
+                endIcon={<ChevronRight />}
+                disabled={isNextDisabled()}
+                onClick={goToNextStep}
+              >
+                Next
+              </Button>
+            </>
+          )}
         </Stack>
       </Stack>
       <Stack gap={1.5}>

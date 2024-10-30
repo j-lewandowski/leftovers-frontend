@@ -1,27 +1,30 @@
 import { UploadFile } from '@mui/icons-material';
 import { Box, Link, Stack, Typography, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
-
-interface FileWithPreview extends File {
-  preview: string;
-}
+import { useMultistepForm } from '../../context/MultistepFormContext';
 
 const ImageDropzone: React.FC = () => {
-  const [selectedFiles, setSelectedFiles] = useState<FileWithPreview | null>(
-    null,
-  );
+  const { setValue, getValues } = useFormContext();
+  const { isEdit } = useMultistepForm();
+  const [imagePreview, setImagePreview] = React.useState<string | null>();
   const theme = useTheme();
-  const { field } = useController({ name: 'image', rules: { required: true } });
+  const { field } = useController({
+    name: 'imageFile',
+    rules: { required: !isEdit },
+  });
+
+  useEffect(() => {
+    setImagePreview(getValues('imagePreview'));
+  }, [field.value]);
 
   const onDrop = (newFile: File[]) => {
-    const fileWithPreview = Object.assign(newFile[0], {
-      preview: URL.createObjectURL(newFile[0]),
-    }) as FileWithPreview;
-    setSelectedFiles(fileWithPreview);
-    field.onChange(fileWithPreview);
+    field.onChange(newFile[0]);
+    const newPreview = URL.createObjectURL(newFile[0]);
+    setValue('imagePreview', newPreview);
+    setImagePreview(newPreview);
   };
 
   const { getRootProps, getInputProps, open } = useDropzone({
@@ -33,17 +36,11 @@ const ImageDropzone: React.FC = () => {
     noKeyboard: true,
   });
 
-  useEffect(() => {
-    return () => {
-      setSelectedFiles(null);
-    };
-  }, []);
-
   return (
     <Box>
       <ImageDropzoneWrapper
         {...getRootProps()}
-        $isImageLoaded={!!selectedFiles}
+        $isImageLoaded={!!getValues('imagePreview')}
       >
         <input
           {...getInputProps({
@@ -55,7 +52,7 @@ const ImageDropzone: React.FC = () => {
             },
           })}
         />
-        {!selectedFiles ? (
+        {!imagePreview ? (
           <Stack justifyItems="center" alignItems="center" gap={4}>
             <UploadFile sx={{ color: 'rgba(33, 150, 243, 1)' }} />
             <Typography>
@@ -75,7 +72,7 @@ const ImageDropzone: React.FC = () => {
             </Typography>
           </Stack>
         ) : (
-          <ImagePreview src={selectedFiles.preview} />
+          <ImagePreview src={imagePreview} />
         )}
       </ImageDropzoneWrapper>
     </Box>

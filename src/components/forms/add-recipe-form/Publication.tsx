@@ -1,62 +1,15 @@
 import { DeleteForeverOutlined, Lock, Public } from '@mui/icons-material';
 import { Button, Divider, Stack, Typography } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { useFormContext } from 'react-hook-form';
-import { API, DEFAULT_ENDPOINTS } from '../../../assets/constants/api';
 import { Visibility } from '../../../assets/constants/enums';
-import {
-  CreateRecipeDto,
-  NewRecipeFormInput,
-} from '../../../models/recipe.model';
-import httpService from '../../../services/http.service';
+import { useMultistepForm } from '../../../context/MultistepFormContext';
+import { useRecipeForm } from '../../../hooks/useRecipeForm';
+import { NewRecipeFormInput } from '../../../models/recipe.model';
 
 const Publication = ({ isVisible }: { isVisible: boolean }) => {
-  const { handleSubmit } = useFormContext<NewRecipeFormInput>();
-
-  const createRecipeMutation = useMutation({
-    mutationFn: async ({
-      data,
-      visibility,
-    }: {
-      data: NewRecipeFormInput;
-      visibility: Visibility;
-    }) => {
-      const getUploadSignedUrlResponse = await httpService.get(
-        DEFAULT_ENDPOINTS.UPLOAD_FILE,
-      );
-      const { fileKey, uploadUrl } = getUploadSignedUrlResponse.data;
-      await axios.put(uploadUrl, data.image);
-
-      const payload: CreateRecipeDto = {
-        ...data,
-        ingredients: data.ingredients
-          .map((ingredient) => ingredient.name)
-          .filter((ingredient) => ingredient !== ''),
-        preparationSteps: data.preparationSteps
-          .map((step) => step.name)
-          .filter((step) => step !== ''),
-        imageKey: fileKey,
-        visibility,
-        servings: 2, // @TODO: Add servings to the form / 23.10.2024
-      };
-
-      const createRecipeResponse = await httpService.post(
-        API.RECIPES.CREATE,
-        payload,
-      );
-      return createRecipeResponse.data;
-    },
-  });
-
-  const submitForm = async (isPublic: boolean) => {
-    handleSubmit(async (data: NewRecipeFormInput) => {
-      createRecipeMutation.mutate({
-        data,
-        visibility: isPublic ? Visibility.Public : Visibility.Private,
-      });
-    })();
-  };
+  const { getValues } = useFormContext<NewRecipeFormInput>();
+  const { submitCreateRecipe, deleteRecipe } = useRecipeForm();
+  const { isEdit } = useMultistepForm();
 
   return (
     <Stack sx={{ display: isVisible ? 'flex' : 'none' }} gap={8}>
@@ -77,10 +30,13 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
           <Button
             variant="outlined"
             startIcon={<Lock />}
-            onClick={() => submitForm(false)}
+            onClick={() => submitCreateRecipe(Visibility.Private)}
             type="submit"
+            disabled={getValues('visibility') === Visibility.Private}
           >
-            Save as private
+            {getValues('visibility') === Visibility.Private
+              ? 'Saved as private'
+              : 'Save as private'}
           </Button>
         </Stack>
         <Divider />
@@ -100,32 +56,42 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
           <Button
             variant="contained"
             startIcon={<Public />}
-            onClick={() => submitForm(true)}
+            onClick={() => submitCreateRecipe(Visibility.Public)}
             type="submit"
+            disabled={getValues('visibility') === Visibility.Public}
           >
-            Publish the recipe
+            {getValues('visibility') === Visibility.Public
+              ? 'Recipe published'
+              : 'Publish the recipe'}
           </Button>
         </Stack>
-        <Divider />
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Stack>
-            <Typography>Delete your recipe</Typography>
-            <Typography variant="body2" color="secondary">
-              Deleting a recipe will permanently remove it from the platform.
-            </Typography>
-          </Stack>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<DeleteForeverOutlined />}
-          >
-            Delete the recipe
-          </Button>
-        </Stack>
+        {isEdit && (
+          <>
+            <Divider />
+
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Stack>
+                <Typography>Delete your recipe</Typography>
+                <Typography variant="body2" color="secondary">
+                  Deleting a recipe will permanently remove it from the
+                  platform.
+                </Typography>
+              </Stack>
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={<DeleteForeverOutlined />}
+                onClick={deleteRecipe}
+              >
+                Delete the recipe
+              </Button>
+            </Stack>
+          </>
+        )}
       </Stack>
     </Stack>
   );

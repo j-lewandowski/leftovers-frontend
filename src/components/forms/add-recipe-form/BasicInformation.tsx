@@ -12,6 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 import { useCategories } from '../../../hooks/useCategories';
 import { usePreparationTime } from '../../../hooks/usePreparationTime';
+import SaveEditedFormButton from '../../buttons/SaveEditedFormButton';
 import ImageUploadInput from '../../inputs/ImageUploadInput';
 
 interface BasicInformationProps {
@@ -22,17 +23,17 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
   const { watch } = useFormContext();
-  const { goToNextStep } = useMultistepForm();
+  const { goToNextStep, isEdit } = useMultistepForm();
+
+  const formData = watch([
+    'title',
+    'description',
+    'categoryName',
+    'preparationTime',
+    'imageFile',
+  ]);
 
   const isNextDisabled = (): boolean => {
-    const formData = watch([
-      'title',
-      'description',
-      'categoryName',
-      'preparationTime',
-      'image',
-    ]);
-
     return formData.some((field) => !field);
   };
 
@@ -53,13 +54,17 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
           alignItems="center"
         >
           <Typography variant="subtitle1">Add basic information</Typography>
-          <Button
-            variant="contained"
-            disabled={isNextDisabled()}
-            onClick={goToNextStep}
-          >
-            Next
-          </Button>
+          {isEdit ? (
+            <SaveEditedFormButton />
+          ) : (
+            <Button
+              variant="contained"
+              disabled={isNextDisabled()}
+              onClick={goToNextStep}
+            >
+              Next
+            </Button>
+          )}
         </Stack>
         <Stack gap={3}>
           <Controller
@@ -101,7 +106,11 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
               name="preparationTime"
               rules={{ required: true }}
               render={({ field }) => (
-                <Select label="Preparation time" {...field} defaultValue={''}>
+                <Select
+                  label="Preparation time"
+                  {...field}
+                  defaultValue={undefined}
+                >
                   {preparationTime.map((time) => (
                     <MenuItem key={time.value} value={time.value}>
                       <option>{time.label}</option>

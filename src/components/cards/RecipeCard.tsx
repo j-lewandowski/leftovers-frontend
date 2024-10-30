@@ -15,7 +15,11 @@ import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
 import Rating from '../recipe/Rating';
 
-const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
+interface RecipeCardProps {
+  recipeData: Recipe;
+}
+
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipeData }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -23,7 +27,7 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
 
   return (
     <CardWrapper>
-      <StyledCard onClick={() => navigate('/recipes/' + recipeData.id)}>
+      <StyledCard>
         <CardMedia sx={{ height: '180px' }} image={recipeData.imageUrl}>
           {recipeData.visibility === Visibility.Private && isMyRecipesPage && (
             <Stack
@@ -42,7 +46,18 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
           )}
         </CardMedia>
         <CardContent>
-          <Typography variant="subtitle1">{recipeData.title}</Typography>
+          <Typography
+            variant="subtitle1"
+            onClick={() => navigate('/recipes/' + recipeData.id)}
+            sx={{
+              cursor: 'pointer',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            {recipeData.title}
+          </Typography>
           <Description variant="body2">{recipeData.description}</Description>
           <Rating
             oneStar
@@ -52,7 +67,12 @@ const RecipeCard = ({ recipeData }: { recipeData: Recipe }) => {
         </CardContent>
         {isMyRecipesPage && (
           <CardActions>
-            <Button endIcon={<Edit />}>Edit the recipe</Button>
+            <Button
+              onClick={() => navigate(`/edit-recipe/${recipeData.id}`)}
+              endIcon={<Edit />}
+            >
+              Edit the recipe
+            </Button>
           </CardActions>
         )}
       </StyledCard>
@@ -65,7 +85,6 @@ export default RecipeCard;
 
 const StyledCard = styled(Card)(() => ({
   minWidth: '100%',
-  cursor: 'pointer',
 }));
 
 const CardWrapper = styled('div')(() => ({
