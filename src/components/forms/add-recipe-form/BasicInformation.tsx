@@ -104,7 +104,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
                 <Select label="Preparation time" {...field} defaultValue={''}>
                   {preparationTime.map((time) => (
                     <MenuItem key={time.value} value={time.value}>
-                      {time.label}
+                      <option>{time.label}</option>
                     </MenuItem>
                   ))}
                 </Select>
