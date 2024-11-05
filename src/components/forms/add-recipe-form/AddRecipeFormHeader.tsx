@@ -4,15 +4,45 @@ import {
   LunchDiningOutlined,
   RestaurantMenuOutlined,
 } from '@mui/icons-material';
-import { Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Breadcrumbs,
+  Divider,
+  Link,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
+import { useFormContext } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 
 const AddRecipeFormHeader = () => {
   const { stepNumber, onTabClick } = useMultistepForm();
+  const location = useLocation();
+  const { getValues } = useFormContext();
+
+  const isEditPage = location.pathname.includes('edit-recipe');
 
   return (
     <>
-      <Typography variant="h5">Add Recipe</Typography>
+      {isEditPage && (
+        <Breadcrumbs>
+          <Typography variant="body1">
+            <Link
+              href="/recipes?myRecipes=true"
+              color="inherit"
+              underline="none"
+            >
+              My recipes
+            </Link>
+          </Typography>
+          <Typography>Edit</Typography>
+        </Breadcrumbs>
+      )}
+      <Typography variant="h5">
+        {isEditPage ? getValues('title') : 'Add Recipe'}
+      </Typography>
       <Stack>
         <Tabs value={stepNumber} onChange={onTabClick}>
           <Tab
@@ -24,7 +54,6 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
-            disabled={stepNumber < 1}
             label={
               <Stack direction="row" gap={1}>
                 <LunchDiningOutlined />
@@ -33,7 +62,6 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
-            disabled={stepNumber < 2}
             label={
               <Stack direction="row" gap={1}>
                 <RestaurantMenuOutlined />
@@ -42,7 +70,6 @@ const AddRecipeFormHeader = () => {
             }
           ></Tab>
           <Tab
-            disabled={stepNumber < 3}
             label={
               <Stack direction="row" gap={1}>
                 <LibraryBooksOutlined />

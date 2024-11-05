@@ -21,7 +21,7 @@ export interface Recipe {
 export interface CreateRecipeDto {
   title: string;
   description: string;
-  preparationTime: PreparationTime;
+  preparationTime: string;
   ingredients: string[];
   preparationSteps: string[];
   visibility: string;
@@ -34,8 +34,12 @@ export interface NewRecipeFormInput {
   title: string;
   description: string;
   categoryName: string;
-  preparationTime: PreparationTime;
-  image: string;
+  preparationTime: string;
+  imageFile: string | null;
+  imagePreview: string | null;
   ingredients: Array<{ name: string }>;
   preparationSteps: Array<{ name: string }>;
+  visibility: string;
 }
+
+export interface UpdateRecipeDto extends Partial<CreateRecipeDto> {}

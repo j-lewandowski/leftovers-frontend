@@ -18,6 +18,7 @@ const Router = () => {
         <Route path="/recipes" element={<RecipesList />} />
         <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
         <Route path="/new-recipe" element={<NewRecipePage />} />
+        <Route path="/edit-recipe/:recipeId" element={<NewRecipePage />} />
       </Route>,
     ),
   );
