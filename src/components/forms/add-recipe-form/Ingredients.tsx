@@ -9,7 +9,7 @@ interface IngredientsProps {
 }
 
 const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
-  const { goToPreviousStep, goToNextStep, isEdit } = useMultistepForm();
+  const { goToPreviousStep, goToNextStep, isEditMode } = useMultistepForm();
   const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
     name: 'ingredients',
@@ -31,7 +31,7 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Add ingredients</Typography>
         <Stack direction="row" gap={1}>
-          {isEdit ? (
+          {isEditMode ? (
             <SaveEditedFormButton />
           ) : (
             <>

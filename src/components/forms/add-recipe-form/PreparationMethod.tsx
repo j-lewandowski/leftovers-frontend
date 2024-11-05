@@ -9,7 +9,7 @@ interface PreparationMethodProps {
 }
 
 const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
-  const { goToPreviousStep, goToNextStep, isEdit } = useMultistepForm();
+  const { goToPreviousStep, goToNextStep, isEditMode } = useMultistepForm();
   const { watch } = useFormContext();
   const { fields, append } = useFieldArray({
     name: 'preparationSteps',
@@ -29,7 +29,7 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="subtitle1">Enter preparation method</Typography>
         <Stack direction="row" gap={1}>
-          {isEdit ? (
+          {isEditMode ? (
             <SaveEditedFormButton />
           ) : (
             <>

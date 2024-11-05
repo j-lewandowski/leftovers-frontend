@@ -8,12 +8,12 @@ import { useMultistepForm } from '../../context/MultistepFormContext';
 
 const ImageDropzone: React.FC = () => {
   const { setValue, getValues } = useFormContext();
-  const { isEdit } = useMultistepForm();
+  const { isEditMode } = useMultistepForm();
   const [imagePreview, setImagePreview] = React.useState<string | null>();
   const theme = useTheme();
   const { field } = useController({
     name: 'imageFile',
-    rules: { required: !isEdit },
+    rules: { required: !isEditMode },
   });
 
   useEffect(() => {

@@ -23,7 +23,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
   const { categories } = useCategories();
   const { preparationTime } = usePreparationTime();
   const { watch } = useFormContext();
-  const { goToNextStep, isEdit } = useMultistepForm();
+  const { goToNextStep, isEditMode } = useMultistepForm();
 
   const formData = watch([
     'title',
@@ -54,7 +54,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
           alignItems="center"
         >
           <Typography variant="subtitle1">Add basic information</Typography>
-          {isEdit ? (
+          {isEditMode ? (
             <SaveEditedFormButton />
           ) : (
             <Button

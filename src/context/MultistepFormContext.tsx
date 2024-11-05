@@ -2,12 +2,12 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 
 const MultistepFormContext = createContext<{
   stepNumber: number;
-  onTabClick: (event: React.SyntheticEvent, tabNumber: number) => void;
+  onTabClick: (event: React.SyntheticEvent, TabIndex: number) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
   validPages: boolean[];
   validatePage: (pageNumber: number, isValid: boolean) => void;
-  isEdit: boolean;
+  isEditMode: boolean;
 } | null>(null);
 
 const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
@@ -18,9 +18,9 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
     false,
     false,
   ]);
-  const isEdit = location.pathname.includes('edit-recipe');
-  const onTabClick = (event: React.SyntheticEvent, tabNumber: number) => {
-    setStepNumber(tabNumber);
+  const isEditMode = location.pathname.includes('edit-recipe');
+  const onTabClick = (event: React.SyntheticEvent, TabIndex: number) => {
+    setStepNumber(TabIndex);
   };
 
   const goToNextStep = () => {
@@ -48,7 +48,7 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
         goToPreviousStep,
         validPages,
         validatePage,
-        isEdit,
+        isEditMode,
       }}
     >
       {children}

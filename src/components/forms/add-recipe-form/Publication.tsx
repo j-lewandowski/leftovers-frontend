@@ -9,7 +9,7 @@ import { NewRecipeFormInput } from '../../../models/recipe.model';
 const Publication = ({ isVisible }: { isVisible: boolean }) => {
   const { getValues } = useFormContext<NewRecipeFormInput>();
   const { submitCreateRecipe, deleteRecipe } = useRecipeForm();
-  const { isEdit } = useMultistepForm();
+  const { isEditMode } = useMultistepForm();
 
   return (
     <Stack sx={{ display: isVisible ? 'flex' : 'none' }} gap={8}>
@@ -65,7 +65,7 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
               : 'Publish the recipe'}
           </Button>
         </Stack>
-        {isEdit && (
+        {isEditMode && (
           <>
             <Divider />
 
