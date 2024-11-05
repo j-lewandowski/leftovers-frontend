@@ -88,7 +88,6 @@ export const useRecipeForm = () => {
     }
 
     handleSubmit(async (data: NewRecipeFormInput) => {
-      console.log(data);
       createRecipeMutation.mutate({
         data,
       });
