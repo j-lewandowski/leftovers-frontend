@@ -1,19 +1,24 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { API, DEFAULT_ENDPOINTS } from '../assets/constants/api';
 import { Visibility } from '../assets/constants/enums';
+import { useSnackbar } from '../context/SnackbarContext';
 import {
   CreateRecipeDto,
   NewRecipeFormInput,
+  Recipe,
   UpdateRecipeDto,
 } from '../models/recipe.model';
 import httpService from '../services/http.service';
 
 export const useRecipeForm = () => {
   const { recipeId } = useParams();
+  const navigate = useNavigate();
+  const { setMessage } = useSnackbar();
   const { handleSubmit, setValue } = useFormContext<NewRecipeFormInput>();
+  const queryClient = useQueryClient();
 
   const createRecipeMutation = useMutation({
     mutationFn: async ({ data }: { data: NewRecipeFormInput }) => {
@@ -40,6 +45,16 @@ export const useRecipeForm = () => {
         payload,
       );
       return createRecipeResponse.data;
+    },
+    onSuccess: (data: Recipe) => {
+      if (data.visibility === Visibility.Private) {
+        setMessage(
+          '🔒 Your recipe has been saved as private. You can find it in your profile.',
+        );
+      } else {
+        setMessage('👏 Congratulations! Your recipe has been published!');
+      }
+      navigate(`/recipes/${data.id}`);
     },
   });
 
@@ -70,6 +85,10 @@ export const useRecipeForm = () => {
         payload,
       );
       return updateRecipeResponse.data;
+    },
+    onSuccess: () => {
+      setMessage('✅ Changes have been saved.');
+      queryClient.invalidateQueries({ queryKey: ['recipe'] });
     },
   });
 

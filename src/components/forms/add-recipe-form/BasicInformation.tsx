@@ -71,14 +71,30 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
             name="title"
             rules={{ minLength: 1, maxLength: 100, required: true }}
             render={({ field }) => (
-              <TextField {...field} label="Title" variant="outlined" />
+              <TextField
+                {...field}
+                label="Title"
+                variant="outlined"
+                FormHelperTextProps={{
+                  sx: { textAlign: 'right' },
+                }}
+                helperText={`${field.value.length}/100`}
+              />
             )}
           ></Controller>
           <Controller
             name="description"
             rules={{ minLength: 1, maxLength: 200, required: true }}
             render={({ field }) => (
-              <TextField {...field} label="Description" variant="outlined" />
+              <TextField
+                {...field}
+                label="Description"
+                variant="outlined"
+                FormHelperTextProps={{
+                  sx: { textAlign: 'right' },
+                }}
+                helperText={`${field.value.length}/200`}
+              />
             )}
           ></Controller>
         </Stack>
