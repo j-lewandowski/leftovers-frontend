@@ -6,6 +6,7 @@ import {
   Stack,
   styled,
   Typography,
+  Zoom,
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ function HomePage() {
     queryKey: ['recipes'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.ALL);
+      console.log(res.data);
       return res.data;
     },
   });
@@ -37,10 +39,12 @@ function HomePage() {
         <Divider />
       </Stack>
       <Grid container spacing={1.5}>
-        {data.map((recipe: Recipe) => (
-          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-            <RecipeCard recipeData={recipe} />
-          </Grid>
+        {data.map((recipe: Recipe, index: number) => (
+          <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
+            <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
+              <RecipeCard recipeData={recipe} />
+            </Grid>
+          </Zoom>
         ))}
       </Grid>
       <ButtonWrapper>

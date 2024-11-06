@@ -8,6 +8,7 @@ const MultistepFormContext = createContext<{
   validPages: boolean[];
   validatePage: (pageNumber: number, isValid: boolean) => void;
   isEditMode: boolean;
+  slideDirection: 'left' | 'right';
 } | null>(null);
 
 const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
@@ -18,16 +19,22 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
     false,
     false,
   ]);
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>(
+    'right',
+  );
   const isEditMode = location.pathname.includes('edit-recipe');
   const onTabClick = (event: React.SyntheticEvent, TabIndex: number) => {
+    setSlideDirection(TabIndex > stepNumber ? 'left' : 'right');
     setStepNumber(TabIndex);
   };
 
   const goToNextStep = () => {
+    setSlideDirection('left');
     setStepNumber((prev) => prev + 1);
   };
 
   const goToPreviousStep = () => {
+    setSlideDirection('right');
     setStepNumber((prev) => prev - 1);
   };
 
@@ -49,6 +56,7 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
         validPages,
         validatePage,
         isEditMode,
+        slideDirection,
       }}
     >
       {children}

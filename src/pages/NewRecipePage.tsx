@@ -1,4 +1,4 @@
-import { Box, Stack, styled } from '@mui/material';
+import { Box, Slide, Stack, styled } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -24,7 +24,7 @@ const NewRecipePage = () => {
 };
 
 const Page = () => {
-  const { stepNumber } = useMultistepForm();
+  const { stepNumber, slideDirection } = useMultistepForm();
   const { recipeId } = useParams();
 
   const { data, isLoading } = useQuery({
@@ -80,13 +80,20 @@ const Page = () => {
     <NewRecipePageWrapper>
       <FormProvider {...methods}>
         <AddRecipeFormHeader />
-
-        <PageContentWrapper padding={4}>
-          <BasicInformation isVisible={stepNumber === 0} />
-          <Ingredients isVisible={stepNumber === 1} />
-          <PreparationMethod isVisible={stepNumber === 2} />
-          <Publication isVisible={stepNumber === 3} />
-        </PageContentWrapper>
+        <Slide
+          in={true}
+          direction={slideDirection}
+          key={stepNumber}
+          mountOnEnter
+          unmountOnExit
+        >
+          <PageContentWrapper padding={4}>
+            <BasicInformation isVisible={stepNumber === 0} />
+            <Ingredients isVisible={stepNumber === 1} />
+            <PreparationMethod isVisible={stepNumber === 2} />
+            <Publication isVisible={stepNumber === 3} />
+          </PageContentWrapper>
+        </Slide>
       </FormProvider>
     </NewRecipePageWrapper>
   );
