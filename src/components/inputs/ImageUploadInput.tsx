@@ -1,5 +1,5 @@
 import { UploadFile } from '@mui/icons-material';
-import { Box, Link, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Link, Stack, Typography, useTheme, Zoom } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useController, useFormContext } from 'react-hook-form';
@@ -72,7 +72,9 @@ const ImageDropzone: React.FC = () => {
             </Typography>
           </Stack>
         ) : (
-          <ImagePreview src={imagePreview} />
+          <Zoom in={true} key={imagePreview}>
+            <ImagePreview src={imagePreview} onClick={open} />
+          </Zoom>
         )}
       </ImageDropzoneWrapper>
     </Box>
@@ -81,6 +83,7 @@ const ImageDropzone: React.FC = () => {
 
 const ImageDropzoneWrapper = styled(Box)<{ $isImageLoaded?: boolean }>`
   background-color: rgba(33, 150, 243, 0.08);
+  width: 300px;
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 0.25rem;
@@ -93,11 +96,12 @@ const ImageDropzoneWrapper = styled(Box)<{ $isImageLoaded?: boolean }>`
   justify-content: center;
 `;
 
-const ImagePreview = styled('img')({
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  borderRadius: '.25rem',
-});
+const ImagePreview = styled(Box)<{ src: string }>`
+  width: 100%;
+  height: 100%;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
+`;
 
 export default ImageDropzone;
