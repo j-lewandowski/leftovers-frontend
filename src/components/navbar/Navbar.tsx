@@ -65,7 +65,6 @@ const Nav = styled(AppBar)({
   minHeight: '64px',
   backgroundColor: '#ffffff',
   boxShadow: 'none',
-  justifyContent: 'center',
 });
 
 const ToolbarWrapper = styled(Toolbar)(({ theme }) => ({
@@ -73,7 +72,7 @@ const ToolbarWrapper = styled(Toolbar)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   justifyContent: 'start',
-  alignItems: 'start',
+  alignItems: 'center',
   gap: '0.5rem',
   [theme.breakpoints.down('sm')]: {
     padding: '1rem',
