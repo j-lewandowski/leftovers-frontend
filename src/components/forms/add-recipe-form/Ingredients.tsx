@@ -64,7 +64,6 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
       <Stack gap={1.5} component={TransitionGroup}>
         {fields.map((item, i) => (
           <Collapse key={item.id}>
-            {/* <Box> */}
             <Controller
               key={item.id}
               name={`ingredients.${i}.name`}
@@ -86,7 +85,6 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
                 );
               }}
             />
-            {/* </Box> */}
           </Collapse>
         ))}
         <Box>

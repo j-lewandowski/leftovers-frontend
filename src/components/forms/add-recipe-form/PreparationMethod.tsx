@@ -2,12 +2,14 @@ import { ChevronLeft, ChevronRight, Close } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Collapse,
   IconButton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { TransitionGroup } from 'react-transition-group';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 import SaveEditedFormButton from '../../buttons/SaveEditedFormButton';
 
@@ -56,28 +58,31 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
           )}
         </Stack>
       </Stack>
-      <Stack gap={1.5}>
+      <Stack gap={1.5} component={TransitionGroup}>
         {fields.map((item, i) => (
-          <Controller
-            key={item.id}
-            name={`preparationSteps.${i}.name`}
-            render={({ field }) => {
-              return (
-                <TextField
-                  label={`Step ${i + 1}`}
-                  placeholder="Describe the step"
-                  {...field}
-                  InputProps={{
-                    endAdornment: (
-                      <IconButton onClick={() => remove(i)}>
-                        <Close sx={{ cursor: 'pointer' }} />
-                      </IconButton>
-                    ),
-                  }}
-                />
-              );
-            }}
-          />
+          <Collapse key={item.id}>
+            <Controller
+              key={item.id}
+              name={`preparationSteps.${i}.name`}
+              render={({ field }) => {
+                return (
+                  <TextField
+                    label={`Step ${i + 1}`}
+                    placeholder="Describe the step"
+                    fullWidth
+                    {...field}
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton onClick={() => remove(i)}>
+                          <Close sx={{ cursor: 'pointer' }} />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                );
+              }}
+            />
+          </Collapse>
         ))}
         <Box>
           <Button onClick={onNewStep}>Add a new step</Button>
