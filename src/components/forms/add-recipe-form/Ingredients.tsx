@@ -1,6 +1,15 @@
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { ChevronLeft, ChevronRight, Close } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Collapse,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { TransitionGroup } from 'react-transition-group';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 import SaveEditedFormButton from '../../buttons/SaveEditedFormButton';
 
@@ -11,7 +20,7 @@ interface IngredientsProps {
 const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
   const { goToPreviousStep, goToNextStep, isEditMode } = useMultistepForm();
   const { watch } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: 'ingredients',
   });
 
@@ -51,21 +60,34 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
           )}
         </Stack>
       </Stack>
-      <Stack gap={1.5}>
+
+      <Stack gap={1.5} component={TransitionGroup}>
         {fields.map((item, i) => (
-          <Controller
-            key={item.id}
-            name={`ingredients.${i}.name`}
-            render={({ field }) => {
-              return (
-                <TextField
-                  label={`Ingredient #${i + 1}`}
-                  placeholder="Enter the ingredient name"
-                  {...field}
-                />
-              );
-            }}
-          />
+          <Collapse key={item.id}>
+            {/* <Box> */}
+            <Controller
+              key={item.id}
+              name={`ingredients.${i}.name`}
+              render={({ field }) => {
+                return (
+                  <TextField
+                    label={`Ingredient #${i + 1}`}
+                    placeholder="Enter the ingredient name"
+                    fullWidth
+                    {...field}
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton onClick={() => remove(i)}>
+                          <Close sx={{ cursor: 'pointer' }} />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                );
+              }}
+            />
+            {/* </Box> */}
+          </Collapse>
         ))}
         <Box>
           <Button onClick={onNewIngredient}>Add a new ingredient</Button>

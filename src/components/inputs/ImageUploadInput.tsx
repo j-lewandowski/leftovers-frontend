@@ -83,7 +83,7 @@ const ImageDropzone: React.FC = () => {
 
 const ImageDropzoneWrapper = styled(Box)<{ $isImageLoaded?: boolean }>`
   background-color: rgba(33, 150, 243, 0.08);
-  width: 300px;
+  width: 320px;
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 0.25rem;

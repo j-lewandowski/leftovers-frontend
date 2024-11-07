@@ -1,5 +1,12 @@
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { ChevronLeft, ChevronRight, Close } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { useMultistepForm } from '../../../context/MultistepFormContext';
 import SaveEditedFormButton from '../../buttons/SaveEditedFormButton';
@@ -11,7 +18,7 @@ interface PreparationMethodProps {
 const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
   const { goToPreviousStep, goToNextStep, isEditMode } = useMultistepForm();
   const { watch } = useFormContext();
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: 'preparationSteps',
   });
 
@@ -60,6 +67,13 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
                   label={`Step ${i + 1}`}
                   placeholder="Describe the step"
                   {...field}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={() => remove(i)}>
+                        <Close sx={{ cursor: 'pointer' }} />
+                      </IconButton>
+                    ),
+                  }}
                 />
               );
             }}
