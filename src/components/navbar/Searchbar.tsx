@@ -14,15 +14,11 @@ const Searchbar = () => {
     useState<string>(searchTerm);
 
   const onSearch = () => {
-    if (debouncedSearchTerm.trim() === '') {
+    if (searchTerm.trim() === '') {
       navigate('/recipes');
       return;
     }
-    navigate(`/recipes?search=${debouncedSearchTerm}`);
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    navigate(`/recipes?search=${searchTerm}`);
   };
 
   useEffect(() => {
@@ -47,10 +43,13 @@ const Searchbar = () => {
     <StyledAutoComplete
       id="searchbar"
       disableClearable
+      freeSolo
       forcePopupIcon={false}
       loading={isLoading}
       options={data || []}
-      getOptionLabel={(option) => option.title || ''}
+      getOptionLabel={(option) => (option as Recipe).title || ''}
+      onInputChange={(_, value) => setSearchTerm(value)}
+      inputValue={searchTerm}
       size="small"
       renderInput={(params) => (
         <SearchBar
@@ -65,8 +64,6 @@ const Searchbar = () => {
               </IconButton>
             ),
           }}
-          onChange={onChange}
-          value={searchTerm}
           onSubmit={onSearch}
           onKeyDownCapture={(e) => {
             if (e.key === 'Enter') {
