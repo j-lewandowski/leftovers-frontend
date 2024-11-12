@@ -8,7 +8,10 @@ const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const onSearch = () => {
-    if (searchTerm.trim() === '') return;
+    if (searchTerm.trim() === '') {
+      navigate('/recipes');
+      return;
+    }
     navigate(`/recipes?search=${searchTerm}`);
   };
 
