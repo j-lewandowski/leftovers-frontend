@@ -1,5 +1,13 @@
 import { ChevronRight } from '@mui/icons-material';
-import { Divider, Stack, styled, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Fade,
+  Stack,
+  styled,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { API } from '../../assets/constants/api';
@@ -19,16 +27,18 @@ const RecipeOfTheDay = () => {
     },
   });
 
+  if (isPending) {
+    return <Typography>Loading...</Typography>;
+  }
+
   if (isError) {
     return <Typography>Something went wrong.</Typography>;
   }
 
   return (
-    <Card direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 1, sm: 2 }}>
-      {isPending ? (
-        <Typography>Loading...</Typography>
-      ) : (
-        <>
+    <Fade in={true}>
+      <Box>
+        <Card direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 1, sm: 2 }}>
           <ImageCard
             recipeId={data.id}
             imageUrl={data.imageUrl}
@@ -72,9 +82,9 @@ const RecipeOfTheDay = () => {
               </Stack>
             </StyledLink>
           </RecipeDetails>
-        </>
-      )}
-    </Card>
+        </Card>
+      </Box>
+    </Fade>
   );
 };
 

@@ -1,4 +1,13 @@
-import { Divider, Grid, Stack, styled, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Grid,
+  Grow,
+  Stack,
+  styled,
+  Typography,
+  Zoom,
+} from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -38,6 +47,10 @@ const RecipesList = () => {
     },
   });
 
+  if (isLoading) {
+    return <Typography>Loading...</Typography>;
+  }
+
   return (
     <Wrapper gap={2}>
       <Stack gap={1}>
@@ -53,31 +66,43 @@ const RecipesList = () => {
       </Stack>
       <Stack direction="row" spacing={1}>
         {label === 'All Recipes' && (
-          <FilterButton name="Filters"></FilterButton>
+          <Zoom in={true} style={{ transitionDelay: '100ms' }}>
+            <Box>
+              <FilterButton name="Filters"></FilterButton>
+            </Box>
+          </Zoom>
         )}
-        <SortingButton
-          name="Rating"
-          fieldName="rating"
-          descOptionName="Highest score first"
-          ascOptionName="Lowest score first"
-        />
-        <SortingButton
-          name="Date"
-          fieldName="date"
-          descOptionName="Sort by newest"
-          ascOptionName="Sort by oldest"
-        />
+        <Zoom in={true} style={{ transitionDelay: '200ms' }}>
+          <Box>
+            <SortingButton
+              name="Rating"
+              fieldName="rating"
+              descOptionName="Highest score first"
+              ascOptionName="Lowest score first"
+            />
+          </Box>
+        </Zoom>
+        <Zoom in={true} style={{ transitionDelay: '300ms' }}>
+          <Box>
+            <SortingButton
+              name="Date"
+              fieldName="date"
+              descOptionName="Sort by newest"
+              ascOptionName="Sort by oldest"
+            />
+          </Box>
+        </Zoom>
       </Stack>
       <Grid container spacing={1.5}>
-        {isLoading ? (
-          <Grid item> Loading... </Grid>
-        ) : (
-          data.map((recipe: Recipe) => (
-            <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-              <RecipeCard recipeData={recipe} />
-            </Grid>
-          ))
-        )}
+        {data.map((recipe: Recipe, index: number) => (
+          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
+            <Grow in={true} style={{ transitionDelay: `${index * 100}ms` }}>
+              <Box>
+                <RecipeCard recipeData={recipe} />
+              </Box>
+            </Grow>
+          </Grid>
+        ))}
       </Grid>
     </Wrapper>
   );
