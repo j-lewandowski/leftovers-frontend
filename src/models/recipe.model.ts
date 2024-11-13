@@ -42,4 +42,11 @@ export interface NewRecipeFormInput {
   visibility: string;
 }
 
+export interface PaginatedRecipes {
+  recipes: Recipe[];
+  page: number;
+  limit: number;
+  totalRecipes: number;
+}
+
 export interface UpdateRecipeDto extends Partial<CreateRecipeDto> {}

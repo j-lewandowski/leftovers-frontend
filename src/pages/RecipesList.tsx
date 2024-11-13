@@ -1,22 +1,23 @@
 import {
   Box,
+  CircularProgress,
   Divider,
   Grid,
-  Grow,
   Stack,
   styled,
   Typography,
   Zoom,
 } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSearchParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
 import FilterButton from '../components/buttons/FilterButton';
 import SortingButton from '../components/buttons/SortingButton';
 import RecipeCard from '../components/cards/RecipeCard';
 import { usePageLabel } from '../hooks/usePageLabel';
-import { Recipe } from '../models/recipe.model';
+import { PaginatedRecipes } from '../models/recipe.model';
 import httpService from '../services/http.service';
 
 const RecipesList = () => {
@@ -30,25 +31,36 @@ const RecipesList = () => {
     });
   }, [searchParams]);
 
-  const { data, isLoading } = useQuery({
+  const fetchRecipes = async ({
+    pageParam,
+  }: {
+    pageParam: number;
+  }): Promise<PaginatedRecipes> => {
+    const res = await httpService.get(API.RECIPES.ALL, {
+      params: {
+        category: searchParams.getAll('category'),
+        saved: searchParams.get('saved'),
+        sort: searchParams.get('sort'),
+        myRecipes: searchParams.get('myRecipes'),
+        title: searchParams.get('search'),
+        page: pageParam,
+      },
+    });
+    return res.data as PaginatedRecipes;
+  };
+
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['recipes', searchParams.toString()],
-    queryFn: async () => {
-      const res = await httpService.get(API.RECIPES.ALL, {
-        params: {
-          category: searchParams.getAll('category'),
-          saved: searchParams.get('saved'),
-          sort: searchParams.get('sort'),
-          myRecipes: searchParams.get('myRecipes'),
-          title: searchParams.get('search'),
-          description: searchParams.get('search'),
-        },
-      });
-      return res.data.recipes;
-    },
+    queryFn: fetchRecipes,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page * lastPage.limit < lastPage.totalRecipes
+        ? lastPage.page + 1
+        : undefined,
   });
 
   if (isLoading) {
-    return <Typography>Loading...</Typography>;
+    return <CircularProgress />;
   }
 
   return (
@@ -93,17 +105,37 @@ const RecipesList = () => {
           </Box>
         </Zoom>
       </Stack>
-      <Grid container spacing={1.5}>
-        {data.map((recipe: Recipe, index: number) => (
-          <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-            <Grow in={true} style={{ transitionDelay: `${index * 100}ms` }}>
-              <Box>
-                <RecipeCard recipeData={recipe} />
-              </Box>
-            </Grow>
-          </Grid>
-        ))}
-      </Grid>
+      <InfiniteScroll
+        dataLength={data?.pages.length || 0}
+        next={fetchNextPage}
+        hasMore={hasNextPage || false}
+        loader={
+          <LoadingWrapper>
+            <CircularProgress />
+          </LoadingWrapper>
+        }
+        endMessage={
+          <NoRecipesMessage variant="body2">
+            No more recipes to show
+          </NoRecipesMessage>
+        }
+      >
+        <Grid container spacing={1.5}>
+          {data?.pages.map((page, index) =>
+            page.recipes.map((recipe) => (
+              <Zoom
+                key={recipe.id}
+                in={true}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <RecipeCard recipeData={recipe} />
+                </Grid>
+              </Zoom>
+            )),
+          )}
+        </Grid>
+      </InfiniteScroll>
     </Wrapper>
   );
 };
@@ -115,3 +147,15 @@ const Wrapper = styled(Stack)(({ theme }) => ({
   background: theme.palette.background.default,
   padding: '2.5rem 3rem',
 }));
+
+const NoRecipesMessage = styled(Typography)({
+  textAlign: 'center',
+  width: '100%',
+  marginTop: '2rem',
+});
+
+const LoadingWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
