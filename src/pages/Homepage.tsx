@@ -22,7 +22,6 @@ function HomePage() {
     queryKey: ['recipes'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.ALL);
-      console.log(res.data);
       return res.data;
     },
   });

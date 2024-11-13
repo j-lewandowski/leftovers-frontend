@@ -1,7 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, IconButton, styled, TextField } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DEFAULT_ENDPOINTS } from '../../assets/constants/api';
 import { Recipe } from '../../models/recipe.model';
@@ -12,6 +12,9 @@ const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] =
     useState<string>(searchTerm);
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(
+    null,
+  );
 
   const onSearch = () => {
     if (searchTerm.trim() === '') {
@@ -20,12 +23,6 @@ const Searchbar = () => {
     }
     navigate(`/recipes?search=${searchTerm}`);
   };
-
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearchTerm(searchTerm), 300);
-
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['search'],
@@ -39,6 +36,27 @@ const Searchbar = () => {
     enabled: !!debouncedSearchTerm,
   });
 
+  const onInputChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string,
+  ) => {
+    setSearchTerm(value);
+
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+
+    if (value.trim() === '') {
+      setDebouncedSearchTerm('');
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setDebouncedSearchTerm(value);
+    }, 3000);
+    setDebounceTimeout(timeout);
+  };
+
   return (
     <StyledAutoComplete
       id="searchbar"
@@ -48,7 +66,7 @@ const Searchbar = () => {
       loading={isLoading}
       options={data || []}
       getOptionLabel={(option) => (option as Recipe).title || ''}
-      onInputChange={(_, value) => setSearchTerm(value)}
+      onInputChange={onInputChange}
       inputValue={searchTerm}
       size="small"
       renderInput={(params) => (
