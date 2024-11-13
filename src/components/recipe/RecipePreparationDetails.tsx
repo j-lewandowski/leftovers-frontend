@@ -3,7 +3,6 @@ import { Recipe } from '../../models/recipe.model';
 
 const RecipePreparationDetails = ({ data }: { data: Recipe }) => {
   const { ingredients, preparationSteps } = data;
-
   return (
     <PreparationDetailsWrapper direction="row">
       <ListWrapper gap={2}>
