@@ -31,7 +31,7 @@ const Searchbar = () => {
         DEFAULT_ENDPOINTS.RECIPES + `?title=${debouncedSearchTerm}`,
       );
 
-      return res.data as Recipe[];
+      return res.data.recipes as Recipe[];
     },
     enabled: !!debouncedSearchTerm,
   });
