@@ -43,7 +43,7 @@ const RecipesList = () => {
           description: searchParams.get('search'),
         },
       });
-      return res.data;
+      return res.data.recipes;
     },
   });
 

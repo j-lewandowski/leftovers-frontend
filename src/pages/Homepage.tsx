@@ -21,8 +21,10 @@ function HomePage() {
   const { data, isPending } = useQuery({
     queryKey: ['recipes'],
     queryFn: async () => {
-      const res = await httpService.get(API.RECIPES.ALL);
-      return res.data;
+      const res = await httpService.get(API.RECIPES.ALL, {
+        params: { limit: 8 },
+      });
+      return res.data.recipes;
     },
   });
 
