@@ -5,7 +5,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface AuthContextTypes {
   isAuthenticated: boolean;
@@ -19,7 +18,6 @@ const AuthContext = createContext<AuthContextTypes | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string>('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem('accessToken');
@@ -27,6 +25,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setAccessToken(localStorageToken || sessionStorageToken || '');
     setIsAuthenticated(!!localStorageToken || !!sessionStorageToken);
+
+    window.addEventListener('tokenRemoved', signOut);
+
+    return () => {
+      window.removeEventListener('tokenRemoved', signOut);
+    };
   }, []);
 
   const signOut = () => {
@@ -36,7 +40,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem('userId');
     setAccessToken('');
     setIsAuthenticated(false);
-    navigate('/');
   };
 
   return (

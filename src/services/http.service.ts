@@ -21,4 +21,15 @@ httpService.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+httpService.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      localStorage.removeItem('accessToken');
+      sessionStorage.removeItem('accessToken');
+      window.dispatchEvent(new Event('tokenRemoved'));
+    }
+    return Promise.reject(error);
+  },
+);
 export default httpService;
