@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   Grid,
+  Skeleton,
   Stack,
   styled,
   Typography,
@@ -18,7 +19,7 @@ import httpService from '../services/http.service';
 
 function HomePage() {
   const navigate = useNavigate();
-  const { data, isPending } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['recipes'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.ALL, {
@@ -28,10 +29,6 @@ function HomePage() {
     },
   });
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <HomePageWrapper>
       <RecipeOfTheDay />
@@ -40,13 +37,19 @@ function HomePage() {
         <Divider />
       </Stack>
       <Grid container spacing={1.5}>
-        {data.map((recipe: Recipe, index: number) => (
-          <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
-            <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
-              <RecipeCard recipeData={recipe} />
-            </Grid>
-          </Zoom>
-        ))}
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                <RecipeCardSkeleton animation="wave" />
+              </Grid>
+            ))
+          : data.map((recipe: Recipe, index: number) => (
+              <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
+                <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3}>
+                  <RecipeCard recipeData={recipe} />
+                </Grid>
+              </Zoom>
+            ))}
       </Grid>
       <ButtonWrapper>
         <Button
@@ -77,5 +80,10 @@ const ButtonWrapper = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
 }));
+
+const RecipeCardSkeleton = styled(Skeleton)({
+  height: '450px',
+  width: '100%',
+});
 
 export default HomePage;

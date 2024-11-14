@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  Skeleton,
   Stack,
   styled,
   Typography,
@@ -59,10 +60,6 @@ const RecipesList = () => {
         : undefined,
   });
 
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-
   return (
     <Wrapper gap={2}>
       <Stack gap={1}>
@@ -105,37 +102,52 @@ const RecipesList = () => {
           </Box>
         </Zoom>
       </Stack>
-      <InfiniteScroll
-        dataLength={data?.pages.length || 0}
-        next={fetchNextPage}
-        hasMore={hasNextPage || false}
-        loader={
-          <LoadingWrapper>
-            <CircularProgress />
-          </LoadingWrapper>
-        }
-        endMessage={
-          <NoRecipesMessage variant="body2">
-            No more recipes to show
-          </NoRecipesMessage>
-        }
-      >
+
+      {isLoading ? (
         <Grid container spacing={1.5}>
-          {data?.pages.map((page, index) =>
-            page.recipes.map((recipe) => (
-              <Zoom
-                key={recipe.id}
-                in={true}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                  <RecipeCard recipeData={recipe} />
-                </Grid>
-              </Zoom>
-            )),
-          )}
+          {Array.from({ length: 8 }).map((_, index) => (
+            <SkeletonGridItem key={index} item xs={12} sm={6} md={4} lg={3}>
+              <RecipeCardSkeleton variant="rounded" animation="wave" />
+            </SkeletonGridItem>
+          ))}
         </Grid>
-      </InfiniteScroll>
+      ) : (
+        <InfiniteScroll
+          dataLength={
+            data?.pages.reduce((acc, page) => acc + page.recipes.length, 0) || 0
+          }
+          next={fetchNextPage}
+          hasMore={hasNextPage || false}
+          loader={
+            <LoadingWrapper>
+              <CircularProgress />
+            </LoadingWrapper>
+          }
+          endMessage={
+            <NoRecipesMessage variant="body2">
+              No more recipes to show
+            </NoRecipesMessage>
+          }
+        >
+          <Grid container spacing={1.5}>
+            {data?.pages.map((page, pageIndex) =>
+              page.recipes.map((recipe, recipeIndex) => (
+                <Zoom
+                  key={recipe.id}
+                  in={true}
+                  style={{
+                    transitionDelay: `${(pageIndex * 4 + recipeIndex) * 100}ms`,
+                  }}
+                >
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <RecipeCard recipeData={recipe} />
+                  </Grid>
+                </Zoom>
+              )),
+            )}
+          </Grid>
+        </InfiniteScroll>
+      )}
     </Wrapper>
   );
 };
@@ -158,4 +170,12 @@ const LoadingWrapper = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+});
+
+const RecipeCardSkeleton = styled(Skeleton)({
+  height: '300px',
+});
+
+const SkeletonGridItem = styled(Grid)({
+  height: 'fit-content',
 });

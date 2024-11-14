@@ -1,4 +1,4 @@
-import { Box, Stack, styled } from '@mui/material';
+import { Box, Skeleton, Stack, styled } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { API } from '../assets/constants/api';
@@ -17,18 +17,18 @@ const RecipeDetails = () => {
     },
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <RecipeDetailsWrapper>
-      <RecipeCard>
-        <Stack gap={2} sx={{ width: '100%', minWidth: '100%' }}>
-          <RecipeDetailsSection data={data} />
-          <RecipePreparationDetails data={data} />
-        </Stack>
-      </RecipeCard>
+      {isLoading ? (
+        <RecipeDetailsSkeleton variant="rounded" animation="wave" />
+      ) : (
+        <RecipeCard>
+          <Stack gap={2} sx={{ width: '100%', minWidth: '100%' }}>
+            <RecipeDetailsSection data={data} />
+            <RecipePreparationDetails data={data} />
+          </Stack>
+        </RecipeCard>
+      )}
     </RecipeDetailsWrapper>
   );
 };
@@ -51,3 +51,8 @@ const RecipeCard = styled(Box)(({ theme }) => ({
   padding: '2rem',
   backgroundColor: theme.palette.common.white,
 }));
+
+const RecipeDetailsSkeleton = styled(Skeleton)({
+  width: '100%',
+  height: '100%',
+});

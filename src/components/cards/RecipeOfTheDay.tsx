@@ -3,6 +3,7 @@ import {
   Box,
   Divider,
   Fade,
+  Skeleton,
   Stack,
   styled,
   Typography,
@@ -19,7 +20,7 @@ import ImageCard from './ImageCard';
 const RecipeOfTheDay = () => {
   const theme = useTheme();
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['recipes', 'recipeOfTheDay'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.RECIPE_OF_THE_DAY);
@@ -27,61 +28,88 @@ const RecipeOfTheDay = () => {
     },
   });
 
-  if (isPending) {
-    return <Typography>Loading...</Typography>;
-  }
-
-  if (isError) {
-    return <Typography>Something went wrong.</Typography>;
-  }
-
   return (
     <Fade in={true}>
       <Box>
         <Card direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 1, sm: 2 }}>
-          <ImageCard
-            recipeId={data.id}
-            imageUrl={data.imageUrl}
-            isSaved={data.isSaved}
-          />
-          <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
-            <Stack gap={{ xs: 1, sm: 2 }}>
-              <Typography
-                variant="overline"
-                fontWeight={600}
-                color={theme.palette.primary.dark}
-              >
-                RECIPE OF THE DAY
-              </Typography>
-              <Rating
-                rating={data.rating}
-                numberOfRatings={data.numberOfRatings}
+          {isLoading ? (
+            <>
+              <ImageSkeleton variant="rounded" />
+              <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
+                <Stack gap={{ xs: 1, sm: 2 }}>
+                  <Typography
+                    variant="overline"
+                    fontWeight={600}
+                    color={theme.palette.primary.dark}
+                  >
+                    RECIPE OF THE DAY
+                  </Typography>
+                  <RatingSkeleton variant="text" />
+                  <TitleSkeleton variant="text" />
+                  <DescriptionSkeleton variant="text" />
+                </Stack>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ xs: 'start', sm: 'center' }}
+                  gap={{ xs: 0.5, sm: 1 }}
+                  divider={
+                    <Divider orientation={'vertical'} variant="middle" />
+                  }
+                >
+                  <AdditionalDataSkeleton variant="text" />
+                  <AdditionalDataSkeleton variant="text" />
+                </Stack>
+                <LinkSkeleton variant="text" />
+              </RecipeDetails>
+            </>
+          ) : (
+            <>
+              <ImageCard
+                recipeId={data.id}
+                imageUrl={data.imageUrl}
+                isSaved={data.isSaved}
               />
-              <Typography variant="h5">{data.title}</Typography>
-              <Typography variant="body1">{data.description}</Typography>
-            </Stack>
-
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              alignItems={{ xs: 'start', sm: 'center' }}
-              gap={{ xs: 0.5, sm: 1 }}
-              divider={<Divider orientation={'vertical'} variant="middle" />}
-            >
-              <Typography variant="overline" lineHeight={'18px'}>
-                PREPARATION TIME:{' '}
-                {getPreparationTimeLabel(data.preparationTime)}
-              </Typography>
-              <Typography variant="overline" lineHeight={'18px'}>
-                {data.servings} SERVINGS
-              </Typography>
-            </Stack>
-            <StyledLink to={'/recipes/' + data.id}>
-              <Stack direction="row" color={theme.palette.primary.main}>
-                <Typography>View the recipe</Typography>
-                <ChevronRight />
-              </Stack>
-            </StyledLink>
-          </RecipeDetails>
+              <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
+                <Stack gap={{ xs: 1, sm: 2 }}>
+                  <Typography
+                    variant="overline"
+                    fontWeight={600}
+                    color={theme.palette.primary.dark}
+                  >
+                    RECIPE OF THE DAY
+                  </Typography>
+                  <Rating
+                    rating={data.rating}
+                    numberOfRatings={data.numberOfRatings}
+                  />
+                  <Typography variant="h5">{data.title}</Typography>
+                  <Typography variant="body1">{data.description}</Typography>
+                </Stack>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ xs: 'start', sm: 'center' }}
+                  gap={{ xs: 0.5, sm: 1 }}
+                  divider={
+                    <Divider orientation={'vertical'} variant="middle" />
+                  }
+                >
+                  <Typography variant="overline" lineHeight={'18px'}>
+                    PREPARATION TIME:{' '}
+                    {getPreparationTimeLabel(data.preparationTime)}
+                  </Typography>
+                  <Typography variant="overline" lineHeight={'18px'}>
+                    {data.servings} SERVINGS
+                  </Typography>
+                </Stack>
+                <StyledLink to={'/recipes/' + data.id}>
+                  <Stack direction="row" color={theme.palette.primary.main}>
+                    <Typography>View the recipe</Typography>
+                    <ChevronRight />
+                  </Stack>
+                </StyledLink>
+              </RecipeDetails>
+            </>
+          )}
         </Card>
       </Box>
     </Fade>
@@ -108,3 +136,34 @@ const StyledLink = styled(Link)(() => ({
 const RecipeDetails = styled(Stack)(() => ({
   width: '100%',
 }));
+
+const ImageSkeleton = styled(Skeleton)({
+  minHeight: '300px',
+  width: '100%',
+});
+
+const RatingSkeleton = styled(Skeleton)({
+  width: '200px',
+  fontSize: '1.5rem',
+});
+
+const TitleSkeleton = styled(Skeleton)({
+  fontSize: '1.5rem',
+  width: '100%',
+});
+
+const DescriptionSkeleton = styled(Skeleton)({
+  fontSize: '1rem',
+  width: '100%',
+  height: '20px',
+});
+
+const AdditionalDataSkeleton = styled(Skeleton)({
+  width: '100px',
+  fontsize: '0.75rem',
+});
+
+const LinkSkeleton = styled(Skeleton)({
+  width: '120px',
+  fontSize: '1rem',
+});
