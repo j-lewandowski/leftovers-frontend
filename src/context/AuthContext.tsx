@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
   createContext,
   ReactNode,
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextTypes | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string>('');
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem('accessToken');
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem('userId');
     setAccessToken('');
     setIsAuthenticated(false);
+    queryClient.invalidateQueries({ queryKey: ['recipes'] });
   };
 
   return (
