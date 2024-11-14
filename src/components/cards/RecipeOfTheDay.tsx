@@ -33,76 +33,83 @@ const RecipeOfTheDay = () => {
       <Box>
         <Card direction={{ xs: 'column', sm: 'row' }} gap={{ xs: 1, sm: 2 }}>
           {isLoading ? (
-            <ImageSkeleton variant="rounded" />
-          ) : (
-            <ImageCard
-              recipeId={data.id}
-              imageUrl={data.imageUrl}
-              isSaved={data.isSaved}
-            />
-          )}
-          <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
-            <Stack gap={{ xs: 1, sm: 2 }}>
-              <Typography
-                variant="overline"
-                fontWeight={600}
-                color={theme.palette.primary.dark}
-              >
-                RECIPE OF THE DAY
-              </Typography>
-              {isLoading ? (
-                <RatingSkeleton variant="text" />
-              ) : (
-                <Rating
-                  rating={data.rating}
-                  numberOfRatings={data.numberOfRatings}
-                />
-              )}
-              {isLoading ? (
-                <TitleSkeleton variant="text" />
-              ) : (
-                <Typography variant="h5">{data.title}</Typography>
-              )}
-              {isLoading ? (
-                <DescriptionSkeleton variant="text" />
-              ) : (
-                <Typography variant="body1">{data.description}</Typography>
-              )}
-            </Stack>
-
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              alignItems={{ xs: 'start', sm: 'center' }}
-              gap={{ xs: 0.5, sm: 1 }}
-              divider={<Divider orientation={'vertical'} variant="middle" />}
-            >
-              {isLoading ? (
-                <AdditionalDataSkeleton variant="text" />
-              ) : (
-                <Typography variant="overline" lineHeight={'18px'}>
-                  PREPARATION TIME:{' '}
-                  {getPreparationTimeLabel(data.preparationTime)}
-                </Typography>
-              )}
-              {isLoading ? (
-                <AdditionalDataSkeleton variant="text" />
-              ) : (
-                <Typography variant="overline" lineHeight={'18px'}>
-                  {data.servings} SERVINGS
-                </Typography>
-              )}
-            </Stack>
-            {isLoading ? (
-              <LinkSkeleton variant="text" />
-            ) : (
-              <StyledLink to={'/recipes/' + data.id}>
-                <Stack direction="row" color={theme.palette.primary.main}>
-                  <Typography>View the recipe</Typography>
-                  <ChevronRight />
+            <>
+              <ImageSkeleton variant="rounded" />
+              <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
+                <Stack gap={{ xs: 1, sm: 2 }}>
+                  <Typography
+                    variant="overline"
+                    fontWeight={600}
+                    color={theme.palette.primary.dark}
+                  >
+                    RECIPE OF THE DAY
+                  </Typography>
+                  <RatingSkeleton variant="text" />
+                  <TitleSkeleton variant="text" />
+                  <DescriptionSkeleton variant="text" />
                 </Stack>
-              </StyledLink>
-            )}
-          </RecipeDetails>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ xs: 'start', sm: 'center' }}
+                  gap={{ xs: 0.5, sm: 1 }}
+                  divider={
+                    <Divider orientation={'vertical'} variant="middle" />
+                  }
+                >
+                  <AdditionalDataSkeleton variant="text" />
+                  <AdditionalDataSkeleton variant="text" />
+                </Stack>
+                <LinkSkeleton variant="text" />
+              </RecipeDetails>
+            </>
+          ) : (
+            <>
+              <ImageCard
+                recipeId={data.id}
+                imageUrl={data.imageUrl}
+                isSaved={data.isSaved}
+              />
+              <RecipeDetails gap={{ xs: 2, sm: 4 }} padding={1}>
+                <Stack gap={{ xs: 1, sm: 2 }}>
+                  <Typography
+                    variant="overline"
+                    fontWeight={600}
+                    color={theme.palette.primary.dark}
+                  >
+                    RECIPE OF THE DAY
+                  </Typography>
+                  <Rating
+                    rating={data.rating}
+                    numberOfRatings={data.numberOfRatings}
+                  />
+                  <Typography variant="h5">{data.title}</Typography>
+                  <Typography variant="body1">{data.description}</Typography>
+                </Stack>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ xs: 'start', sm: 'center' }}
+                  gap={{ xs: 0.5, sm: 1 }}
+                  divider={
+                    <Divider orientation={'vertical'} variant="middle" />
+                  }
+                >
+                  <Typography variant="overline" lineHeight={'18px'}>
+                    PREPARATION TIME:{' '}
+                    {getPreparationTimeLabel(data.preparationTime)}
+                  </Typography>
+                  <Typography variant="overline" lineHeight={'18px'}>
+                    {data.servings} SERVINGS
+                  </Typography>
+                </Stack>
+                <StyledLink to={'/recipes/' + data.id}>
+                  <Stack direction="row" color={theme.palette.primary.main}>
+                    <Typography>View the recipe</Typography>
+                    <ChevronRight />
+                  </Stack>
+                </StyledLink>
+              </RecipeDetails>
+            </>
+          )}
         </Card>
       </Box>
     </Fade>

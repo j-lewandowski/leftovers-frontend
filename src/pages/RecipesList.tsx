@@ -113,7 +113,9 @@ const RecipesList = () => {
         </Grid>
       ) : (
         <InfiniteScroll
-          dataLength={data?.pages.length || 0}
+          dataLength={
+            data?.pages.reduce((acc, page) => acc + page.recipes.length, 0) || 0
+          }
           next={fetchNextPage}
           hasMore={hasNextPage || false}
           loader={
@@ -128,12 +130,14 @@ const RecipesList = () => {
           }
         >
           <Grid container spacing={1.5}>
-            {data?.pages.map((page, index) =>
-              page.recipes.map((recipe) => (
+            {data?.pages.map((page, pageIndex) =>
+              page.recipes.map((recipe, recipeIndex) => (
                 <Zoom
                   key={recipe.id}
                   in={true}
-                  style={{ transitionDelay: `${index * 100}ms` }}
+                  style={{
+                    transitionDelay: `${(pageIndex * 4 + recipeIndex) * 100}ms`,
+                  }}
                 >
                   <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RecipeCard recipeData={recipe} />
