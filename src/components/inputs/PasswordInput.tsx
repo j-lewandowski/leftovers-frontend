@@ -43,6 +43,7 @@ const PasswordInput = <
 
   return (
     <TextField
+      data-cy="password-input"
       placeholder={placeholder}
       label={label}
       size="small"

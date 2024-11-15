@@ -37,13 +37,14 @@ const SignupModal = () => {
         <Content>
           <Typography variant="body2">Create an account for free</Typography>
         </Content>
-        <Content>
+
+        <Content data-cy="email-input">
           <EmailInput control={form.control} name="email" />
         </Content>
         <Content>
           <PasswordInput control={form.control} name="password" />
         </Content>
-        <Content>
+        <Content data-cy="checkbox">
           <FormControlLabel
             control={
               <Checkbox {...form.register('acceptTC', { required: true })} />
@@ -65,6 +66,7 @@ const SignupModal = () => {
             size="medium"
             onClick={form.handleSubmit(async (data) => mutation.mutate(data))}
             disabled={!form.formState.isValid || mutation.isPending}
+            data-cy="create-account-button"
           >
             {mutation.isPending ? <Spinner /> : 'Create an account'}
           </Button>

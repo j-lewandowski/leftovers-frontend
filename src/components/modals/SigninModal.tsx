@@ -34,7 +34,7 @@ const SigninModal = () => {
         </IconButton>
       </CloseDialogContainer>
       <Title variant="h4">Log in</Title>
-      <Content>
+      <Content data-cy="email-input">
         <EmailInput control={form.control} name="email" />
       </Content>
       <Content>
@@ -52,6 +52,7 @@ const SigninModal = () => {
             signInMutation.mutate(data),
           )}
           disabled={!form.formState.isValid || signInMutation.isPending}
+          data-cy="signin-button"
         >
           {signInMutation.isPending ? <Spinner /> : 'Log in'}
         </Button>

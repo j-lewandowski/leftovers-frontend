@@ -101,7 +101,7 @@ const RecipeOfTheDay = () => {
                     {data.servings} SERVINGS
                   </Typography>
                 </Stack>
-                <StyledLink to={'/recipes/' + data.id}>
+                <StyledLink to={'/recipes/' + data.id} data-cy="view-recipe">
                   <Stack direction="row" color={theme.palette.primary.main}>
                     <Typography>View the recipe</Typography>
                     <ChevronRight />
