@@ -18,7 +18,9 @@ describe('Sign in', () => {
   });
 
   it('Should sign in user', () => {
-    cy.intercept('POST', '/auth/login/').as('signinRequest');
+    cy.intercept('POST', '/auth/login/', { statusCode: 200 }).as(
+      'signinRequest',
+    );
     cy.visit('/?signin=true');
 
     cy.get('[data-cy="email-input"]').type('jane@email.com');

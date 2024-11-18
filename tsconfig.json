@@ -9,7 +9,9 @@
     }
   ],
   "compilerOptions": {
-    "types": ["@testing-library/jest-dom", "cypress"]
+    "types": ["@testing-library/jest-dom", "cypress"],
+    "module": "ESNext",
+    "moduleResolution": "node"
   },
   "include": ["cypress", "*.ts", "*.tsx"]
 }

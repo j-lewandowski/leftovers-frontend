@@ -51,6 +51,7 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
                 endIcon={<ChevronRight />}
                 disabled={isNextDisabled()}
                 onClick={goToNextStep}
+                data-cy="next-button-3"
               >
                 Next
               </Button>
@@ -60,7 +61,7 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
       </Stack>
       <Stack gap={1.5} component={TransitionGroup}>
         {fields.map((item, i) => (
-          <Collapse key={item.id}>
+          <Collapse key={item.id} data-cy={`step-${i}`}>
             <Controller
               key={item.id}
               name={`preparationSteps.${i}.name`}
@@ -85,7 +86,9 @@ const PreparationMethod: React.FC<PreparationMethodProps> = ({ isVisible }) => {
           </Collapse>
         ))}
         <Box>
-          <Button onClick={onNewStep}>Add a new step</Button>
+          <Button onClick={onNewStep} data-cy="add-step-button">
+            Add a new step
+          </Button>
         </Box>
       </Stack>
     </Stack>

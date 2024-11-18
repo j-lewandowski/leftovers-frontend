@@ -33,6 +33,7 @@ const Publication = ({ isVisible }: { isVisible: boolean }) => {
             onClick={() => submitCreateRecipe(Visibility.Private)}
             type="submit"
             disabled={getValues('visibility') === Visibility.Private}
+            data-cy="add-private-recipe"
           >
             {getValues('visibility') === Visibility.Private
               ? 'Saved as private'

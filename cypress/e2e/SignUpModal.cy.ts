@@ -20,7 +20,9 @@ describe('Sign up', () => {
   });
 
   it('Should sign up user', () => {
-    cy.intercept('POST', '/auth/register').as('signupRequest');
+    cy.intercept('POST', '/auth/register', { statusCode: 201 }).as(
+      'signupRequest',
+    );
     cy.visit('/?signup=true');
 
     cy.get(`[data-cy="email-input"]`).type(faker.internet.email());
