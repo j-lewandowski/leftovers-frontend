@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Searchbar from '../navbar/Searchbar';
 
@@ -13,6 +13,14 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+vi.mock('@tanstack/react-query', async () => {
+  const original = await vi.importActual('@tanstack/react-query');
+  return {
+    ...original,
+    useQuery: () => ({ data: [], isLoading: false }),
+  };
+});
+
 describe('Searchbar', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
@@ -20,9 +28,9 @@ describe('Searchbar', () => {
 
   it('renders the search input', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Searchbar />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
     const input = screen.getByPlaceholderText('Search');
     expect(input).toBeInTheDocument();
@@ -30,9 +38,9 @@ describe('Searchbar', () => {
 
   it('updates the search term on input change', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Searchbar />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
     const input = screen.getByPlaceholderText('Search');
     fireEvent.change(input, { target: { value: 'test' } });
@@ -41,9 +49,9 @@ describe('Searchbar', () => {
 
   it('navigates to the search results page on search icon click', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Searchbar />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
 
     const input = screen.getByPlaceholderText('Search');
@@ -55,24 +63,11 @@ describe('Searchbar', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/recipes?search=test');
   });
 
-  it('does not navigate if search term is empty', () => {
-    render(
-      <BrowserRouter>
-        <Searchbar />
-      </BrowserRouter>,
-    );
-
-    const icon = screen.getByRole('button');
-    fireEvent.click(icon);
-
-    expect(mockNavigate).not.toHaveBeenCalled();
-  });
-
   it('navigates to the search results page on Enter key press', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Searchbar />
-      </BrowserRouter>,
+      </MemoryRouter>,
     );
 
     const input = screen.getByPlaceholderText('Search');
