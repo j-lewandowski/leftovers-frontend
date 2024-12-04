@@ -4,7 +4,7 @@ describe('Add New Recipe', () => {
       body: { fileKey: 'fileKey', uploadUrl: 'uploadUrl' },
       statusCode: 200,
     });
-    cy.intercept('PUT', 'uploadUrl', { statusCode: 200 });
+    cy.intercept('PUT', '/uploadUrl', { statusCode: 200 });
     cy.intercept('POST', '/recipes', { statusCode: 201 }).as('createRecipe');
 
     cy.visit('/new-recipe');
