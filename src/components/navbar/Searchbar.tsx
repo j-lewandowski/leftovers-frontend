@@ -37,7 +37,7 @@ const Searchbar = () => {
   });
 
   const onInputChange = (
-    event: React.SyntheticEvent<Element, Event>,
+    _: React.SyntheticEvent<Element, Event>,
     value: string,
   ) => {
     setSearchTerm(value);

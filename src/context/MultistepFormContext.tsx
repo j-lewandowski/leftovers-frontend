@@ -23,7 +23,7 @@ const MultistepFormProvider = ({ children }: { children: ReactNode }) => {
     'right',
   );
   const isEditMode = location.pathname.includes('edit-recipe');
-  const onTabClick = (event: React.SyntheticEvent, TabIndex: number) => {
+  const onTabClick = (_: React.SyntheticEvent, TabIndex: number) => {
     setSlideDirection(TabIndex > stepNumber ? 'left' : 'right');
     setStepNumber(TabIndex);
   };

@@ -5,7 +5,7 @@ import RateRecipeModal from '../modals/RateRecipeModal';
 
 const RateRecipeButton = () => {
   const navigate = useNavigate();
-  const { userId } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <>
@@ -13,7 +13,7 @@ const RateRecipeButton = () => {
         variant="text"
         sx={{ width: 'fit-content' }}
         onClick={() => {
-          if (userId) {
+          if (isAuthenticated) {
             navigate('?rate-recipe=true');
           } else {
             navigate('?signin=true');

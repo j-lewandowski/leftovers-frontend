@@ -12,6 +12,5 @@
     "types": ["@testing-library/jest-dom", "cypress"],
     "module": "ESNext",
     "moduleResolution": "node"
-  },
-  "include": ["cypress", "*.ts", "*.tsx"]
+  }
 }
