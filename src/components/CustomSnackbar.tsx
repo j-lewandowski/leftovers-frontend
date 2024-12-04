@@ -23,7 +23,7 @@ const CustomSnackbar = () => {
     </>
   );
   return (
-    <Portal>
+    <Portal data-cy="snackbar">
       <Snackbar
         open={!!message}
         autoHideDuration={5000}

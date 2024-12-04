@@ -41,6 +41,7 @@ const ImageDropzone: React.FC = () => {
       <ImageDropzoneWrapper
         {...getRootProps()}
         $isImageLoaded={!!getValues('imagePreview')}
+        data-cy="image-upload"
       >
         <input
           {...getInputProps({

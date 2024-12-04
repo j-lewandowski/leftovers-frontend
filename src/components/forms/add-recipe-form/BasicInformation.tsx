@@ -61,6 +61,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
               variant="contained"
               disabled={isNextDisabled()}
               onClick={goToNextStep}
+              data-cy="next-button-1"
             >
               Next
             </Button>
@@ -79,6 +80,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
                   sx: { textAlign: 'right' },
                 }}
                 helperText={`${field.value.length}/100`}
+                data-cy="recipe-title"
               />
             )}
           ></Controller>
@@ -94,6 +96,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
                   sx: { textAlign: 'right' },
                 }}
                 helperText={`${field.value.length}/200`}
+                data-cy="recipe-description"
               />
             )}
           ></Controller>
@@ -105,9 +108,18 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
               name="categoryName"
               rules={{ required: true }}
               render={({ field }) => (
-                <Select label="Category" {...field} defaultValue={''}>
-                  {categories.map((category) => (
-                    <MenuItem key={category.filter} value={category.filter}>
+                <Select
+                  label="Category"
+                  {...field}
+                  defaultValue={''}
+                  data-cy="recipe-category"
+                >
+                  {categories.map((category, i) => (
+                    <MenuItem
+                      key={category.filter}
+                      value={category.filter}
+                      data-cy={`category-item-${i}`}
+                    >
                       {category.name}
                     </MenuItem>
                   ))}
@@ -126,9 +138,14 @@ const BasicInformation: React.FC<BasicInformationProps> = ({ isVisible }) => {
                   label="Preparation time"
                   {...field}
                   defaultValue={undefined}
+                  data-cy="recipe-preparation-time"
                 >
-                  {preparationTime.map((time) => (
-                    <MenuItem key={time.value} value={time.value}>
+                  {preparationTime.map((time, i) => (
+                    <MenuItem
+                      key={time.value}
+                      value={time.value}
+                      data-cy={`recipe-preparation-time-item-${i}`}
+                    >
                       <option>{time.label}</option>
                     </MenuItem>
                   ))}

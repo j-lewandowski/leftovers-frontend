@@ -53,6 +53,7 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
                 endIcon={<ChevronRight />}
                 disabled={isNextDisabled()}
                 onClick={goToNextStep}
+                data-cy="next-button-2"
               >
                 Next
               </Button>
@@ -63,7 +64,7 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
 
       <Stack gap={1.5} component={TransitionGroup}>
         {fields.map((item, i) => (
-          <Collapse key={item.id}>
+          <Collapse key={item.id} data-cy={`ingredient-${i}`}>
             <Controller
               key={item.id}
               name={`ingredients.${i}.name`}
@@ -88,7 +89,9 @@ const Ingredients: React.FC<IngredientsProps> = ({ isVisible }) => {
           </Collapse>
         ))}
         <Box>
-          <Button onClick={onNewIngredient}>Add a new ingredient</Button>
+          <Button onClick={onNewIngredient} data-cy="add-ingredient-button">
+            Add a new ingredient
+          </Button>
         </Box>
       </Stack>
     </Stack>
