@@ -39,7 +39,11 @@ describe('BasicInformation Component', () => {
   const Wrapper = ({ isVisible }: { isVisible: boolean }) => {
     const methods = useForm({
       defaultValues: {
-        image: new File(['test-image.jpg'], 'test-image.jpg'),
+        imageFile: new File([''], 'image.png', { type: 'image/png' }),
+        title: '',
+        description: '',
+        categoryName: '',
+        preparationTime: '',
       },
     });
     return (

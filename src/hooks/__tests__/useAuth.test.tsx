@@ -2,11 +2,11 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 
-const mockNavigate = vi.fn();
-
-vi.mock('react-router-dom', () => ({
-  ...vi.importActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
+vi.mock('@tanstack/react-query', () => ({
+  ...vi.importActual('@tanstack/react-query'),
+  useQueryClient: () => ({
+    invalidateQueries: vi.fn(),
+  }),
 }));
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -58,7 +58,6 @@ describe('useAuth', () => {
     act(() => result.current.signOut());
     expect(result.current.accessToken).toEqual('');
     expect(result.current.isAuthenticated).toEqual(false);
-    expect(mockNavigate).toHaveBeenCalledWith('/');
     expect(Storage.prototype.removeItem).toHaveBeenCalled();
   });
 });
