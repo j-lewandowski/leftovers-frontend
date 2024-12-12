@@ -46,18 +46,12 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipeData }) => {
           )}
         </CardMedia>
         <CardContent>
-          <Typography
+          <Title
             variant="subtitle1"
             onClick={() => navigate('/recipes/' + recipeData.id)}
-            sx={{
-              cursor: 'pointer',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-            }}
           >
             {recipeData.title}
-          </Typography>
+          </Title>
           <Description variant="body2">{recipeData.description}</Description>
           <Rating
             oneStar
@@ -84,12 +78,27 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipeData }) => {
 export default RecipeCard;
 
 const StyledCard = styled(Card)(() => ({
-  minWidth: '100%',
+  width: '100%',
+  height: '100%',
 }));
 
 const CardWrapper = styled('div')(() => ({
   position: 'relative',
+  width: '100%',
+  height: '100%',
 }));
+
+const Title = styled(Typography)`
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 const Description = styled(Typography)`
   display: -webkit-box;
@@ -97,4 +106,5 @@ const Description = styled(Typography)`
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 100%;
 `;
