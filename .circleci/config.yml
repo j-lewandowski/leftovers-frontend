@@ -76,6 +76,9 @@ jobs:
           name: Prepare .env file
           command: sh ./scripts/env_file_from_env_vars.sh
       - run:
+          name: List all files
+          command: ls -a
+      - run:
           name: Build the project
           command: npm run build
       - save_cache:
