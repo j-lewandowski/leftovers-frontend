@@ -53,7 +53,7 @@ const Searchbar = () => {
 
     const timeout = setTimeout(() => {
       setDebouncedSearchTerm(value);
-    }, 3000);
+    }, 300);
     setDebounceTimeout(timeout);
   };
 
