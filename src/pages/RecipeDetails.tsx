@@ -10,7 +10,7 @@ const RecipeDetails = () => {
   const { recipeId } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['save-recipes', 'recipe'],
+    queryKey: ['save-recipes', 'recipes', 'recipe'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.ALL + recipeId);
       return res.data;

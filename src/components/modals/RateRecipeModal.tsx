@@ -9,7 +9,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useSnackbar } from '../../context/SnackbarContext';
@@ -26,17 +26,21 @@ const RateRecipeModal = () => {
   const [searchParams] = useSearchParams();
   const { setMessage } = useSnackbar();
   const { recipeId } = useParams();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const rateRecipeMutation = useMutation({
     mutationFn: (data: { rating: number }) => {
       return httpService.post(`recipes/${recipeId}/rate-recipe`, {
-        value: data.rating,
+        value: +data.rating,
       });
     },
     onSuccess: () => {
       reset();
       navigate(-1);
       setMessage('⭐  Thank you for submitting your rating!');
+      queryClient.invalidateQueries({
+        queryKey: ['save-recipes', 'recipes', 'recipe'],
+      });
     },
   });
 

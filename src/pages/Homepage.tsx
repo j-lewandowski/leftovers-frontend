@@ -20,7 +20,7 @@ import httpService from '../services/http.service';
 function HomePage() {
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
-    queryKey: ['recipes'],
+    queryKey: ['save-recipes', 'recipes'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.ALL, {
         params: { limit: 8 },

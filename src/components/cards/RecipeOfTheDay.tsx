@@ -21,7 +21,7 @@ const RecipeOfTheDay = () => {
   const theme = useTheme();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['recipes', 'recipeOfTheDay'],
+    queryKey: ['save-recipes', 'recipes', 'recipeOfTheDay'],
     queryFn: async () => {
       const res = await httpService.get(API.RECIPES.RECIPE_OF_THE_DAY);
       return res.data;
