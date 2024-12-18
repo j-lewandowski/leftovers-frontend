@@ -1,4 +1,4 @@
-import { Stack, styled, Typography } from '@mui/material';
+import { CardMedia, Stack, styled, Typography } from '@mui/material';
 import { getPreparationTimeLabel } from '../../features/recipes/recipes';
 import { Recipe } from '../../models/recipe.model';
 import FavoritesButton from '../buttons/FavoritesButton';
@@ -18,7 +18,7 @@ const RecipeDetailsSection = ({ data }: { data: Recipe }) => {
   } = data;
   return (
     <RecipeDetailsWrapper direction="row" gap={7}>
-      <Image src={imageUrl} />
+      <Image image={imageUrl} />
       <Stack gap={2} sx={{ width: '100%' }}>
         <SaveRecipeWrapper>
           <FavoritesButton
@@ -52,9 +52,10 @@ const RecipeDetailsWrapper = styled(Stack)({
   minWidth: '100%',
 });
 
-const Image = styled('img')({
+const Image = styled(CardMedia)({
   aspectRatio: '1 / 1',
   borderRadius: '4px',
+  width: '60%',
 });
 
 const SaveRecipeWrapper = styled('div')({
