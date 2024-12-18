@@ -1,0 +1,135 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.2
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:22.11.0
+
+jobs:
+  fetch-latest-changes:
+    resource_class: small
+    executor: node-executor
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  install-dependencies:
+    resource_class: small
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          key: |
+            {{ .Environment.CACHE_VERSION }}-dependencies-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          paths:
+            - node_modules
+          key: |
+            {{ .Environment.CACHE_VERSION }}-dependencies-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+
+  lint:
+    resource_class: small
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          key: |
+            {{ .Environment.CACHE_VERSION }}-dependencies-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Run lint checks
+          command: npm run lint
+
+  unit-tests:
+    resource_class: small
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          key: |
+            {{ .Environment.CACHE_VERSION }}-dependencies-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Run unit tests
+          command: npm run test
+
+  build:
+    resource_class: medium
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          key: |
+            {{ .Environment.CACHE_VERSION }}-dependencies-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Prepare .env file
+          command: sh ./scripts/env_file_from_env_vars.sh
+      - run:
+          name: Build the project
+          command: npm run build
+      - save_cache:
+          paths:
+            - dist
+            - node_modules
+            - .env
+          key: |
+            {{ .Environment.CACHE_VERSION }}-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+
+  deploy_over_ssh:
+    resource_class: small
+    docker:
+      - image: cimg/base:2024.11
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          key: |
+            {{ .Environment.CACHE_VERSION }}-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+      - setup_remote_docker
+      - run:
+          name: Add SSH key to known hosts
+          command: |
+            ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+      - run:
+          name: Send dist folder over ssh
+          command: |
+            scp -r ./dist/* $SSH_USER@$SSH_HOST:$APP_REMOTE_PATH
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - fetch-latest-changes
+      - install-dependencies:
+          requires:
+            - fetch-latest-changes
+      - lint:
+          requires:
+            - install-dependencies
+      - unit-tests:
+          requires:
+            - install-dependencies
+      - build:
+          requires:
+            - install-dependencies
+          context: leftovers-deployment
+      - deploy_over_ssh:
+          requires:
+            - lint
+            - unit-tests
+            - build
+          filters:
+            branches:
+              only:
+                - main
