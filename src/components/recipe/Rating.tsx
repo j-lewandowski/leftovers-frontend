@@ -13,7 +13,9 @@ const Rating = ({ rating, numberOfRatings, oneStar = false }: RatingProps) => {
       <MUIRating
         readOnly
         defaultValue={oneStar ? 1 : rating}
+        value={oneStar ? 1 : rating}
         max={oneStar ? 1 : 5}
+        precision={0.5}
       />
       <Typography variant="overline">({numberOfRatings})</Typography>
     </Stack>

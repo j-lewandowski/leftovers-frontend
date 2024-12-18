@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ReactNode, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API } from '../../assets/constants/api';
 import { useSnackbar } from '../../context/SnackbarContext';
 import httpService from '../../services/http.service';
@@ -10,6 +10,7 @@ const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
   const [searchParams] = useSearchParams();
   const { setMessage } = useSnackbar();
   const hasMutated = useRef<boolean>(false);
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: () => {
@@ -18,8 +19,11 @@ const AccountActivationHOC = ({ children }: { children: ReactNode }) => {
         validationToken: searchParams.get('requestId'),
       });
     },
-    onSuccess: (res) => {
-      setMessage(res.data.message);
+    onSuccess: () => {
+      setMessage(
+        "You've successfully completed the registration process. You may now log in ✅",
+      );
+      navigate('/?signin=true');
     },
     onError: (error: AxiosError<{ message: string }>) => {
       if (!error.response) {
